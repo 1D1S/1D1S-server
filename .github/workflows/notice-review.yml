@@ -1,0 +1,34 @@
+name: notice-review
+on:
+  pull_request_review:
+    types:
+      - submitted
+
+jobs:
+  on-approve:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: install yarn
+        run: npm install -g yarn
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "20"
+          cache: 'yarn'
+          cache-dependency-path: .github/workflows/review/yarn.lock
+
+      - name: install dependencies
+        working-directory: .github/workflows/review
+        run: yarn install
+
+      - name: run script
+        working-directory: .github/workflows/review
+        run: node ./review.js
+        env:
+          REVIEW_TOKEN: ${{ secrets.REVIEW_TOKEN }}
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
