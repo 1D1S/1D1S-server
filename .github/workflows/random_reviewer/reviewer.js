@@ -32,7 +32,7 @@ async function sendDiscordMsg(reviewer, title) {
 }
 
 function createMsg(reviewer, title) {
-    return title + "\n" + "* PR: " + `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/pull/${github.context.payload.pull_request.number}`
+    return "# " + title + "\n" + "* PR: " + `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/pull/${github.context.payload.pull_request.number}`
         + "\n* 담당자: " + "<@!" + member[reviewer] + ">"
         + "께서 리뷰를 맡게 되었습니다. :tada:"
 }
