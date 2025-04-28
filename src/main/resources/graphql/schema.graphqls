@@ -1,0 +1,13 @@
+# for extends
+type Query {
+    _empty: String
+}
+type Mutation {
+    _empty: String
+}
+
+type Date {
+    year: Int
+    month: Int
+    day: Int
+}

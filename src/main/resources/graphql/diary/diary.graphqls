@@ -1,0 +1,17 @@
+type Diary {
+    id: ID!
+    member: Member!
+    title: String!
+    content: String!
+    goals: [Goal]!
+    info: DiaryInfo!
+    option: DiaryOption!
+    status: DiaryStatus!
+    img: Img
+    like: Likes!
+}
+
+type Goal {
+    content: String!
+    achieved: Boolean!
+}

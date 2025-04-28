@@ -15,4 +15,4 @@ public class Application {
 // TODO: docker setting
 // TODO: discord bot
 // TODO: .env setting
-// TODO: application.yml separate
+// TODO: application.yaml separate

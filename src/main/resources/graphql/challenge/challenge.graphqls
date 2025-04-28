@@ -1,0 +1,8 @@
+type Challenge {
+    id: ID!
+    host: Member!
+    applicants: [Applicant]!
+    title: String!
+    info: ChallengeInfo!
+    like: Likes!
+}

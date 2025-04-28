@@ -54,7 +54,7 @@ repositories {
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-graphql'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+//    implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
@@ -76,5 +76,8 @@ tasks.register("updateGitHooks", Copy) {
 tasks.register("executableGitHooks", Exec) {
     commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
     dependsOn(updateGitHooks)
+    onlyIf {
+        file("${projectDir}/.git/hooks/pre-commit").exists()
+    }
 }
 compileJava.dependsOn(executableGitHooks)

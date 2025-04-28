@@ -1,0 +1,6 @@
+type Applicant {
+    id: ID!
+    member: Member!
+    relation: Relation!
+    goals: [String]!
+}

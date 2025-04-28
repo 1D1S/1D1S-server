@@ -1,0 +1,4 @@
+extend type Query {
+    AllDiaries: [Diary!]!
+    DiaryById(id: ID!): Diary!
+}

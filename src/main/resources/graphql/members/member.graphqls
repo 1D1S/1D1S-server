@@ -1,0 +1,8 @@
+type Member {
+    id: ID!
+    info: MemberInfo!
+    option: MemberOption!
+    img: Img
+    role: MemberRole! # enums
+    relations: [Relation]!
+}

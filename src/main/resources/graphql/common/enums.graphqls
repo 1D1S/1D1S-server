@@ -1,0 +1,27 @@
+enum MemberRole {
+    ADMIN
+    PARTICIPANT
+}
+
+# diary
+enum Feeling {
+    HAPPY
+    SO_SO
+    SAD
+}
+
+# challenge
+enum ChallengeRole {
+    HOST
+    GUEST
+}
+
+enum Category {
+    DEV
+    EXERCISE
+    BOOK
+    MUSIC
+    STUDY
+    LEISURE
+    ECONOMY
+}
