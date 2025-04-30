@@ -53,7 +53,7 @@ async function main() {
     }
 
     const title = "[Review:\#" + github.context.payload.pull_request.number + "](" + lastReview.html_url + ")";
-    sendDiscordMsg(member[lastReview.user], title, lastReview.state, lastReview.body)
+    sendDiscordMsg(member[lastReview.user.login], title, lastReview.state, lastReview.body)
         .then(() => console.log("message send success"))
         .catch((err) => {
             console.log("message send failed");
