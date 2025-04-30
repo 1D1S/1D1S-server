@@ -31,7 +31,7 @@ function createMsg(reviewer, title, status, content) {
     return "# " + emoji + " " + title + ": " + status +
         "\n" + "* PR: " + `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/pull/${github.context.payload.pull_request.number}`
         + "\n* 담당자: " + "<@!" + member[reviewer] + ">"
-        + "께서 리뷰를 남겼습니다.\n"
+        + " 님 께서 리뷰를 남겼습니다.\n"
         + content;
 }
 
