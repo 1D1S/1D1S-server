@@ -23,12 +23,16 @@ async function sendDiscordMsg(reviewer, title, status, content) {
 }
 
 function createMsg(reviewer, title, status, content) {
-    return title + ": " + status +
+    let emoji = "";
+    if(status === "COMMENTED") emoji = ":speech_left:";
+    else if(status === "CHANGES_REQUESTED") emoji = ":x:";
+    else if(status === "APPROVED") emoji = ":white_check_mark:";
+
+    return "# " + emoji + " " + title + ": " + status +
         "\n" + "* PR: " + `https://github.com/${github.context.repo.owner}/${github.context.repo.repo}/pull/${github.context.payload.pull_request.number}`
         + "\n* 담당자: " + "<@!" + member[reviewer] + ">"
-        + "께서 리뷰를 남겼습니다.\n"
+        + " 님 께서 리뷰를 남겼습니다.\n"
         + content;
-
 }
 
 async function main() {
@@ -48,8 +52,8 @@ async function main() {
         return;
     }
 
-    const title = "# [review num \#" + lastReview.id + "](" + lastReview.html_url + ")";
-    sendDiscordMsg(member[lastReview.user], title, lastReview.state, lastReview.body)
+    const title = "[Review\#" + github.context.payload.pull_request.number + "](" + lastReview.html_url + ")";
+    sendDiscordMsg(lastReview.user.login, title, lastReview.state, lastReview.body)
         .then(() => console.log("message send success"))
         .catch((err) => {
             console.log("message send failed");
