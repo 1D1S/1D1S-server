@@ -52,6 +52,10 @@ async function main() {
         return;
     }
 
+    console.log("All member keys:", Object.keys(member));
+    console.log("Reviewer login     :", lastReview.user.login);
+    console.log("Lookup result      :", member[lastReview.user.login]);
+
     const title = "[Review:\#" + github.context.payload.pull_request.number + "](" + lastReview.html_url + ")";
     sendDiscordMsg(member[lastReview.user.login], title, lastReview.state, lastReview.body)
         .then(() => console.log("message send success"))
