@@ -52,7 +52,7 @@ async function main() {
         return;
     }
 
-    const title = "[Review:\#" + github.context.payload.pull_request.number + "](" + lastReview.html_url + ")";
+    const title = "[Review\#" + github.context.payload.pull_request.number + "](" + lastReview.html_url + ")";
     sendDiscordMsg(lastReview.user.login, title, lastReview.state, lastReview.body)
         .then(() => console.log("message send success"))
         .catch((err) => {
