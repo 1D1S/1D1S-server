@@ -1,3 +1,23 @@
 extend type Mutation {
-    _members: Boolean
+    createMember(memberInfo: MemberInfoCreate!): Member!
+    updateMember(memberId: ID! memberInfo: MemberInfoUpdate!): Member!
+    deleteMember(memberId: ID!): ID # null 시 삭제 실패
+}
+
+input MemberInfoCreate {
+    name: String!
+    email: String!
+    job: String!
+    category: Category!
+    birthday: DateInput!
+    gender: String!
+}
+
+input MemberInfoUpdate {
+    name: String
+    email: String
+    job: String
+    category: Category
+    birthday: DateInput
+    gender: String
 }

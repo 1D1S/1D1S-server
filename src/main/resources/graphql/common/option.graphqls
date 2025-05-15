@@ -1,8 +1,13 @@
 type MemberOption {
     public: Boolean!
 }
+input MemberOptionInput {
+    public: Boolean!
+}
 
 type DiaryOption {
     public: Boolean!
 }
-
+input DiaryOptionInput {
+    public: Boolean!
+}

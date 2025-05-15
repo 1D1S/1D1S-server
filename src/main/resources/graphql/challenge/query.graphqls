@@ -1,3 +1,4 @@
 extend type Query {
-    _challenge: Boolean
+    ReadChallenge(id: ID!): Challenge!
+    ReadAllChallenges: [Challenge]!
 }

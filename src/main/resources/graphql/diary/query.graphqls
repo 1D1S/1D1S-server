@@ -1,4 +1,4 @@
 extend type Query {
-    AllDiaries: [Diary!]!
-    DiaryById(id: ID!): Diary!
+    readAllDiaries: [Diary!]!
+    readDiary(id: ID!): Diary!
 }

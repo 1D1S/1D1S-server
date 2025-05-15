@@ -1,3 +1,35 @@
 extend type Mutation {
-    _challenge: Boolean
+    createChallenge(memberId: ID!, challengeInfo: ChallengeCreate!): Challenge!
+    updateChallenge(challengeInfo: ChallengeUpdate!): Challenge!
+    deleteChallenge(challengeId: ID!): ID!
+
+    addApplicants(challengeId: ID!, applicants: [ApplicantCreate]!): Challenge!
+    acceptApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
+    rejectApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
+
+    addChallengeLike(challengeId: ID!, memberId: ID!): Int # 좋아요 개수
+    cancelChallengeLike(challengeId: ID!, memberId: ID!): Int # 좋아요 개수
+}
+
+input ChallengeCreate {
+    title: String!
+    startDate: DateInput!
+    endDate: DateInput!
+    goals: [String]!
+    category: Category!
+    status: ChallengeStatus!
+}
+
+input ChallengeUpdate {
+    title: String
+    startDate: DateInput
+    endDate: DateInput
+    goals: [String]
+    category: Category
+    status: ChallengeStatus
+}
+
+input ApplicantCreate {
+    member: ID!
+    goals: [ID]!
 }

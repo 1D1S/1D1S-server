@@ -2,6 +2,7 @@ type MemberInfo {
     name: String
     email: String
     job: String
+    category: Category
     birthday: Date
     gender: String
 }
@@ -10,12 +11,11 @@ type DiaryInfo {
     createdAt: Date!
     date: Date!
     feeling: Feeling!
-    public: Boolean!
-    goals: [DiaryGoal]!
+    achievement: [Achievement]!
 }
-type DiaryGoal {
-    content: String!
-    achieve: Boolean!
+type Achievement {
+    goal: Goal
+    achieved: Boolean
 }
 
 type ChallengeInfo {

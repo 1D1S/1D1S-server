@@ -2,5 +2,5 @@ type Report {
     id: ID!
     member: Member!
     diary: Diary!
-
+    content: String!
 }

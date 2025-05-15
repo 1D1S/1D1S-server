@@ -3,15 +3,10 @@ type Diary {
     member: Member!
     title: String!
     content: String!
-    goals: [Goal]!
+    challenge: Challenge!
     info: DiaryInfo!
     option: DiaryOption!
     status: DiaryStatus!
     img: Img
     like: Likes!
-}
-
-type Goal {
-    content: String!
-    achieved: Boolean!
 }
