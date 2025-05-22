@@ -1,6 +1,13 @@
-package com.odos.odos_server.entity;
+package com.odos.odos_server.member;
 
 import com.odos.odos_server.Enum.*;
+import com.odos.odos_server.challenge.Challenge;
+import com.odos.odos_server.challenge.Challenge_Like;
+import com.odos.odos_server.diary.Diary;
+import com.odos.odos_server.diary.Diary_Like;
+import com.odos.odos_server.diary.Diary_Report;
+import com.odos.odos_server.friend.Friend;
+import com.odos.odos_server.interest.Interest;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

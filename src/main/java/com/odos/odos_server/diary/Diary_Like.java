@@ -1,5 +1,6 @@
-package com.odos.odos_server.entity;
+package com.odos.odos_server.diary;
 
+import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

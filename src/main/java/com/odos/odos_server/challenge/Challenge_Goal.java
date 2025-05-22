@@ -1,5 +1,6 @@
-package com.odos.odos_server.entity;
+package com.odos.odos_server.challenge;
 
+import com.odos.odos_server.member.Member_Challenge;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;

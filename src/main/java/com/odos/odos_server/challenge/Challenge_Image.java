@@ -1,4 +1,4 @@
-package com.odos.odos_server.entity;
+package com.odos.odos_server.challenge;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,15 +9,15 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Diary_Image {
+public class Challenge_Image {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diary_image_id;
+  private Long challenge_image_id;
 
-  @Column private String diary_image_url;
+  @Column private String challenge_image_url;
 
   @ManyToOne
-  @JoinColumn(name = "diary_id")
-  private Diary diary;
+  @JoinColumn(name = "challenge_id")
+  private Challenge challenge;
 }
