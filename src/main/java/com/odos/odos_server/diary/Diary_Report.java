@@ -21,9 +21,7 @@ public class Diary_Report {
   @Enumerated(EnumType.STRING)
   private Report_Type diary_report_type;
 
-  @Column
-  @Enumerated(EnumType.STRING)
-  private String diary_report_content;
+  @Column private String diary_report_content;
 
   @ManyToOne
   @JoinColumn(name = "member_id")
