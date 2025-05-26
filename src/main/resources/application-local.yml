@@ -1,8 +1,7 @@
-spring:
+spring:햣
   config:
     activate:
       on-profile: "local"
-
   jpa:
     hibernate:
       ddl-auto: update
