@@ -1,4 +1,4 @@
-spring:햣
+spring:
   config:
     activate:
       on-profile: "local"
