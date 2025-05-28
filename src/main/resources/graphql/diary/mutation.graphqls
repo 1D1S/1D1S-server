@@ -1,3 +1,27 @@
 extend type Mutation {
-    _diary: Boolean
+    createDiary(input: CreateDiaryInput!): Diary!
+    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary!
+    deleteDiary(DiaryId: ID!): Boolean
+
+    addDiaryLike(diaryId: ID!, memberId: ID!): Int # 좋아요 개수
+    cancelDairyLike(diaryId: ID!, memberId: ID!): Int # 좋아요 개수
+
+    reportDiary(input: CreateDiaryReportInput!): Boolean!
+}
+
+
+input CreateDiaryInput {
+    challengeId: ID!
+    title: String!
+    content: String!
+    feeling: Feeling!
+    public: Boolean
+    achievedGoalIds: [ID!]!
+    achievedDate: DateInput
+}
+
+input CreateDiaryReportInput{
+    diaryId: ID!
+    content: String!
+    reportType: ReportType!
 }

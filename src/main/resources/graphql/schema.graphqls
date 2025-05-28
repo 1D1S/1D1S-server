@@ -11,3 +11,9 @@ type Date {
     month: Int
     day: Int
 }
+
+input DateInput {
+    year: Int!
+    month: Int!
+    day: Int!
+}

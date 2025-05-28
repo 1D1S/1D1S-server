@@ -2,5 +2,12 @@ type Report {
     id: ID!
     member: Member!
     diary: Diary!
+    content: String!
+    reportType: ReportType!
+}
 
+enum ReportType {
+    INAPPROPRIATE_TITLE
+    INAPPROPRIATE_CONTENT
+    INAPPROPRIATE_IMG
 }

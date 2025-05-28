@@ -1,7 +1,10 @@
+# 수정 예정
+"""
 type MemberInfo {
     name: String
     email: String
     job: String
+    category: Category
     birthday: Date
     gender: String
 }
@@ -13,10 +16,6 @@ type DiaryInfo {
     public: Boolean!
     goals: [DiaryGoal]!
 }
-type DiaryGoal {
-    content: String!
-    achieve: Boolean!
-}
 
 type ChallengeInfo {
     startDate: Date!
@@ -24,4 +23,10 @@ type ChallengeInfo {
     participants: Int!
     category: Category!
     status: ChallengeStatus!
+    goal: [String] # fixed 목표
+}
+"""
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
 }

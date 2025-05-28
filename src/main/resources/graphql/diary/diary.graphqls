@@ -1,17 +1,30 @@
 type Diary {
     id: ID!
+    challenge: Challenge!
     member: Member!
     title: String!
     content: String!
-    goals: [Goal]!
-    info: DiaryInfo!
-    option: DiaryOption!
-    status: DiaryStatus!
-    img: Img
+
+    public: DiaryOption! # 공개 여부
+    status: DiaryStatus! # 삭제 여부
+    img: Img #사진 여러개 받을 수 있으면 [Img]
     like: Likes!
+
+    #Diaryinfo
+    createdAt: Date!
+    date: Date!
+    feeling: Feeling!
+    achievement: [Achievement]!
+
+    isMine: Boolean!
+    isLiked: Boolean!
+
+    AchievementRate: Int!
 }
 
-type Goal {
-    content: String!
-    achieved: Boolean!
+type Achievement {
+goal: Goal
+achieved: Boolean
 }
+
+

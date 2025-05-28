@@ -5,4 +5,3 @@ type MemberOption {
 type DiaryOption {
     public: Boolean!
 }
-

@@ -1,8 +1,27 @@
 type Member {
     id: ID!
-    info: MemberInfo!
-    option: MemberOption!
+    #
+    option: MemberOption! # 공개 여부
     img: Img
     role: MemberRole! # enums
-    relations: [Relation]!
+
+    #info: MemberInfo!
+    name: String
+    email: String
+    job: String
+    category: [Category]
+    memberStreak: MemberStreak
+    birthday: Date
+    gender: String
+}
+
+enum MemberRole {
+    USER
+    ADMIN
+}
+
+type MemberStreak {
+    currentStreak: Int!
+    maxStreak: Int!
+    lastActiveDate: Date!
 }

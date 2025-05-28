@@ -1,4 +1,31 @@
 extend type Query {
-    AllDiaries: [Diary!]!
-    DiaryById(id: ID!): Diary!
+    allDiaries: [Diary!]!
+    myDiaries: [Diary]
+
+    diaryById(id: ID!): Diary!
+
+    randomDiaries(first: Int = 10): [Diary]
+
+    diariesList(
+        filter: DiaryFilterInput,
+        first: Int = 10,
+        after: String
+    ): DiaryConnection
+
 }
+
+input DiaryFilterInput{
+    job: JobType
+    ageGroup: AgeGroup
+}
+
+type DiaryConnection {
+    edges: [DiaryEdge]
+    pageInfo: PageInfo!
+}
+
+type DiaryEdge {
+    node: Diary
+    cursor: String!
+}
+

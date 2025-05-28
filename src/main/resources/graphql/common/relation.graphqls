@@ -1,7 +1,10 @@
 type Relation {
+    challenge: Challenge!
     member: Member!
     status: RelationStatus!
+    goals: [String]!
 }
+
 enum RelationStatus {
     PENDING
     REJECTED
