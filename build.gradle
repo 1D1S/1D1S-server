@@ -58,9 +58,6 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
-    // build.gradle
-    implementation 'io.github.cdimascio:dotenv-java:2.3.0'
-
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.graphql:spring-graphql-test'
@@ -76,23 +73,11 @@ tasks.register("updateGitHooks", Copy) {
     from "scripts/pre-commit"
     into ".git/hooks"
 }
-
-
-if (!System.properties['os.name'].toLowerCase().contains('windows')) {
-    tasks.register("executableGitHooks", Exec) {
-        commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
-        dependsOn(updateGitHooks)
-        onlyIf {
-            file("${projectDir}/.git/hooks/pre-commit").exists()
-        }
-    }
-} else {
-    // Windows에서는 빈 task를 등록해 의존성 충돌 방지 (선택사항)
-    tasks.register("executableGitHooks") {
-        doLast {
-            println "executableGitHooks task skipped on Windows."
-        }
+tasks.register("executableGitHooks", Exec) {
+    commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
+    dependsOn(updateGitHooks)
+    onlyIf {
+        file("${projectDir}/.git/hooks/pre-commit").exists()
     }
 }
-
 compileJava.dependsOn(executableGitHooks)
