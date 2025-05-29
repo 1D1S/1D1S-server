@@ -4,6 +4,7 @@ server:
 
 spring:
   profiles:
+    active: dev
     group:
       dev:
       - local
@@ -11,7 +12,5 @@ spring:
       local:
        - local
        - datasource
-    active:
-      local
 
 
