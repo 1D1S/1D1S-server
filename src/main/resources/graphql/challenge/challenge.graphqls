@@ -12,6 +12,7 @@ type Applicant {
     member: Member!
     relation: RelationStatus!
     goals: [Goal]!
+    # TODO: Steak 정보 포함해야함
 }
 
 
