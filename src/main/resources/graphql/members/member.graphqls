@@ -1,8 +1,14 @@
 type Member {
     id: ID!
+
+    """통계용 정보"""
     info: MemberInfo!
     option: MemberOption!
     img: Img
+
+    """일반 유저 / 관리자"""
     role: MemberRole! # enums
+
+    """친구 관계"""
     relations: [Relation]!
 }

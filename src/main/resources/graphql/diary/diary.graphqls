@@ -3,9 +3,16 @@ type Diary {
     member: Member!
     title: String!
     content: String!
+
+    """연관된 챌린지"""
     challenge: Challenge!
+
+    """통계용 정보"""
     info: DiaryInfo!
+
     option: DiaryOption!
+
+    """삭제 여부"""
     status: DiaryStatus!
     img: Img
     like: Likes!

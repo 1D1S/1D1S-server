@@ -1,16 +1,28 @@
+"""챌린지의 기본적인 정보"""
 type Challenge {
     id: ID!
-    host: Member!
+
+    """주최자 정보"""
+    host: Applicant!
+
+    """주최자 제외 참여자"""
     applicants: [Applicant]!
+
     title: String!
     goals: [Goal]!
+
+    """통계용 정보"""
     info: ChallengeInfo!
     like: Likes!
 }
 
+"""챌린지 참여자"""
 type Applicant {
     member: Member!
+
+    """챌린지 참여 / 대기 / 거부"""
     relation: RelationStatus!
+
     goals: [Goal]!
     # TODO: Steak 정보 포함해야함
 }

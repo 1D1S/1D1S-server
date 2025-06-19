@@ -22,6 +22,7 @@ type ChallengeInfo {
     startDate: Date!
     endDate: Date!
     participants: Int!
+    maxParticipants: Int!
     category: Category!
     status: ChallengeStatus!
 }
