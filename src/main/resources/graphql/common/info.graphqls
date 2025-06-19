@@ -1,4 +1,3 @@
-# 수정 예정
 """
 type MemberInfo {
     name: String
@@ -8,24 +7,53 @@ type MemberInfo {
     birthday: Date
     gender: String
 }
+"""
+type MemberActivityInfo {
+    todayGoalCount: Int!
+    currentStreak: Int!
+
+    totalDiaryCount: Int!
+    totalGoalCount: Int!
+
+    currentMonthDiaryCount: Int!
+    currentMonthGoalCount: Int!
+
+    maxStreak: Int!
+    #현재 스트릭
+
+    calendar: [DailyActivityInfo]
+}
+type DailyActivityInfo{
+    date: Date
+    count: Int!
+}
 
 type DiaryInfo {
     createdAt: Date!
     date: Date!
     feeling: Feeling!
-    public: Boolean!
-    goals: [DiaryGoal]!
+    achievement: [diaryGoal]!
+    AchievementRate: Int!
+}
+type DiaryMe {
+    isMine: Boolean!
+    isLiked: Boolean!
 }
 
-type ChallengeInfo {
+type ChallengeInfo{
     startDate: Date!
     endDate: Date!
     participants: Int!
+    maxParticipants: Int!
     category: Category!
-    status: ChallengeStatus!
-    goal: [String] # fixed 목표
+    goalType: ChallengeGoalType!
+    status: ChallengeProgressStatus!
 }
-"""
+type ChallengeMe {
+    isLiked: Boolean!
+    myApplicantType: ChallengeApplicantType!
+}
+
 type PageInfo {
     endCursor: String
     hasNextPage: Boolean!

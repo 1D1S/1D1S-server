@@ -2,14 +2,14 @@ extend type Query {
     allChallenges: [Challenge!]!
     myChallenges: [Challenge]
 
-    challengeById(id: ID!): Challenge!
-
     randomChallenges(first: Int = 10): [Challenge]
     challengesList(
         filter: ChallengeFilterInput,
         first: Int = 10,
         after: String
     ): ChallengeConnection
+
+    challengeById(id: ID!): Challenge!
 }
 
 input ChallengeFilterInput {

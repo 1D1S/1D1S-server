@@ -2,16 +2,14 @@ extend type Query {
     allDiaries: [Diary!]!
     myDiaries: [Diary]
 
-    diaryById(id: ID!): Diary!
-
     randomDiaries(first: Int = 10): [Diary]
-
     diariesList(
         filter: DiaryFilterInput,
         first: Int = 10,
         after: String
     ): DiaryConnection
 
+    diaryById(id: ID!): Diary!
 }
 
 input DiaryFilterInput{

@@ -1,18 +1,21 @@
 type Member {
     id: ID!
-    #
     option: MemberOption! # 공개 여부
-    img: Img
+    profileImageUrl: Img
     role: MemberRole! # enums
 
     #info: MemberInfo!
-    name: String
     email: String
+    nickname: String
     job: String
     category: [Category]
-    memberStreak: MemberStreak
     birthday: Date
     gender: String
+
+    memberActivityInfo: MemberActivityInfo
+
+    challenge: [Challenge]
+    diary: [Diary]
 }
 
 enum MemberRole {
@@ -20,8 +23,3 @@ enum MemberRole {
     ADMIN
 }
 
-type MemberStreak {
-    currentStreak: Int!
-    maxStreak: Int!
-    lastActiveDate: Date!
-}

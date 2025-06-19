@@ -5,19 +5,10 @@ type Challenge {
     title: String!
     description: String!
     like: Likes!
+    likeCount: Int!
 
-    # ChallengeInfo
-    startDate: Date!
-    endDate: Date!
-    participants: Int!
-    category: Category!
-    goalType: ChallengeGoalType!
-
-
-    status: ChallengeProgressStatus!
-    isLiked: Boolean!
-    myApplicantType: ChallengeApplicantType! #내가 이 챌린지의 호스트인지, 신청중인지, 미신청자인지
-    maxParticipants: Int! # 최대 인원수
+    challengeInfo: ChallengeInfo!
+    challengeMe: ChallengeMe!
 }
 
 enum ChallengeGoalType {
@@ -38,6 +29,12 @@ enum ChallengeApplicantType {
     NONE
 }
 
+enum RelationStatus {
+    PENDING
+    REJECTED
+    ACCEPTED
+}
+
 type Applicant {
     member: Member!
     relation: RelationStatus!
@@ -48,3 +45,6 @@ type Goal {
     id: ID!
     content: String!
 }
+
+
+
