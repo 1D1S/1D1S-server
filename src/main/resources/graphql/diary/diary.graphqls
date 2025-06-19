@@ -10,7 +10,6 @@ type Diary {
     public: DiaryOption! # 공개 여부
 
     diaryInfo: DiaryInfo
-    diaryMe: DiaryMe
 }
 
 type diaryGoal {

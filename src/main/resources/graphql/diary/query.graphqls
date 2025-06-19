@@ -1,15 +1,15 @@
 extend type Query {
-    allDiaries: [Diary!]!
-    myDiaries: [Diary]
+    allDiaries: [DiaryReturn!]!
+    myDiaries: [DiaryReturn]
 
-    randomDiaries(first: Int = 10): [Diary]
+    randomDiaries(first: Int = 10): [DiaryReturn]
     diariesList(
         filter: DiaryFilterInput,
         first: Int = 10,
         after: String
     ): DiaryConnection
 
-    diaryById(id: ID!): Diary!
+    diaryById(id: ID!): DiaryReturn!
 }
 
 input DiaryFilterInput{
@@ -25,5 +25,10 @@ type DiaryConnection {
 type DiaryEdge {
     node: Diary
     cursor: String!
+}
+
+type DiaryReturn{
+    diary: Diary
+    diaryMe: DiaryMe
 }
 
