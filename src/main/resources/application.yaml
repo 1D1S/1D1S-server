@@ -1,7 +1,3 @@
-server:
-  port: ${SERVER_PORT}
-  address: ${SERVER_ADDRESS}
-
 spring:
   profiles:
     group:
