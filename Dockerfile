@@ -2,7 +2,7 @@
 FROM gradle:jdk17 AS builder
 USER root
 # gradlew를 못 찾아서 추가한 부분
-RUN apt-get update && apt-get install -y dos2unix
+#RUN apt-get update && apt-get install -y dos2unix
 
 WORKDIR /builder
 
