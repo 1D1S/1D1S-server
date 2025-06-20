@@ -1,4 +1,9 @@
 spring:
+  config:
+    activate:
+      on-profile: "deploy"
+    import: "aws-secretsmanager:odos-db?prefix=spring.datasource."
+
   cloud:
     aws:
       region:
@@ -10,11 +15,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
-
-  config:
-    activate:
-      on-profile: "deploy"
-    import: "aws-secretsmanager:odos-db?prefix=spring.datasource."
 
   datasource:
     driver-class-name: org.postgresql.Driver
