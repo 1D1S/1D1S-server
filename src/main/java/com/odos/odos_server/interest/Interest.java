@@ -1,6 +1,6 @@
 package com.odos.odos_server.interest;
 
-import com.odos.odos_server.Enum.Interest_Type;
+import com.odos.odos_server.Enum.InterestType;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -15,13 +15,13 @@ public class Interest {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long interest_id;
+  private Long interestId;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Interest_Type interest_category;
+  private InterestType interestCategory;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 }

@@ -1,6 +1,6 @@
 package com.odos.odos_server.challenge;
 
-import com.odos.odos_server.member.Member_Challenge;
+import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "ChallengeGoal")
 public class ChallengeGoal {
 
   @Id
@@ -23,6 +24,6 @@ public class ChallengeGoal {
   private List<ChallengeDiary> challengeDiaries;
 
   @ManyToOne
-  @JoinColumn(name = "member_challenge_id")
-  private Member_Challenge memberChallenge;
+  @JoinColumn(name = "memberChallengeId")
+  private MemberChallenge memberChallenge;
 }

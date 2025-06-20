@@ -19,36 +19,36 @@ public class Diary {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diary_id;
+  private Long diaryId;
 
-  @Column private String diary_title;
+  @Column private String diaryTitle;
 
-  @Column private LocalDateTime diary_created_date;
+  @Column private LocalDateTime diaryCreatedDate;
 
-  @Column private LocalDateTime diary_date; // 수행날짜?
+  @Column private LocalDateTime diaryDate; // 수행날짜?
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Emotion diary_feeling;
+  private Emotion diaryFeeling;
 
-  @Column private Boolean diary_public;
+  @Column private Boolean diaryPublic;
 
   @Column(columnDefinition = "TEXT")
   private String content;
 
-  @Column private Boolean diary_deleted;
+  @Column private Boolean diaryDeleted;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<ChallengeDiary> challengeDiaries;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-  private List<Diary_Image> diaryImages;
+  private List<DiaryImage> diaryImages;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "challenge_id")
+  @JoinColumn(name = "challengeId")
   private Challenge challenge;
 }

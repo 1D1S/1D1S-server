@@ -10,17 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Diary_Like {
+@Table(name = "DiaryLike")
+public class DiaryLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diary_like_id;
+  private Long diaryLikeId;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "diary_id")
+  @JoinColumn(name = "diaryId")
   private Diary diary;
 }

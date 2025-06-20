@@ -1,6 +1,6 @@
 package com.odos.odos_server.diary;
 
-import com.odos.odos_server.Enum.Report_Type;
+import com.odos.odos_server.Enum.ReportType;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -11,24 +11,25 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Diary_Report {
+@Table(name = "DiaryReport")
+public class DiaryReport {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diary_report_id;
+  private Long diaryReportId;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Report_Type diary_report_type;
+  private ReportType diaryReportType;
 
-  @Column private String diary_report_content;
+  @Column private String diaryReportContent;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "diary_id")
+  @JoinColumn(name = "diaryId")
   private Diary diary;
 
   //    이거 필요없는거 같은데 erd에 있네여 ..

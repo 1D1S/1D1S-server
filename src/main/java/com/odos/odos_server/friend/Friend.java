@@ -1,6 +1,6 @@
 package com.odos.odos_server.friend;
 
-import com.odos.odos_server.Enum.Friend_Status;
+import com.odos.odos_server.Enum.FriendStatus;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -14,17 +14,17 @@ import lombok.NoArgsConstructor;
 public class Friend {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long friend_id;
+  private Long friendId;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Friend_Status friend_status;
+  private FriendStatus friendStatus;
 
   @ManyToOne
-  @JoinColumn(name = "member_send")
+  @JoinColumn(name = "memberSend")
   private Member sender;
 
   @ManyToOne
-  @JoinColumn(name = "member_receive")
+  @JoinColumn(name = "memberReceive")
   private Member receiver;
 }

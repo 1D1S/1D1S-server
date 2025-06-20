@@ -1,6 +1,6 @@
 package com.odos.odos_server.member;
 
-import com.odos.odos_server.Enum.Challenge_Status;
+import com.odos.odos_server.Enum.ChallengeStatus;
 import com.odos.odos_server.Enum.Role;
 import com.odos.odos_server.challenge.Challenge;
 import jakarta.persistence.*;
@@ -12,25 +12,26 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Member_Challenge {
+@Table(name = "MemberChallenge")
+public class MemberChallenge {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long member_challenge_id;
+  private Long memberChallengeId;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Challenge_Status member_challenge_status;
+  private ChallengeStatus memberChallengeStatus;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role member_challenge_role;
+  private Role memberChallengeRole;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "challenge_id")
+  @JoinColumn(name = "challengeId")
   private Challenge challenge;
 }

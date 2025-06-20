@@ -4,8 +4,8 @@ import com.odos.odos_server.Enum.*;
 import com.odos.odos_server.challenge.Challenge;
 import com.odos.odos_server.challenge.ChallengeLike;
 import com.odos.odos_server.diary.Diary;
-import com.odos.odos_server.diary.Diary_Like;
-import com.odos.odos_server.diary.Diary_Report;
+import com.odos.odos_server.diary.DiaryLike;
+import com.odos.odos_server.diary.DiaryReport;
 import com.odos.odos_server.friend.Friend;
 import com.odos.odos_server.interest.Interest;
 import jakarta.persistence.*;
@@ -23,17 +23,17 @@ public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long member_id;
+  private Long memberId;
 
-  @Column private String member_email;
+  @Column private String memberEmail;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Signup_Route member_signup_route;
+  private SignupRoute memberSignupRoute;
 
   @Column private String nickname;
 
-  @Column private String member_profile_image_url;
+  @Column private String memberProfileImageUrl;
 
   @Column
   @Enumerated(EnumType.STRING)
@@ -55,7 +55,7 @@ public class Member {
   private List<Challenge> challenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Member_Challenge> memberChallenges;
+  private List<MemberChallenge> memberChallenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<ChallengeLike> challengeLikes;
@@ -70,10 +70,10 @@ public class Member {
   private List<Interest> interests;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Diary_Like> diaryLikes;
+  private List<DiaryLike> diaryLikes;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Diary_Report> diaryReports;
+  private List<DiaryReport> diaryReports;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Diary> diaries;

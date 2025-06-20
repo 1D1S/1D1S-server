@@ -3,7 +3,7 @@ package com.odos.odos_server.challenge;
 // 챌린지 목표-일지
 
 import com.odos.odos_server.diary.Diary;
-import com.odos.odos_server.member.Member_Challenge;
+import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,23 +13,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "ChallengeDiary")
 public class ChallengeDiary {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challegeDiaryId;
+  private Long challengeDiaryId;
 
   @Column private Boolean isChallengeSuccess;
 
   @ManyToOne
-  @JoinColumn(name = "diary_id")
+  @JoinColumn(name = "diaryId")
   private Diary diary; // 일자 id
 
   @ManyToOne
-  @JoinColumn(name = "challenge_goal_id")
+  @JoinColumn(name = "challengeGoalId")
   private ChallengeGoal challengeGoal; // 챌린지 목표 아이디
 
   @ManyToOne
-  @JoinColumn(name = "member_challenge_id")
-  private Member_Challenge memberChallenge;
+  @JoinColumn(name = "memberChallengeId")
+  private MemberChallenge memberChallenge;
 }

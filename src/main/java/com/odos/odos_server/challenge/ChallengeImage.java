@@ -9,15 +9,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "ChallengeImage")
 public class ChallengeImage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long challengeImageId;
 
-  @Column private String challenge_image_url;
+  @Column private String challengeImageUrl;
 
   @ManyToOne
-  @JoinColumn(name = "challenge_id")
+  @JoinColumn(name = "challengeId")
   private Challenge challenge;
 }

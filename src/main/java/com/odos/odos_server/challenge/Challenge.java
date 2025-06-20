@@ -1,8 +1,8 @@
 package com.odos.odos_server.challenge;
 
-import com.odos.odos_server.Enum.Challenge_Type;
+import com.odos.odos_server.Enum.ChallengeType;
 import com.odos.odos_server.member.Member;
-import com.odos.odos_server.member.Member_Challenge;
+import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -32,16 +32,16 @@ public class Challenge {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Challenge_Type challengeType;
+  private ChallengeType challengeType;
 
   @Column private String challengeDescription;
 
   @ManyToOne
-  @JoinColumn(name = "challenge_host")
+  @JoinColumn(name = "challengeHost")
   private Member member; // 챌린지가 없어진다고 해서 멤버가 없어지는건 아니니까.. 고민,, 주회자 아이디 의도하긴함
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
-  private List<Member_Challenge> memberChallenges;
+  private List<MemberChallenge> memberChallenges;
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
   private List<ChallengeLike> challengeLikes;

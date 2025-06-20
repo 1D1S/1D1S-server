@@ -1,6 +1,6 @@
 package com.odos.odos_server.Enum;
 
-public enum Signup_Route {
+public enum SignupRoute {
   KAKAO,
   NAVER,
   APPLE,

@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Table(name = "ChallengeLike")
 public class ChallengeLike {
 
   @Id
@@ -17,10 +18,10 @@ public class ChallengeLike {
   private Long diaryImageId;
 
   @ManyToOne
-  @JoinColumn(name = "member_id")
+  @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "challenge_id")
+  @JoinColumn(name = "challengeId")
   private Challenge challenge;
 }
