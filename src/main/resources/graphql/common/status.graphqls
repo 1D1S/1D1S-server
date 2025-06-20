@@ -1,4 +1,0 @@
-# 사용 없음
-type DiaryStatus {
-    deleted: Boolean!
-}

@@ -1,7 +1,0 @@
-# 사용 없음
-type Relation {
-    challenge: Challenge!
-    member: Member!
-    status: RelationStatus!
-    goals: [String]!
-}

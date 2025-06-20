@@ -10,6 +10,10 @@ extend type Query {
     ): DiaryConnection
 
     diaryById(id: ID!): DiaryReturn!
+
+    isDiaryWrittenByMe(id: ID!): Boolean!
+    isDiaryLikedByMe(id: ID!): Boolean!
+
 }
 
 input DiaryFilterInput{

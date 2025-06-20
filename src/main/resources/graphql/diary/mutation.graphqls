@@ -9,7 +9,6 @@ extend type Mutation {
     reportDiary(input: CreateDiaryReportInput!): Boolean!
 }
 
-
 input CreateDiaryInput {
     challengeId: ID!
     title: String!

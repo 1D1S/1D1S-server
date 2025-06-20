@@ -6,8 +6,7 @@ type Diary {
     content: String!
     img: Img #사진 여러개 받을 수 있으면 [Img]
     like: Likes!
-    likeCount: Int!
-    public: DiaryOption! # 공개 여부
+    public: DiaryPublic! # 공개 여부
 
     diaryInfo: DiaryInfo
 }

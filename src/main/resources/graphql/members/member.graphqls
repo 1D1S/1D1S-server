@@ -1,6 +1,6 @@
 type Member {
     id: ID!
-    option: MemberOption! # 공개 여부
+    public: MemberPublic! # 공개 여부
     profileImageUrl: Img
     role: MemberRole! # enums
 
@@ -12,7 +12,7 @@ type Member {
     birthday: Date
     gender: String
 
-    memberActivityInfo: MemberActivityInfo
+    streak: Streak
 
     challenge: [Challenge]
     diary: [Diary]

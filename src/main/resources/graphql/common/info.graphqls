@@ -8,22 +8,21 @@ type MemberInfo {
     gender: String
 }
 """
-type MemberActivityInfo {
-    todayGoalCount: Int!
-    currentStreak: Int!
+type Streak {
+    todayGoalCount: Int! # 5
+    currentStreak: Int! # 42 (10)
 
-    totalDiaryCount: Int!
-    totalGoalCount: Int!
+    totalDiaryCount: Int! # 10
+    totalGoalCount: Int! # 35
 
-    currentMonthDiaryCount: Int!
-    currentMonthGoalCount: Int!
+    currentMonthDiaryCount: Int! # 10
+    currentMonthGoalCount: Int! # 35
 
-    maxStreak: Int!
-    #현재 스트릭
+    maxStreak: Int! #180
 
-    calendar: [DailyActivityInfo]
+    calendar: [DailyStreak] # 잔디
 }
-type DailyActivityInfo{
+type DailyStreak{
     date: Date
     count: Int!
 }
@@ -35,10 +34,6 @@ type DiaryInfo {
     achievement: [diaryGoal]!
     AchievementRate: Int!
 }
-type DiaryMe {
-    isMine: Boolean!
-    isLiked: Boolean!
-}
 
 type ChallengeInfo{
     startDate: Date!
@@ -48,10 +43,6 @@ type ChallengeInfo{
     category: Category!
     goalType: ChallengeGoalType!
     status: ChallengeProgressStatus!
-}
-type ChallengeMe {
-    isLiked: Boolean!
-    myApplicantType: ChallengeApplicantType!
 }
 
 type PageInfo {

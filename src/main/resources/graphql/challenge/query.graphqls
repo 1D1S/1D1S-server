@@ -10,6 +10,9 @@ extend type Query {
     ): ChallengeConnection
 
     challengeById(id: ID!): ChallengeReturn!
+
+    isChallengeLikedByMe(id: ID!): Boolean!
+    myChallengeApplicantStatus(id: ID!): ChallengeApplicantStatus
 }
 
 input ChallengeFilterInput {

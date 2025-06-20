@@ -5,7 +5,6 @@ type Challenge {
     title: String!
     description: String!
     like: Likes!
-    likeCount: Int!
 
     challengeInfo: ChallengeInfo!
 }
@@ -21,7 +20,7 @@ enum ChallengeProgressStatus {
     COMPLETED
 }
 
-enum ChallengeApplicantType {
+enum ChallengeApplicantStatus {
     HOST
     APPLICANT
     REQUESTED
