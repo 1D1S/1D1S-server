@@ -2,7 +2,7 @@ package com.odos.odos_server.member;
 
 import com.odos.odos_server.Enum.*;
 import com.odos.odos_server.challenge.Challenge;
-import com.odos.odos_server.challenge.Challenge_Like;
+import com.odos.odos_server.challenge.ChallengeLike;
 import com.odos.odos_server.diary.Diary;
 import com.odos.odos_server.diary.Diary_Like;
 import com.odos.odos_server.diary.Diary_Report;
@@ -58,7 +58,7 @@ public class Member {
   private List<Member_Challenge> memberChallenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Challenge_Like> challengeLikes;
+  private List<ChallengeLike> challengeLikes;
 
   @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
   private List<Friend> senders;

@@ -2,7 +2,7 @@ package com.odos.odos_server.diary;
 
 import com.odos.odos_server.Enum.Emotion;
 import com.odos.odos_server.challenge.Challenge;
-import com.odos.odos_server.challenge.Challenge_Diary;
+import com.odos.odos_server.challenge.ChallengeDiary;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -39,7 +39,7 @@ public class Diary {
   @Column private Boolean diary_deleted;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-  private List<Challenge_Diary> challengeDiaries;
+  private List<ChallengeDiary> challengeDiaries;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<Diary_Image> diaryImages;

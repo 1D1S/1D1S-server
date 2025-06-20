@@ -9,11 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Challenge_Image {
+public class ChallengeImage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challenge_image_id;
+  private Long challengeImageId;
 
   @Column private String challenge_image_url;
 

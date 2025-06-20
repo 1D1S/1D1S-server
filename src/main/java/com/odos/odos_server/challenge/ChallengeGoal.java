@@ -1,10 +1,8 @@
 package com.odos.odos_server.challenge;
 
-// 챌린지 목표-일지
-
-import com.odos.odos_server.diary.Diary;
 import com.odos.odos_server.member.Member_Challenge;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,21 +11,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Challenge_Diary {
+public class ChallengeGoal {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challege_diary_id;
+  private Long challengeGoalId;
 
-  @Column private Boolean isChallengeSuccess;
+  @Column private String challengeGoalContent;
 
-  @ManyToOne
-  @JoinColumn(name = "diary_id")
-  private Diary diary; // 일자 id
-
-  @ManyToOne
-  @JoinColumn(name = "challenge_goal_id")
-  private Challenge_Goal challengeGoal; // 챌린지 목표 아이디
+  @OneToMany(mappedBy = "challengeGoal", cascade = CascadeType.ALL)
+  private List<ChallengeDiary> challengeDiaries;
 
   @ManyToOne
   @JoinColumn(name = "member_challenge_id")

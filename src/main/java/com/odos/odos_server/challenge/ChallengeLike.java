@@ -10,11 +10,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Challenge_Like {
+public class ChallengeLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diary_image_id;
+  private Long diaryImageId;
 
   @ManyToOne
   @JoinColumn(name = "member_id")

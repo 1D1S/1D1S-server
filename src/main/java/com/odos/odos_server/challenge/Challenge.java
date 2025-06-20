@@ -18,23 +18,23 @@ public class Challenge {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challenge_id;
+  private Long challengeId;
 
-  @Column private String challenge_title;
+  @Column private String challengeTitle;
 
-  @Column private String challenge_category; // enum으로 안함?
+  @Column private String challengeCategory; // enum으로 안함?
 
-  @Column private LocalDateTime challenge_start_date;
+  @Column private LocalDateTime challengeStartDate;
 
-  @Column private LocalDateTime challenge_end_date;
+  @Column private LocalDateTime challengeEndDate;
 
-  @Column private Long challenge_participants_cnt; // 수 표현 위해 cnt 붙임
+  @Column private Long challengeParticipantsCnt; // 수 표현 위해 cnt 붙임
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Challenge_Type challenge_type;
+  private Challenge_Type challengeType;
 
-  @Column private String challenge_description;
+  @Column private String challengeDescription;
 
   @ManyToOne
   @JoinColumn(name = "challenge_host")
@@ -44,8 +44,8 @@ public class Challenge {
   private List<Member_Challenge> memberChallenges;
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
-  private List<Challenge_Like> challengeLikes;
+  private List<ChallengeLike> challengeLikes;
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
-  private List<Challenge_Image> challengeImages;
+  private List<ChallengeImage> challengeImages;
 }
