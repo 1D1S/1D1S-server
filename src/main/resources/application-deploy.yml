@@ -1,0 +1,22 @@
+spring:
+  cloud:
+    aws:
+      region:
+        static: ap-northeast-2
+      credentials:
+        access-key: ${AWS_ACCESS_KEY_ID}
+        secret-key: ${AWS_SECRET_ACCESS_KEY}
+
+
+  config:
+    activate:
+      on-profile: "deploy"
+    import: "aws-secretsmanager:odos-db?prefix=spring.datasource."
+
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.dbInstanceIdentifier}
+
+  graphql:
+    graphiql:
+      enabled: true
