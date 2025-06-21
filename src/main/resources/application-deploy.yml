@@ -2,7 +2,7 @@ spring:
   config:
     activate:
       on-profile: "deploy"
-    import: "aws-secretsmanager:/secret/odos-db-dev?prefix=spring.datasource."
+    import: "aws-secretsmanager:/secret/odos-db-dev?prefix=spring.datasource"
 
   cloud:
     aws:
