@@ -1,3 +1,9 @@
+logging:
+  level:
+    root: INFO
+    com.zaxxer.hikari: DEBUG
+    org.springframework.jdbc: DEBUG
+
 spring:
   config:
     activate:
