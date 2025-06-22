@@ -2,7 +2,7 @@ spring:
   config:
     activate:
       on-profile: "deploy"
-    import: "aws-secretsmanager:/secret/odos-db-dev?prefix=spring.datasource."
+    import: "aws-secretsmanager:/secret/odos-db-dev"
 
   cloud:
     aws:
@@ -18,7 +18,9 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${spring.datasource.host}:${spring.datasource.port}/${spring.datasource.dbInstanceIdentifier}
+    url: jdbc:postgresql://${host}:${port}/${dbInstanceIdentifier}
+    username: ${username}
+    password: ${password}
 
   graphql:
     graphiql:
