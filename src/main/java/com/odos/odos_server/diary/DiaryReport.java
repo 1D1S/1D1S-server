@@ -31,10 +31,4 @@ public class DiaryReport {
   @ManyToOne
   @JoinColumn(name = "diaryId")
   private Diary diary;
-
-  //    이거 필요없는거 같은데 erd에 있네여 ..
-  //    @ManyToOne
-  //    @JoinColumn(name="")
-  //    private Member member2;
-
 }

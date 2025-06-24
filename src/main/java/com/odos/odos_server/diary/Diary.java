@@ -51,4 +51,7 @@ public class Diary {
   @ManyToOne
   @JoinColumn(name = "challengeId")
   private Challenge challenge;
+
+  @OneToMany(mappedBy = "diaryReport", cascade = CascadeType.ALL)
+  private List<DiaryReport> diaryReports;
 }

@@ -37,19 +37,19 @@ public class Member {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Job member_job;
+  private Job memberJob;
 
-  @Column private LocalDateTime member_birth;
-
-  @Column
-  @Enumerated(EnumType.STRING)
-  private Gender member_gender;
-
-  @Column private Boolean member_public;
+  @Column private LocalDateTime memberBirth;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role member_role;
+  private Gender memberGender;
+
+  @Column private Boolean memberPublic;
+
+  @Column
+  @Enumerated(EnumType.STRING)
+  private Role memberRole;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Challenge> challenges;

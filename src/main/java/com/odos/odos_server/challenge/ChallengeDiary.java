@@ -20,7 +20,7 @@ public class ChallengeDiary {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long challengeDiaryId;
 
-  @Column private Boolean isChallengeSuccess;
+  @Column private Boolean goalCompleted;
 
   @ManyToOne
   @JoinColumn(name = "diaryId")
