@@ -15,7 +15,7 @@ public class ChallengeLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diaryImageId;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

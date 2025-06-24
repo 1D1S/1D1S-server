@@ -20,23 +20,23 @@ public class Challenge {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challengeId;
+  private Long id;
 
-  @Column private String challengeTitle;
+  @Column private String title;
 
-  @Column private ChallengeCategory challengeCategory;
+  @Column private ChallengeCategory category;
 
-  @Column private LocalDateTime challengeStartDate;
+  @Column private LocalDateTime startDate;
 
-  @Column private LocalDateTime challengeEndDate;
+  @Column private LocalDateTime endDate;
 
-  @Column private Long challengeParticipantsCnt;
+  @Column private Long participantsCnt;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private ChallengeType challengeType;
+  private ChallengeType type;
 
-  @Column private String challengeDescription;
+  @Column private String description;
 
   @ManyToOne
   @JoinColumn(name = "challengeHost")
@@ -46,11 +46,11 @@ public class Challenge {
   private List<MemberChallenge> memberChallenges;
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
-  private List<ChallengeLike> challengeLikes;
+  private List<ChallengeLike> likes;
 
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
-  private List<ChallengeImage> challengeImages;
+  private List<ChallengeImage> images;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-  private List<Diary> challengeDiaries;
+  private List<Diary> diaries;
 }

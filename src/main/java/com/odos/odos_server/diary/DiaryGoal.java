@@ -1,8 +1,8 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.diary;
 
 // 챌린지 목표-일지
 
-import com.odos.odos_server.diary.Diary;
+import com.odos.odos_server.challenge.ChallengeGoal;
 import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -13,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "ChallengeDiary")
-public class ChallengeDiary {
+@Table(name = "DiaryGoal")
+public class DiaryGoal {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challengeDiaryId;
+  private Long id;
 
   @Column private Boolean goalCompleted;
 

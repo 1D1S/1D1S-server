@@ -1,5 +1,6 @@
 package com.odos.odos_server.challenge;
 
+import com.odos.odos_server.diary.DiaryGoal;
 import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import java.util.List;
@@ -16,12 +17,12 @@ public class ChallengeGoal {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challengeGoalId;
+  private Long id;
 
-  @Column private String challengeGoalContent;
+  @Column private String content;
 
   @OneToMany(mappedBy = "challengeGoal", cascade = CascadeType.ALL)
-  private List<ChallengeDiary> challengeDiaries;
+  private List<DiaryGoal> diaryGoals;
 
   @ManyToOne
   @JoinColumn(name = "memberChallengeId")

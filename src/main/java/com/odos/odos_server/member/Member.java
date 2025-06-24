@@ -23,33 +23,33 @@ public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberId;
+  private Long id;
 
-  @Column private String memberEmail;
+  @Column private String email;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private SignupRoute memberSignupRoute;
+  private SignupRoute signupRoute;
 
   @Column private String nickname;
 
-  @Column private String memberProfileImageUrl;
+  @Column private String profileImageUrl;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Job memberJob;
+  private Job job;
 
-  @Column private LocalDateTime memberBirth;
-
-  @Column
-  @Enumerated(EnumType.STRING)
-  private Gender memberGender;
-
-  @Column private Boolean memberPublic;
+  @Column private LocalDateTime birth;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role memberRole;
+  private Gender gender;
+
+  @Column private Boolean isPublic;
+
+  @Column
+  @Enumerated(EnumType.STRING)
+  private Role role;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Challenge> challenges;

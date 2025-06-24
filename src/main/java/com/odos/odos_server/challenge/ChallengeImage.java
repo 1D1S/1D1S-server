@@ -14,9 +14,9 @@ public class ChallengeImage {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long challengeImageId;
+  private Long id;
 
-  @Column private String challengeImageUrl;
+  @Column private String url;
 
   @ManyToOne
   @JoinColumn(name = "challengeId")

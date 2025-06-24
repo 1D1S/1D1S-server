@@ -2,7 +2,6 @@ package com.odos.odos_server.diary;
 
 import com.odos.odos_server.Enum.Emotion;
 import com.odos.odos_server.challenge.Challenge;
-import com.odos.odos_server.challenge.ChallengeDiary;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -10,36 +9,41 @@ import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@EntityListeners(AuditingEntityListener.class)
 public class Diary {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diaryId;
+  private Long id;
 
-  @Column private String diaryTitle;
+  @Column private String title;
 
-  @Column private LocalDateTime diaryCreatedDate;
+  @CreatedDate
+  @Column(updatable = false)
+  private LocalDateTime createdDate;
 
-  @Column private LocalDateTime diaryDate; // 수행날짜?
+  @Column private LocalDateTime date;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Emotion diaryFeeling;
+  private Emotion feeling;
 
-  @Column private Boolean diaryPublic;
+  @Column private Boolean isPublic;
 
   @Column(columnDefinition = "TEXT")
   private String content;
 
-  @Column private Boolean diaryDeleted;
+  @Column private Boolean deleted;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
-  private List<ChallengeDiary> challengeDiaries;
+  private List<DiaryGoal> diaryGoals;
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<DiaryImage> diaryImages;

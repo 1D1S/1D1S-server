@@ -16,13 +16,13 @@ public class DiaryReport {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diaryReportId;
+  private Long id;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private ReportType diaryReportType;
+  private ReportType type;
 
-  @Column private String diaryReportContent;
+  @Column private String content;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

@@ -17,15 +17,15 @@ public class MemberChallenge {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long memberChallengeId;
+  private Long id;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private ChallengeStatus memberChallengeStatus;
+  private ChallengeStatus status;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role memberChallengeRole;
+  private Role role;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

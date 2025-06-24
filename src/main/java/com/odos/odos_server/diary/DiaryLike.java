@@ -15,7 +15,7 @@ public class DiaryLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long diaryLikeId;
+  private Long id;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

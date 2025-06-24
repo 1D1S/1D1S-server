@@ -15,11 +15,11 @@ public class Interest {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long interestId;
+  private Long id;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private InterestType interestCategory;
+  private InterestType category;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

@@ -14,11 +14,11 @@ import lombok.NoArgsConstructor;
 public class Friend {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long friendId;
+  private Long id;
 
   @Column
   @Enumerated(EnumType.STRING)
-  private FriendStatus friendStatus;
+  private FriendStatus status;
 
   @ManyToOne
   @JoinColumn(name = "memberSend")
