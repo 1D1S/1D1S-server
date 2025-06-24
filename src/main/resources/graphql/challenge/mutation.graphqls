@@ -25,5 +25,5 @@ input CreateChallengeInput {
 
 input ApplicantCreate {
     member: ID!
-    goals: [ID]!
+    goals: [String!]
 }

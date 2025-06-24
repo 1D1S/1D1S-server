@@ -16,7 +16,7 @@ input CreateDiaryInput {
     feeling: Feeling!
     public: Boolean
     achievedGoalIds: [ID!]!
-    achievedDate: DateInput
+    achievedDate: DateInput!
 }
 
 input CreateDiaryReportInput{
