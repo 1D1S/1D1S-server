@@ -7,8 +7,8 @@ extend type Mutation {
     acceptApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
     rejectApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
 
-    addChallengeLike(challengeId: ID!, memberId: ID!): Int # 좋아요 개수
-    cancelChallengeLike(challengeId: ID!, memberId: ID!): Int # 좋아요 개수
+    addChallengeLike(challengeId: ID!, memberId: ID!): Int! # 좋아요 개수
+    cancelChallengeLike(challengeId: ID!, memberId: ID!): Int! # 좋아요 개수
 }
 
 input CreateChallengeInput {
@@ -20,7 +20,7 @@ input CreateChallengeInput {
     goalType: ChallengeGoalType!         # FIXED or FLEXIBLE
     goals: [String!]                     # FIXED일 경우 사용
     category: Category!
-    imgs: [String!]
+    img: [String!]
 }
 
 input ApplicantCreate {

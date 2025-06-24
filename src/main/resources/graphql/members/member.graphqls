@@ -3,23 +3,16 @@ type Member {
     public: MemberPublic! # 공개 여부
     profileImageUrl: Img
     role: MemberRole! # enums
+    email: String!
+    nickname: String!
 
-    #info: MemberInfo!
-    email: String
-    nickname: String
-    job: String
-    category: [Category]
-    birthday: Date
-    gender: String
+    info: MemberInfo!
 
-    streak: Streak
 
-    challenge: [Challenge]
-    diary: [Diary]
+    streak: Streak!
+
+    challenge: [Challenge!]!
+    diary: [Diary!]!
 }
 
-enum MemberRole {
-    USER
-    ADMIN
-}
 

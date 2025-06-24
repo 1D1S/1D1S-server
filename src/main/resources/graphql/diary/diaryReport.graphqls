@@ -5,9 +5,3 @@ type Report {
     content: String!
     reportType: ReportType!
 }
-
-enum ReportType {
-    INAPPROPRIATE_TITLE
-    INAPPROPRIATE_CONTENT
-    INAPPROPRIATE_IMG
-}

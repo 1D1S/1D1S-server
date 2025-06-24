@@ -4,11 +4,6 @@ enum Feeling {
   SAD
 }
 
-enum ChallengeRole {
-  HOST
-  GUEST
-}
-
 enum Category {
   DEV
   EXERCISE
@@ -29,4 +24,43 @@ enum AgeGroup {
   TWENTIES
   THIRTIES
   FORTIES_PLUS
+}
+
+enum ChallengeGoalType {
+  FIXED
+  FLEXIBLE
+}
+
+enum ChallengeProgressStatus {
+  RECRUITING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ChallengeApplicantStatus {
+  HOST
+  APPLICANT
+  REQUESTED
+  NONE
+}
+
+enum RelationStatus {
+  PENDING
+  REJECTED
+  ACCEPTED
+}
+
+enum ReportType {
+  INAPPROPRIATE_TITLE
+  INAPPROPRIATE_CONTENT
+  INAPPROPRIATE_IMG
+}
+
+enum MemberRole {
+  USER
+  ADMIN
+}
+
+enum signupRoute {
+  KAKAO,NAVER
 }

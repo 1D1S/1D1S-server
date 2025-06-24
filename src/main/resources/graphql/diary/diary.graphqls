@@ -4,17 +4,17 @@ type Diary {
     author: Member!
     title: String!
     content: String!
-    img: Img #사진 여러개 받을 수 있으면 [Img]
+    img: [Img!]! #사진 여러개 받을 수 있으면 [Img]
     like: Likes!
     public: DiaryPublic! # 공개 여부
 
-    diaryInfo: DiaryInfo
+    diaryInfo: DiaryInfo!
 }
 
 type diaryGoal {
     id: ID!
-    goal: Goal
-    achieved: Boolean
+    goal: Goal!
+    achieved: Boolean!
     streakCount: Int!
 }
 

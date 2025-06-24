@@ -1,15 +1,15 @@
 extend type Query {
-    allChallenges: [ChallengeReturn!]!
-    myChallenges: [ChallengeReturn]
+    allChallenges: [Challenge!]!
+    myChallenges: [Challenge!]!
 
-    randomChallenges(first: Int = 10): [ChallengeReturn]
+    randomChallenges(first: Int = 10): [Challenge!]!
     challengesList(
         filter: ChallengeFilterInput,
         first: Int = 10,
         after: String
     ): ChallengeConnection
 
-    challengeById(id: ID!): ChallengeReturn!
+    challengeById(id: ID!): Challenge!
 
     isChallengeLikedByMe(id: ID!): Boolean!
     myChallengeApplicantStatus(id: ID!): ChallengeApplicantStatus
@@ -36,9 +36,4 @@ type ChallengeConnection {
 type ChallengeEdge {
     node: Challenge
     cursor: String!
-}
-
-type ChallengeReturn{
-    challenge: Challenge
-    challengeMe: ChallengeMe
 }

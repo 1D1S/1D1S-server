@@ -3,8 +3,8 @@ extend type Mutation {
     updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary!
     deleteDiary(DiaryId: ID!): Boolean
 
-    addDiaryLike(diaryId: ID!, memberId: ID!): Int # 좋아요 개수
-    cancelDairyLike(diaryId: ID!, memberId: ID!): Int # 좋아요 개수
+    addDiaryLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수
+    cancelDairyLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수
 
     reportDiary(input: CreateDiaryReportInput!): Boolean!
 }
