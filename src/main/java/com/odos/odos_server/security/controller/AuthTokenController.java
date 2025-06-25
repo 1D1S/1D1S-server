@@ -2,14 +2,11 @@ package com.odos.odos_server.security.controller;
 
 import com.odos.odos_server.member.repository.MemberRepository;
 import com.odos.odos_server.security.jwt.JwtTokenProvider;
-import com.odos.odos_server.security.oauth2.OAuth2LoginResponse;
+import com.odos.odos_server.security.oauth2.TokenResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.jwt.JwtException;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -19,8 +16,9 @@ public class AuthTokenController {
   private final JwtTokenProvider jwtTokenProvider;
   private final MemberRepository memberRepository;
 
-  @PostMapping("/token")
-  public ResponseEntity<OAuth2LoginResponse> reissueAccessToken(
+  @GetMapping("/token")
+  @ResponseBody
+  public ResponseEntity<TokenResponse> reissueAccessToken(
       @RequestHeader("Authorization-Refresh") String refreshHeader) {
 
     String refreshToken =
@@ -40,8 +38,8 @@ public class AuthTokenController {
               String newRefreshToken = jwtTokenProvider.createRefreshToken();
               jwtTokenProvider.updateRefreshToken(member.getEmail(), newRefreshToken);
 
-              OAuth2LoginResponse response =
-                  OAuth2LoginResponse.builder()
+              TokenResponse response =
+                  TokenResponse.builder()
                       .accessToken(newAccessToken)
                       .refreshToken(newRefreshToken)
                       .build();

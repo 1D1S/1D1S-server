@@ -64,7 +64,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
             .email(email)
             .provider(provider)
             .socialId(socialId)
-            .role(MemberRole.USER)
+            .role(MemberRole.GUEST)
             .build();
 
     Member saved = memberRepository.save(newMember);
