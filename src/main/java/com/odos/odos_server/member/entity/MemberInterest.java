@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Interest {
+public class MemberInterest {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -51,7 +51,7 @@ public class Member {
   @Enumerated(EnumType.STRING)
   private Role role;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
   private List<Challenge> challenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -67,7 +67,7 @@ public class Member {
   private List<Friend> receivers;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Interest> interests;
+  private List<MemberInterest> memberInterests;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<DiaryLike> diaryLikes;

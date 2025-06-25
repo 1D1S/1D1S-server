@@ -50,6 +50,6 @@ public class Challenge {
   @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
   private List<ChallengeImage> images;
 
-  @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "challenge", cascade = CascadeType.ALL)
   private List<Diary> diaries;
 }

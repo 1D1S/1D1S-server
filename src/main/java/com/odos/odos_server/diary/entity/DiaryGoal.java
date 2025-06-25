@@ -1,7 +1,5 @@
 package com.odos.odos_server.diary.entity;
 
-// 챌린지 목표-일지
-
 import com.odos.odos_server.challenge.entity.ChallengeGoal;
 import com.odos.odos_server.challenge.entity.MemberChallenge;
 import jakarta.persistence.*;
@@ -24,11 +22,11 @@ public class DiaryGoal {
 
   @ManyToOne
   @JoinColumn(name = "diaryId")
-  private Diary diary; // 일자 id
+  private Diary diary;
 
   @ManyToOne
   @JoinColumn(name = "challengeGoalId")
-  private ChallengeGoal challengeGoal; // 챌린지 목표 아이디
+  private ChallengeGoal challengeGoal;
 
   @ManyToOne
   @JoinColumn(name = "memberChallengeId")
