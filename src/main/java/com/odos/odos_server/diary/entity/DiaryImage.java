@@ -1,4 +1,4 @@
-package com.odos.odos_server.diary;
+package com.odos.odos_server.diary.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

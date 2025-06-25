@@ -1,4 +1,4 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,16 +9,17 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "ChallengeImage")
-public class ChallengeImage {
+public class Interest {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column private String url;
+  @Column
+  @Enumerated(EnumType.STRING)
+  private com.odos.odos_server.Enum.Interest category;
 
   @ManyToOne
-  @JoinColumn(name = "challengeId")
-  private Challenge challenge;
+  @JoinColumn(name = "memberId")
+  private Member member;
 }

@@ -1,7 +1,6 @@
-package com.odos.odos_server.diary;
+package com.odos.odos_server.challenge.entity;
 
-import com.odos.odos_server.Enum.ReportType;
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -11,24 +10,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "DiaryReport")
-public class DiaryReport {
+@Table(name = "ChallengeLike")
+public class ChallengeLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column
-  @Enumerated(EnumType.STRING)
-  private ReportType type;
-
-  @Column private String content;
 
   @ManyToOne
   @JoinColumn(name = "memberId")
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "diaryId")
-  private Diary diary;
+  @JoinColumn(name = "challengeId")
+  private Challenge challenge;
 }

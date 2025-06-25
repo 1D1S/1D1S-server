@@ -1,6 +1,6 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.diary.entity;
 
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "ChallengeLike")
-public class ChallengeLike {
+@Table(name = "DiaryLike")
+public class DiaryLike {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,6 +22,6 @@ public class ChallengeLike {
   private Member member;
 
   @ManyToOne
-  @JoinColumn(name = "challengeId")
-  private Challenge challenge;
+  @JoinColumn(name = "diaryId")
+  private Diary diary;
 }

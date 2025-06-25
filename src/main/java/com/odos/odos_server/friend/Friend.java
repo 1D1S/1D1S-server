@@ -1,7 +1,7 @@
 package com.odos.odos_server.friend;
 
 import com.odos.odos_server.Enum.FriendStatus;
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

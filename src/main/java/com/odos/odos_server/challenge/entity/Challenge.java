@@ -1,9 +1,9 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.challenge.entity;
 
 import com.odos.odos_server.Enum.ChallengeCategory;
 import com.odos.odos_server.Enum.ChallengeType;
-import com.odos.odos_server.diary.Diary;
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.diary.entity.Diary;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

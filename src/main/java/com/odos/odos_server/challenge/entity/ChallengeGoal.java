@@ -1,6 +1,6 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.challenge.entity;
 
-import com.odos.odos_server.diary.DiaryGoal;
+import com.odos.odos_server.diary.entity.DiaryGoal;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "ChallengeGoal")
+@Table(name = "ChallengeGoalRepository")
 public class ChallengeGoal {
 
   @Id

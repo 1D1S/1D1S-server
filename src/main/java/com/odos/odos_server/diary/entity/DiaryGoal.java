@@ -1,9 +1,9 @@
-package com.odos.odos_server.diary;
+package com.odos.odos_server.diary.entity;
 
 // 챌린지 목표-일지
 
-import com.odos.odos_server.challenge.ChallengeGoal;
-import com.odos.odos_server.challenge.MemberChallenge;
+import com.odos.odos_server.challenge.entity.ChallengeGoal;
+import com.odos.odos_server.challenge.entity.MemberChallenge;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

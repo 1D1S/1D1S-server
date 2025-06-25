@@ -1,6 +1,7 @@
-package com.odos.odos_server.diary;
+package com.odos.odos_server.diary.entity;
 
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.Enum.ReportType;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,12 +11,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-@Table(name = "DiaryLike")
-public class DiaryLike {
+@Table(name = "DiaryReport")
+public class DiaryReport {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
+
+  @Column
+  @Enumerated(EnumType.STRING)
+  private ReportType type;
+
+  @Column private String content;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

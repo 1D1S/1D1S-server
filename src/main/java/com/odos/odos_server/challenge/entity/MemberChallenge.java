@@ -1,10 +1,8 @@
-package com.odos.odos_server.challenge;
+package com.odos.odos_server.challenge.entity;
 
 import com.odos.odos_server.Enum.ChallengeStatus;
 import com.odos.odos_server.Enum.MemberChallengeRole;
-import com.odos.odos_server.Enum.Role;
-import com.odos.odos_server.challenge.Challenge;
-import com.odos.odos_server.member.Member;
+import com.odos.odos_server.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

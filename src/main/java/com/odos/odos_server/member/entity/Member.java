@@ -1,14 +1,13 @@
-package com.odos.odos_server.member;
+package com.odos.odos_server.member.entity;
 
 import com.odos.odos_server.Enum.*;
-import com.odos.odos_server.challenge.Challenge;
-import com.odos.odos_server.challenge.ChallengeLike;
-import com.odos.odos_server.challenge.MemberChallenge;
-import com.odos.odos_server.diary.Diary;
-import com.odos.odos_server.diary.DiaryLike;
-import com.odos.odos_server.diary.DiaryReport;
+import com.odos.odos_server.challenge.entity.Challenge;
+import com.odos.odos_server.challenge.entity.ChallengeLike;
+import com.odos.odos_server.challenge.entity.MemberChallenge;
+import com.odos.odos_server.diary.entity.Diary;
+import com.odos.odos_server.diary.entity.DiaryLike;
+import com.odos.odos_server.diary.entity.DiaryReport;
 import com.odos.odos_server.friend.Friend;
-import com.odos.odos_server.interest.Interest;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
