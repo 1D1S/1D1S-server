@@ -2,7 +2,7 @@ type Member {
     id: ID!
     info: MemberInfo!
     option: MemberOption!
-    img: Img
+    img: Img!
     role: MemberRole! # enums
     relations: [Relation]!
 }

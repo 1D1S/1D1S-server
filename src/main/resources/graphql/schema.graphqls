@@ -1,7 +1,9 @@
 # for extends
 type Query {
-    _empty: String
+    #_empty: String
+    getMember(nickname:String!):Member
 }
+
 type Mutation {
     _empty: String
 }

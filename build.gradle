@@ -58,6 +58,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     compileOnly 'org.projectlombok:lombok'
     runtimeOnly 'org.postgresql:postgresql'
+    implementation 'org.postgresql:postgresql:42.7.2'  // 추가
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.graphql:spring-graphql-test'
@@ -73,11 +74,22 @@ tasks.register("updateGitHooks", Copy) {
     from "scripts/pre-commit"
     into ".git/hooks"
 }
+//tasks.register("executableGitHooks", Exec) {
+//    commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
+//    dependsOn(updateGitHooks)
+//    onlyIf {
+//        file("${projectDir}/.git/hooks/pre-commit").exists()
+//    }
+//}
 tasks.register("executableGitHooks", Exec) {
-    commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
     dependsOn(updateGitHooks)
+
     onlyIf {
-        file("${projectDir}/.git/hooks/pre-commit").exists()
+        file("${projectDir}/.git/hooks/pre-commit").exists() &&
+                !org.gradle.internal.os.OperatingSystem.current().isWindows()
     }
+
+    commandLine "chmod", "ug+x", ".git/hooks/pre-commit"
 }
+
 compileJava.dependsOn(executableGitHooks)
