@@ -1,8 +1,22 @@
 type Challenge {
     id: ID!
     host: Member!
-    applicants: [Applicant]!
+    applicants: [Applicant!]!
     title: String!
-    info: ChallengeInfo!
+    description: String!
     like: Likes!
+    img: [Img!]!
+
+    challengeInfo: ChallengeInfo!
+}
+
+type Applicant {
+    member: Member!
+    relation: ChallengeApplicantStatus!
+    goals: [Goal]!
+}
+
+type Goal {
+    id: ID!
+    content: String!
 }

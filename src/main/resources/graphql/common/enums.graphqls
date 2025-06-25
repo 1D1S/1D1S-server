@@ -1,27 +1,65 @@
-enum MemberRole {
-    ADMIN
-    PARTICIPANT
-}
-
-# diary
 enum Feeling {
-    HAPPY
-    SO_SO
-    SAD
-}
-
-# challenge
-enum ChallengeRole {
-    HOST
-    GUEST
+  SAD
+  NORMAL
+  HAPPY
+  NONE
 }
 
 enum Category {
-    DEV
-    EXERCISE
-    BOOK
-    MUSIC
-    STUDY
-    LEISURE
-    ECONOMY
+  DEV
+  EXERCISE
+  BOOK
+  MUSIC
+  STUDY
+  LEISURE
+  ECONOMY
+}
+
+enum Job {
+  STUDENT
+  WORKER
+}
+
+enum AgeGroup {
+  TEENS
+  TWENTIES
+  THIRTIES
+  FORTIES_PLUS
+}
+
+enum ChallengeType {
+  FIXED
+  FLEXIBLE
+}
+
+enum ChallengeStatus {
+  RECRUITING
+  IN_PROGRESS
+  COMPLETED
+}
+
+enum ChallengeApplicantStatus {
+  HOST
+  APPLICANT
+  REQUESTED
+  REJECTED
+  NONE
+}
+
+enum ReportType {
+  BAD_TITLE_CONTENT
+  BAD_IMAGE
+  ETC
+}
+
+enum MemberRole {
+  USER
+  ADMIN
+}
+
+enum signupRoute {
+  KAKAO
+  NAVER
+  APPLE
+  GOOGLE
 }

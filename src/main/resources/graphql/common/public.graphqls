@@ -1,8 +1,7 @@
-type MemberOption {
+type MemberPublic {
     public: Boolean!
 }
 
-type DiaryOption {
+type DiaryPublic {
     public: Boolean!
 }
-
