@@ -33,7 +33,6 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     MemberPrincipal principal = (MemberPrincipal) authentication.getPrincipal();
     String email = principal.getEmail();
 
-    // 회원가입 시에도 member가 이미 생성된 상태임 (CustomOAuth2UserService에서 처리)
     Member member =
         memberRepository
             .findByEmail(email)

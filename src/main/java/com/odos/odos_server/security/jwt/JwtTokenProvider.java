@@ -42,11 +42,10 @@ public class JwtTokenProvider {
   private Long refreshTokenExpirationPeriod;
 
   private Key getSigningKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(secretKey); // secretKey는 Base64 인코딩된 문자열이어야 함
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
     return Keys.hmacShaKeyFor(keyBytes);
   }
 
-  // AccessToken 생성
   public String createAccessToken(Member member) {
     Date now = new Date();
     Date expiry = new Date(now.getTime() + accessTokenExpirationPeriod);
@@ -63,7 +62,6 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  // RefreshToken 생성 : claim 넣을 필요 x
   public String createRefreshToken() {
     Date now = new Date();
     Date expiry = new Date(now.getTime() + refreshTokenExpirationPeriod);
@@ -146,7 +144,3 @@ public class JwtTokenProvider {
             });
   }
 }
-
-// 클라이언트 요청에서 jwt token, id 추출하는 부분
-  // JWT 토큰의 헤더(Authorization의 형식 = Authorization : <type> <credentials> -> Bearer는 여기서 type에 해당하고,
-  // 토큰 값이 credentials에 해당)

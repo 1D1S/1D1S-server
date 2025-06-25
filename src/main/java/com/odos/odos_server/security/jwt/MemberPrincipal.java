@@ -27,7 +27,7 @@ public class MemberPrincipal implements UserDetails, OAuth2User {
   @Override
   public String getPassword() {
     return "";
-  } // 소셜 로그인은 비번 없음
+  }
 
   @Override
   public String getUsername() {

@@ -69,7 +69,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 
     Member saved = memberRepository.save(newMember);
     log.info(
-        "신규 회원 저장됨: id={}, email={}, provider={}",
+        "new member saved : id={}, email={}, provider={}",
         saved.getId(),
         saved.getEmail(),
         saved.getProvider());

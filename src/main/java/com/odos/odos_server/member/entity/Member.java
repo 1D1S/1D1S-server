@@ -40,7 +40,6 @@ public class Member {
   private Gender memberGender;
   private Boolean memberPublic;
 
-  // user 권한 부여
   public void authorizeUser() {
     this.role = MemberRole.USER;
   }
