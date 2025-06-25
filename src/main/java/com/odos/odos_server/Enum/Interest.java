@@ -1,6 +1,6 @@
 package com.odos.odos_server.Enum;
 
-public enum InterestType {
+public enum Interest {
   CERTIFICATION, // 자격증
   STUDY, // 공부
   DEV, // 개발

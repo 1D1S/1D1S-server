@@ -1,8 +1,10 @@
-package com.odos.odos_server.member;
+package com.odos.odos_server.challenge;
 
 import com.odos.odos_server.Enum.ChallengeStatus;
+import com.odos.odos_server.Enum.MemberChallengeRole;
 import com.odos.odos_server.Enum.Role;
 import com.odos.odos_server.challenge.Challenge;
+import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,7 +27,7 @@ public class MemberChallenge {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role role;
+  private MemberChallengeRole memberChallengeRole;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

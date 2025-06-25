@@ -4,7 +4,6 @@ import com.odos.odos_server.Enum.ChallengeCategory;
 import com.odos.odos_server.Enum.ChallengeType;
 import com.odos.odos_server.diary.Diary;
 import com.odos.odos_server.member.Member;
-import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;

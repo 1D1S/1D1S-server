@@ -1,7 +1,6 @@
 package com.odos.odos_server.challenge;
 
 import com.odos.odos_server.diary.DiaryGoal;
-import com.odos.odos_server.member.MemberChallenge;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;

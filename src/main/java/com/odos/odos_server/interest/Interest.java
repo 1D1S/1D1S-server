@@ -1,6 +1,5 @@
 package com.odos.odos_server.interest;
 
-import com.odos.odos_server.Enum.InterestType;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -19,7 +18,7 @@ public class Interest {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private InterestType category;
+  private com.odos.odos_server.Enum.Interest category;
 
   @ManyToOne
   @JoinColumn(name = "memberId")

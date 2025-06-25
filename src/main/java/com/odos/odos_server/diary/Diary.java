@@ -1,6 +1,6 @@
 package com.odos.odos_server.diary;
 
-import com.odos.odos_server.Enum.Emotion;
+import com.odos.odos_server.Enum.Feeling;
 import com.odos.odos_server.challenge.Challenge;
 import com.odos.odos_server.member.Member;
 import jakarta.persistence.*;
@@ -33,7 +33,7 @@ public class Diary {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Emotion feeling;
+  private Feeling feeling;
 
   @Column private Boolean isPublic;
 

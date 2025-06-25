@@ -3,6 +3,7 @@ package com.odos.odos_server.member;
 import com.odos.odos_server.Enum.*;
 import com.odos.odos_server.challenge.Challenge;
 import com.odos.odos_server.challenge.ChallengeLike;
+import com.odos.odos_server.challenge.MemberChallenge;
 import com.odos.odos_server.diary.Diary;
 import com.odos.odos_server.diary.DiaryLike;
 import com.odos.odos_server.diary.DiaryReport;

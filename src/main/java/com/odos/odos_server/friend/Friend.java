@@ -18,7 +18,7 @@ public class Friend {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private FriendStatus status;
+  private FriendStatus friendStatus;
 
   @ManyToOne
   @JoinColumn(name = "memberSend")
