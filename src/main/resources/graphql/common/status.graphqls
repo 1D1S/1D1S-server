@@ -1,8 +1,0 @@
-type DiaryStatus {
-    deleted: Boolean!
-}
-
-enum ChallengeStatus {
-    FIXED
-    FLEXIBLE
-}

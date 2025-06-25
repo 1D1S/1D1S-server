@@ -1,27 +1,47 @@
 type MemberInfo {
-    name: String
-    email: String
-    job: String
-    birthday: Date
-    gender: String
+    job: String!
+    category: [Category!]!
+    birthday: Date!
+    gender: String!
+}
+type Streak {
+    todayGoalCount: Int! # 5
+    currentStreak: Int! # 42 (10)
+
+    totalDiaryCount: Int! # 10
+    totalGoalCount: Int! # 35
+
+    currentMonthDiaryCount: Int! # 10
+    currentMonthGoalCount: Int! # 35
+
+    maxStreak: Int! #180
+
+    calendar: [DailyStreak!]! # 잔디
+}
+type DailyStreak{
+    date: Date!
+    count: Int!
 }
 
 type DiaryInfo {
     createdAt: Date!
     date: Date!
     feeling: Feeling!
-    public: Boolean!
-    goals: [DiaryGoal]!
-}
-type DiaryGoal {
-    content: String!
-    achieve: Boolean!
+    achievement: [DiaryGoal!]!
+    AchievementRate: Int!
 }
 
-type ChallengeInfo {
+type ChallengeInfo{
     startDate: Date!
     endDate: Date!
     participants: Int!
+    maxParticipants: Int!
     category: Category!
+    goalType: ChallengeType!
     status: ChallengeStatus!
+}
+
+type PageInfo {
+    endCursor: String
+    hasNextPage: Boolean!
 }

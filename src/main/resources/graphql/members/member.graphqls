@@ -1,8 +1,15 @@
 type Member {
     id: ID!
-    info: MemberInfo!
-    option: MemberOption!
-    img: Img!
+    public: MemberPublic! # 공개 여부
+    profileImageUrl: Img
     role: MemberRole! # enums
-    relations: [Relation]!
+    email: String!
+    nickname: String!
+
+    info: MemberInfo!
+
+    streak: Streak!
+
+    challenge: [Challenge!]!
+    diary: [Diary!]!
 }

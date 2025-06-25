@@ -1,4 +1,5 @@
 extend type Query {
-    MemberById(id: ID!): Member!
-    AllMembers: [Member!]!
+    memberMe:Member!
+    memberById(id: ID!): Member!
+    allMembers: [Member!]!
 }

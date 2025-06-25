@@ -1,0 +1,7 @@
+type MemberPublic {
+    public: Boolean!
+}
+
+type DiaryPublic {
+    public: Boolean!
+}

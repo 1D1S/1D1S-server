@@ -1,3 +1,39 @@
 extend type Query {
-    _challenge: Boolean
+    allChallenges: [Challenge!]!
+    myChallenges: [Challenge!]!
+
+    randomChallenges(first: Int = 10): [Challenge!]!
+    challengesList(
+        filter: ChallengeFilterInput,
+        first: Int = 10,
+        after: String
+    ): ChallengeConnection
+
+    challengeById(id: ID!): Challenge!
+
+    isChallengeLikedByMe(id: ID!): Boolean!
+    myChallengeApplicantStatus(id: ID!): ChallengeApplicantStatus
+}
+
+input ChallengeFilterInput {
+    keyword: String
+    job: Job
+    status: ChallengeStatus
+    ageGroup: AgeGroup
+    duration: DurationRange
+}
+
+input DurationRange {
+    minDays: Int
+    maxDays: Int
+}
+
+type ChallengeConnection {
+    edges: [ChallengeEdge]
+    pageInfo: PageInfo!
+}
+
+type ChallengeEdge {
+    node: Challenge
+    cursor: String!
 }
