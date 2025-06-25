@@ -7,9 +7,15 @@ type Mutation {
 }
 
 type Date {
-    year: Int
-    month: Int
-    day: Int
+    year: Int!
+    month: Int!
+    day: Int!
+}
+
+input DateInput {
+    year: Int!
+    month: Int!
+    day: Int!
 }
 
 input DateInput {
