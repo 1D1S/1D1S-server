@@ -1,0 +1,8 @@
+package com.odos.odos_server.domain.Enum;
+
+public enum MemberChallengeRole {
+  HOST,
+  APPLICANT,
+  REQUESTED,
+  NONE
+}
