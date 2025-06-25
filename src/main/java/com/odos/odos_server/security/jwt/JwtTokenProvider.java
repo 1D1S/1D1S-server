@@ -20,10 +20,12 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.JwtException;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Component
 @Getter
 @Slf4j
 public class JwtTokenProvider {
@@ -52,8 +54,9 @@ public class JwtTokenProvider {
     return Jwts.builder()
         .setSubject("AccessToken")
         .claim("id", member.getId())
-        .claim("role", member.getRole().name())
         .claim("email", member.getEmail())
+        .claim("role", member.getRole().name())
+        .claim("provider", member.getProvider().name())
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(getSigningKey(), SignatureAlgorithm.HS256)
@@ -74,12 +77,6 @@ public class JwtTokenProvider {
         .compact();
   }
 
-  // token 헤더에 실어 보내기
-  public void sendAccessToken(HttpServletResponse response, String accessToken) {
-    response.setStatus(HttpServletResponse.SC_OK);
-    response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
-  }
-
   public void sendAccessAndRefreshToken(
       HttpServletResponse response, String accessToken, String refreshToken) {
     response.setStatus(HttpServletResponse.SC_OK);
@@ -87,31 +84,20 @@ public class JwtTokenProvider {
     response.setHeader("Authorization-Refresh", "Bearer " + refreshToken);
   }
 
-  // 클라이언트 요청에서 jwt token, id 추출하는 부분
-  // JWT 토큰의 헤더(Authorization의 형식 = Authorization : <type> <credentials> -> Bearer는 여기서 type에 해당하고,
-  // 토큰 값이 credentials에 해당)
-  private Optional<String> extractTokenFromHeader(String bearerToken) {
-    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
-      return Optional.of(bearerToken.substring(7));
-    }
-    return Optional.empty();
-  }
-
-  public Optional<String> extractAccessToken(HttpServletRequest request) {
-    return extractTokenFromHeader(request.getHeader(HttpHeaders.AUTHORIZATION));
-  }
-
-  public Optional<String> extractRefreshToken(HttpServletRequest request) {
-    return extractTokenFromHeader(request.getHeader("Authorization-Refresh"));
-  }
-
-  public Optional<String> extractMemberId(String accessToken) {
+  public boolean isValidToken(String token) {
     try {
-      Claims claims = parseToken(accessToken);
-      Object id = claims.get("id");
-      return Optional.ofNullable(id).map(Object::toString);
+      Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
+      return true;
     } catch (JwtException | IllegalArgumentException e) {
-      return Optional.empty();
+      return false;
+    }
+  }
+
+  public boolean isExpired(String token) {
+    try {
+      return parseToken(token).getExpiration().before(new Date());
+    } catch (JwtException | IllegalArgumentException e) {
+      return true;
     }
   }
 
@@ -123,25 +109,28 @@ public class JwtTokenProvider {
         .getBody();
   }
 
-  public boolean isValidToken(String token) {
+  public Optional<String> extractMemberId(String accessToken) {
     try {
-      Jwts.parserBuilder()
-          .setSigningKey(getSigningKey()) // 이미 정의된 Key 반환 메서드 사용
-          .build()
-          .parseClaimsJws(token); // 서명 검증 포함
-      return true;
+      Object id = parseToken(accessToken).get("id");
+      return Optional.ofNullable(id).map(Object::toString);
     } catch (JwtException | IllegalArgumentException e) {
-      return false;
+      return Optional.empty();
     }
   }
 
-  public boolean isExpired(String token) {
-    try {
-      Date expiration = parseToken(token).getExpiration();
-      return expiration.before(new Date());
-    } catch (JwtException | IllegalArgumentException e) {
-      return true;
+  public Optional<String> extractAccessToken(HttpServletRequest request) {
+    return extractTokenFromHeader(request.getHeader(HttpHeaders.AUTHORIZATION));
+  }
+
+  public Optional<String> extractRefreshToken(HttpServletRequest request) {
+    return extractTokenFromHeader(request.getHeader("Authorization-Refresh"));
+  }
+
+  public Optional<String> extractTokenFromHeader(String bearerToken) {
+    if (bearerToken != null && bearerToken.startsWith("Bearer ")) {
+      return Optional.of(bearerToken.substring(7));
     }
+    return Optional.empty();
   }
 
   public void updateRefreshToken(String email, String refreshToken) {
@@ -157,3 +146,7 @@ public class JwtTokenProvider {
             });
   }
 }
+
+// 클라이언트 요청에서 jwt token, id 추출하는 부분
+  // JWT 토큰의 헤더(Authorization의 형식 = Authorization : <type> <credentials> -> Bearer는 여기서 type에 해당하고,
+  // 토큰 값이 credentials에 해당)

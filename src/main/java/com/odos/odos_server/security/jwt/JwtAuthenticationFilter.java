@@ -7,7 +7,6 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,63 +33,25 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(
       HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
-
-    Optional<String> accessOpt =
-        jwtTokenProvider.extractAccessToken(request).filter(jwtTokenProvider::isValidToken);
-
-    if (accessOpt.isPresent() && !jwtTokenProvider.isExpired(accessOpt.get())) {
-      authenticateWithAccessToken(accessOpt.get());
-      filterChain.doFilter(request, response);
-      return;
-    }
-
-    Optional<String> refreshOpt =
-        jwtTokenProvider.extractRefreshToken(request).filter(jwtTokenProvider::isValidToken);
-
-    if (refreshOpt.isPresent()) {
-      boolean refreshed = handleRefreshFlow(response, refreshOpt.get());
-      if (refreshed) {
-        return;
-      }
-    }
-
-    accessOpt.ifPresent(this::authenticateWithAccessToken);
-    filterChain.doFilter(request, response);
-  }
-
-  private boolean handleRefreshFlow(HttpServletResponse response, String refreshToken) {
-    return memberRepository
-        .findByRefreshToken(refreshToken)
-        .map(
-            member -> {
-              String newRefreshToken = rotateRefreshToken(member);
-              String newAccessToken = jwtTokenProvider.createAccessToken(member);
-              jwtTokenProvider.sendAccessAndRefreshToken(response, newAccessToken, newRefreshToken);
-              return true;
-            })
-        .orElse(false);
-  }
-
-  private String rotateRefreshToken(Member member) {
-    String newRefreshToken = jwtTokenProvider.createRefreshToken();
-    jwtTokenProvider.updateRefreshToken(member.getEmail(), newRefreshToken); // 내부에서 DB save 처리
-    return newRefreshToken;
-  }
-
-  private void authenticateWithAccessToken(String token) {
     jwtTokenProvider
-        .extractMemberId(token)
+        .extractAccessToken(request)
+        .filter(jwtTokenProvider::isValidToken)
+        .filter(token -> !jwtTokenProvider.isExpired(token))
+        .flatMap(jwtTokenProvider::extractMemberId)
         .map(Long::parseLong)
         .flatMap(memberRepository::findById)
         .ifPresent(this::setAuthentication);
+
+    filterChain.doFilter(request, response);
   }
 
   private void setAuthentication(Member member) {
-    MemberPrincipal principal = new MemberPrincipal(member.getEmail(), member.getRole().name());
+    MemberPrincipal principal =
+        new MemberPrincipal(
+            member.getId(), member.getEmail(), member.getRole().name(), member.getProvider());
 
     Authentication authentication =
         new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());
-
     SecurityContextHolder.getContext().setAuthentication(authentication);
   }
 }

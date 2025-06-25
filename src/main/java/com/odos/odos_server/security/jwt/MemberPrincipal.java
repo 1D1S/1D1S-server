@@ -1,18 +1,23 @@
 package com.odos.odos_server.security.jwt;
 
+import com.odos.odos_server.member.enums.Provider;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 @Getter
 @AllArgsConstructor
-public class MemberPrincipal implements UserDetails {
+public class MemberPrincipal implements UserDetails, OAuth2User {
 
+  private final Long id;
   private final String email;
   private final String role;
+  private final Provider provider;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,5 +52,15 @@ public class MemberPrincipal implements UserDetails {
   @Override
   public boolean isEnabled() {
     return true;
+  }
+
+  @Override
+  public Map<String, Object> getAttributes() {
+    return Collections.emptyMap();
+  }
+
+  @Override
+  public String getName() {
+    return String.valueOf(id);
   }
 }

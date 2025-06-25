@@ -1,16 +1,16 @@
 package com.odos.odos_server.config;
 
 import com.odos.odos_server.security.jwt.JwtAuthenticationFilter;
+import com.odos.odos_server.security.jwt.JwtTokenExceptionFilter;
 import com.odos.odos_server.security.oauth2.handler.OAuth2LoginFailureHandler;
 import com.odos.odos_server.security.oauth2.handler.OAuth2LoginSuccessHandler;
 import com.odos.odos_server.security.oauth2.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,41 +20,35 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @RequiredArgsConstructor
 public class SecurityConfig {
 
+  private final CustomOAuth2UserService customOAuth2UserService;
   private final JwtAuthenticationFilter jwtAuthenticationFilter;
   private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
   private final OAuth2LoginFailureHandler oAuth2LoginFailureHandler;
-  private final CustomOAuth2UserService customOAuth2UserService;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
-        .cors(cors -> {})
-        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+    http.csrf(AbstractHttpConfigurer::disable)
+        .cors(AbstractHttpConfigurer::disable)
+        .httpBasic(AbstractHttpConfigurer::disable)
+        .formLogin(AbstractHttpConfigurer::disable)
+        .logout(AbstractHttpConfigurer::disable)
+        .sessionManagement(
+            session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/", "/css/**", "/js/**")
-                    .permitAll()
-                    .requestMatchers("/login", "/auth/**")
-                    .permitAll()
-                    .requestMatchers("/sign-up")
+                auth.requestMatchers("/", "/auth/**", "/oauth2/**", "/css/**", "/js/**")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
         .oauth2Login(
             oauth ->
                 oauth
-                    .redirectionEndpoint(redir -> redir.baseUri("/auth/*/callback"))
+                    .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
                     .successHandler(oAuth2LoginSuccessHandler)
-                    .failureHandler(oAuth2LoginFailureHandler)
-                    .userInfoEndpoint(ui -> ui.userService(customOAuth2UserService)))
-        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                    .failureHandler(oAuth2LoginFailureHandler))
+        .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+        .addFilterBefore(new JwtTokenExceptionFilter(), JwtAuthenticationFilter.class);
 
     return http.build();
-  }
-
-  @Bean
-  public AuthenticationManager authenticationManager(AuthenticationConfiguration config)
-      throws Exception {
-    return config.getAuthenticationManager();
   }
 }

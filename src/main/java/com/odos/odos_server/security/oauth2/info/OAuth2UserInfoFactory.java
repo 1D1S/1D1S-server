@@ -10,7 +10,7 @@ public class OAuth2UserInfoFactory {
       case GOOGLE -> new GoogleOAuth2UserInfo(attributes);
       case KAKAO -> new KakaoOAuth2UserInfo(attributes);
       case NAVER -> new NaverOAuth2UserInfo(attributes);
-      default -> throw new IllegalArgumentException("지원하지 않는 소셜 로그인입니다: " + provider);
+      default -> throw new IllegalArgumentException("unexpected provider " + provider);
     };
   }
 }

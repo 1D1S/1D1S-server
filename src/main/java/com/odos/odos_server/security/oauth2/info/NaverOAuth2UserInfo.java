@@ -9,12 +9,11 @@ public class NaverOAuth2UserInfo extends OAuth2UserInfo {
 
   @Override
   public String getId() {
-    return attributes.get("id").toString();
+    return String.valueOf(attributes.get("id"));
   }
 
   @Override
-  @SuppressWarnings("unchecked")
   public String getEmail() {
-    return attributes.get("email").toString();
+    return (String) attributes.get("email");
   }
 }

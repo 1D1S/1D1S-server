@@ -7,19 +7,23 @@ spring:
             client-id: ${KAKAO_CLIENT_ID}
             redirect-uri : ${KAKAO_REDIRECT_URI}
             authorization-grant-type: authorization_code
-            client-authentication-method: POST
-            scope: account_email
+            client-authentication-method: client_secret_post
+            scope:
+              - account_email
+            client-name: kakao
           google:
             client-id: ${GOOGLE_CLIENT_ID}
             client-secret: ${GOOGLE_CLIENT_SECRET}
             redirect-uri: ${GOOGLE_REDIRECT_URI}
-            scope: email
+            scope:
+              - email
           naver:
             client-id: ${NAVER_CLIENT_ID}
             client-secret: ${NAVER_CLIENT_SECRET}
             redirect-uri: ${NAVER_REDIRECT_URI}
             authorization-grant-type: authorization_code
-            scope: email
+            scope:
+              - email
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize
