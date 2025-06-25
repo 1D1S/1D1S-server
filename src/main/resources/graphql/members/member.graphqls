@@ -8,7 +8,6 @@ type Member {
 
     info: MemberInfo!
 
-
     streak: Streak!
 
     challenge: [Challenge!]!

@@ -1,7 +1,8 @@
 enum Feeling {
-  HAPPY
-  SO_SO
   SAD
+  NORMAL
+  HAPPY
+  NONE
 }
 
 enum Category {
@@ -14,7 +15,7 @@ enum Category {
   ECONOMY
 }
 
-enum JobType {
+enum Job {
   STUDENT
   WORKER
 }
@@ -26,12 +27,12 @@ enum AgeGroup {
   FORTIES_PLUS
 }
 
-enum ChallengeGoalType {
+enum ChallengeType {
   FIXED
   FLEXIBLE
 }
 
-enum ChallengeProgressStatus {
+enum ChallengeStatus {
   RECRUITING
   IN_PROGRESS
   COMPLETED
@@ -41,19 +42,14 @@ enum ChallengeApplicantStatus {
   HOST
   APPLICANT
   REQUESTED
+  REJECTED
   NONE
 }
 
-enum RelationStatus {
-  PENDING
-  REJECTED
-  ACCEPTED
-}
-
 enum ReportType {
-  INAPPROPRIATE_TITLE
-  INAPPROPRIATE_CONTENT
-  INAPPROPRIATE_IMG
+  BAD_TITLE_CONTENT
+  BAD_IMAGE
+  ETC
 }
 
 enum MemberRole {
@@ -62,5 +58,8 @@ enum MemberRole {
 }
 
 enum signupRoute {
-  KAKAO,NAVER
+  KAKAO
+  NAVER
+  APPLE
+  GOOGLE
 }

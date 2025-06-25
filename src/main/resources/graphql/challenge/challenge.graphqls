@@ -12,7 +12,7 @@ type Challenge {
 
 type Applicant {
     member: Member!
-    relation: RelationStatus!
+    relation: ChallengeApplicantStatus!
     goals: [Goal]!
 }
 
@@ -20,6 +20,3 @@ type Goal {
     id: ID!
     content: String!
 }
-
-
-

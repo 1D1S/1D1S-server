@@ -11,7 +11,7 @@ type Diary {
     diaryInfo: DiaryInfo!
 }
 
-type diaryGoal {
+type DiaryGoal {
     id: ID!
     goal: Goal!
     achieved: Boolean!

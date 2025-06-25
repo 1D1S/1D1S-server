@@ -27,7 +27,7 @@ type DiaryInfo {
     createdAt: Date!
     date: Date!
     feeling: Feeling!
-    achievement: [diaryGoal!]!
+    achievement: [DiaryGoal!]!
     AchievementRate: Int!
 }
 
@@ -37,8 +37,8 @@ type ChallengeInfo{
     participants: Int!
     maxParticipants: Int!
     category: Category!
-    goalType: ChallengeGoalType!
-    status: ChallengeProgressStatus!
+    goalType: ChallengeType!
+    status: ChallengeStatus!
 }
 
 type PageInfo {

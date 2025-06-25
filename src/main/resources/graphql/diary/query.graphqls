@@ -17,7 +17,7 @@ extend type Query {
 }
 
 input DiaryFilterInput{
-    job: JobType
+    job: Job
     ageGroup: AgeGroup
 }
 
