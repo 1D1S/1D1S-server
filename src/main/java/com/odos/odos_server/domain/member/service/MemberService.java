@@ -1,5 +1,7 @@
-package com.odos.odos_server.member;
+package com.odos.odos_server.domain.member.service;
 
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.global.error.code.ErrorCode;
 import com.odos.odos_server.global.error.exception.CustomException;
 import lombok.RequiredArgsConstructor;

@@ -1,5 +1,7 @@
-package com.odos.odos_server.member;
+package com.odos.odos_server.domain.member.controller;
 
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
