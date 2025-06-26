@@ -1,6 +1,5 @@
 package com.odos.odos_server.domain.member.entity;
 
-import com.odos.odos_server.Enum.*;
 import com.odos.odos_server.domain.Enum.Gender;
 import com.odos.odos_server.domain.Enum.Job;
 import com.odos.odos_server.domain.Enum.Role;

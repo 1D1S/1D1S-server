@@ -1,6 +1,5 @@
 package com.odos.odos_server.domain.challenge.entity;
 
-import com.odos.odos_server.domain.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.Enum.MemberChallengeRole;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
@@ -18,10 +17,6 @@ public class MemberChallenge {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
-
-  @Column
-  @Enumerated(EnumType.STRING)
-  private ChallengeStatus status;
 
   @Column
   @Enumerated(EnumType.STRING)
