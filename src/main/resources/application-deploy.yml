@@ -28,9 +28,9 @@ spring:
     username: ${username}
     password: ${password}
 
-server:
-  port: ${server_port}
-
   graphql:
     graphiql:
       enabled: true
+
+server:
+  port: ${server_port}
