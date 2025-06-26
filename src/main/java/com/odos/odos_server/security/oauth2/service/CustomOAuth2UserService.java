@@ -2,7 +2,7 @@ package com.odos.odos_server.security.oauth2.service;
 
 import com.odos.odos_server.member.entity.Member;
 import com.odos.odos_server.member.enums.MemberRole;
-import com.odos.odos_server.member.enums.Provider;
+import com.odos.odos_server.member.enums.SignupRoute;
 import com.odos.odos_server.member.repository.MemberRepository;
 import com.odos.odos_server.security.jwt.MemberPrincipal;
 import com.odos.odos_server.security.oauth2.info.OAuth2UserInfo;
@@ -32,11 +32,11 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     OAuth2UserService<OAuth2UserRequest, OAuth2User> delegate = new DefaultOAuth2UserService();
     OAuth2User oAuth2User = delegate.loadUser(userRequest);
 
-    Provider provider =
-        Provider.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
+    SignupRoute signupRoute =
+        SignupRoute.valueOf(userRequest.getClientRegistration().getRegistrationId().toUpperCase());
     Map<String, Object> attributes = oAuth2User.getAttributes();
 
-    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.get(provider, attributes);
+    OAuth2UserInfo userInfo = OAuth2UserInfoFactory.get(signupRoute, attributes);
     String email = userInfo.getEmail();
 
     if (email == null || email.isBlank()) {
@@ -47,22 +47,21 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
     Member member =
         memberRepository
             .findByEmail(email)
-            .orElseGet(() -> createMember(email, provider, userInfo.getId()));
+            .orElseGet(() -> createMember(email, signupRoute, userInfo.getId()));
 
     log.debug(">>> OAuth2 attributes: {}", attributes);
     log.info(
-        "[OAuth2UserService] 진입: provider = {}",
-        userRequest.getClientRegistration().getRegistrationId());
+        "OAuth2UserService provider = {}", userRequest.getClientRegistration().getRegistrationId());
 
     return new MemberPrincipal(
-        member.getId(), member.getEmail(), member.getRole().name(), member.getProvider());
+        member.getId(), member.getEmail(), member.getRole().name(), member.getSignupRoute());
   }
 
-  private Member createMember(String email, Provider provider, String socialId) {
+  private Member createMember(String email, SignupRoute signupRoute, String socialId) {
     Member newMember =
         Member.builder()
             .email(email)
-            .provider(provider)
+            .signupRoute(signupRoute)
             .socialId(socialId)
             .role(MemberRole.GUEST)
             .build();
@@ -72,7 +71,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         "new member saved : id={}, email={}, provider={}",
         saved.getId(),
         saved.getEmail(),
-        saved.getProvider());
+        saved.getSignupRoute());
     return saved;
   }
 }

@@ -1,6 +1,6 @@
 package com.odos.odos_server.security.jwt;
 
-import com.odos.odos_server.member.enums.Provider;
+import com.odos.odos_server.member.enums.SignupRoute;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
@@ -17,7 +17,7 @@ public class MemberPrincipal implements UserDetails, OAuth2User {
   private final Long id;
   private final String email;
   private final String role;
-  private final Provider provider;
+  private final SignupRoute signupRoute;
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {

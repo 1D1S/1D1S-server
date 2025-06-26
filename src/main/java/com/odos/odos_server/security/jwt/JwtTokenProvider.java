@@ -55,7 +55,7 @@ public class JwtTokenProvider {
         .claim("id", member.getId())
         .claim("email", member.getEmail())
         .claim("role", member.getRole().name())
-        .claim("provider", member.getProvider().name())
+        .claim("provider", member.getSignupRoute().name())
         .setIssuedAt(now)
         .setExpiration(expiry)
         .signWith(getSigningKey(), SignatureAlgorithm.HS256)

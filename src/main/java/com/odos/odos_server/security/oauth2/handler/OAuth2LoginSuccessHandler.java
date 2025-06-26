@@ -52,13 +52,25 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
       jwtTokenProvider.updateRefreshToken(email, refreshToken);
     }
 
+    boolean isProfileComplete =
+        member.getMemberNickname() != null
+            // && member.getMemberProfileImageUrl() != null
+            && member.getMemberJob() != null
+            && member.getMemberBirth() != null
+            && member.getMemberGender() != null
+            && member.getMemberPublic() != null;
+
     OAuth2LoginResponse dto =
-        OAuth2LoginResponse.builder().accessToken(accessToken).refreshToken(refreshToken).build();
+        OAuth2LoginResponse.builder()
+            .accessToken(accessToken)
+            .refreshToken(refreshToken)
+            .isProfileComplete(isProfileComplete)
+            .build();
 
     response.setStatus(HttpServletResponse.SC_OK);
     response.setContentType("application/json;charset=UTF-8");
     response.getWriter().write(objectMapper.writeValueAsString(dto));
 
-    log.debug("OAuth2 login success - {} ({})", email, principal.getProvider());
+    log.debug("OAuth2 login success - {} (profileComplete={})", email, isProfileComplete);
   }
 }

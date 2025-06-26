@@ -48,7 +48,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   private void setAuthentication(Member member) {
     MemberPrincipal principal =
         new MemberPrincipal(
-            member.getId(), member.getEmail(), member.getRole().name(), member.getProvider());
+            member.getId(), member.getEmail(), member.getRole().name(), member.getSignupRoute());
 
     Authentication authentication =
         new UsernamePasswordAuthenticationToken(principal, null, principal.getAuthorities());

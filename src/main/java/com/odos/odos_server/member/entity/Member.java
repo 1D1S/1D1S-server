@@ -1,9 +1,9 @@
 package com.odos.odos_server.member.entity;
 
-import com.nimbusds.openid.connect.sdk.claims.Gender;
+import com.odos.odos_server.member.enums.Gender;
 import com.odos.odos_server.member.enums.Job;
 import com.odos.odos_server.member.enums.MemberRole;
-import com.odos.odos_server.member.enums.Provider;
+import com.odos.odos_server.member.enums.SignupRoute;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
@@ -25,7 +25,7 @@ public class Member {
   private String email;
 
   @Enumerated(EnumType.STRING)
-  private Provider provider;
+  private SignupRoute signupRoute;
 
   private String socialId;
   private String refreshToken;
@@ -35,16 +35,34 @@ public class Member {
 
   private String memberNickname;
   private String memberProfileImageUrl;
-  private Job memberJob;
-  private LocalDate memberBirth;
-  private Gender memberGender;
-  private Boolean memberPublic;
 
-  public void authorizeUser() {
-    this.role = MemberRole.USER;
-  }
+  @Enumerated(EnumType.STRING)
+  private Job memberJob;
+
+  private LocalDate memberBirth;
+
+  @Enumerated(EnumType.STRING)
+  private Gender memberGender;
+
+  private Boolean memberPublic;
 
   public void updateRefreshToken(String updateRefreshToken) {
     this.refreshToken = updateRefreshToken;
+  }
+
+  public void completeProfile(
+      String nickname,
+      String profileImageUrl,
+      Job job,
+      LocalDate birth,
+      Gender gender,
+      Boolean isPublic) {
+    this.memberNickname = nickname;
+    this.memberProfileImageUrl = profileImageUrl;
+    this.memberJob = job;
+    this.memberBirth = birth;
+    this.memberGender = gender;
+    this.memberPublic = isPublic;
+    this.role = MemberRole.USER;
   }
 }
