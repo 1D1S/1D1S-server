@@ -10,13 +10,13 @@ spring:
       on-profile: "deploy"
 #    import: "aws-secretsmanager:/secret/odos-db-dev"
 
-  cloud:
-    aws:
-      region:
-        static: "ap-northeast-2"
-      credentials:
-        access-key: ${AWS_ACCESS_KEY_ID}
-        secret-key: ${AWS_SECRET_ACCESS_KEY}
+#  cloud:
+#    aws:
+#      region:
+#        static: "ap-northeast-2"
+#      credentials:
+#        access-key: ${AWS_ACCESS_KEY_ID}
+#        secret-key: ${AWS_SECRET_ACCESS_KEY}
 
   jpa:
     hibernate:
@@ -24,9 +24,12 @@ spring:
 
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://${host}:${port}/${dbInstanceIdentifier}
+    url: jdbc:postgresql://${host}:${port}/${db}
     username: ${username}
     password: ${password}
+
+server:
+  port: ${server_port}
 
   graphql:
     graphiql:
