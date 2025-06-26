@@ -1,7 +1,6 @@
 package com.odos.odos_server.domain.challenge.entity;
 
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

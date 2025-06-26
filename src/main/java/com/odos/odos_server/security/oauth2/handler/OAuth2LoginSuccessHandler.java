@@ -1,8 +1,8 @@
 package com.odos.odos_server.security.oauth2.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.odos.odos_server.member.entity.Member;
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.security.jwt.JwtTokenProvider;
 import com.odos.odos_server.security.jwt.MemberPrincipal;
 import com.odos.odos_server.security.oauth2.OAuth2LoginResponse;

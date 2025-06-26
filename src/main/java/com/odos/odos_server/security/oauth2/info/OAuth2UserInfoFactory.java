@@ -1,6 +1,6 @@
 package com.odos.odos_server.security.oauth2.info;
 
-import com.odos.odos_server.member.enums.SignupRoute;
+import com.odos.odos_server.domain.common.Enum.SignupRoute;
 import java.util.Map;
 
 public class OAuth2UserInfoFactory {

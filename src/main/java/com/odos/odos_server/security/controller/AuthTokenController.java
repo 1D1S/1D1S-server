@@ -1,6 +1,6 @@
 package com.odos.odos_server.security.controller;
 
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.security.jwt.JwtTokenProvider;
 import com.odos.odos_server.security.oauth2.TokenResponse;
 import lombok.RequiredArgsConstructor;

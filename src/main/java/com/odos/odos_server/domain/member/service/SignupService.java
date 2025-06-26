@@ -1,8 +1,8 @@
-package com.odos.odos_server.member.service;
+package com.odos.odos_server.domain.member.service;
 
-import com.odos.odos_server.member.dto.SignupInfoRequest;
-import com.odos.odos_server.member.entity.Member;
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.member.dto.SignupInfoRequest;
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -1,7 +1,7 @@
 package com.odos.odos_server.security.jwt;
 
-import com.odos.odos_server.member.entity.Member;
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

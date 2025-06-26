@@ -1,7 +1,7 @@
-package com.odos.odos_server.member.controller;
+package com.odos.odos_server.domain.member.controller;
 
-import com.odos.odos_server.member.dto.SignupInfoRequest;
-import com.odos.odos_server.member.service.SignupService;
+import com.odos.odos_server.domain.member.dto.SignupInfoRequest;
+import com.odos.odos_server.domain.member.service.SignupService;
 import com.odos.odos_server.security.jwt.MemberPrincipal;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

@@ -2,82 +2,67 @@ package com.odos.odos_server.domain.member.entity;
 
 import com.odos.odos_server.domain.common.Enum.Gender;
 import com.odos.odos_server.domain.common.Enum.Job;
-import com.odos.odos_server.domain.common.Enum.Role;
+import com.odos.odos_server.domain.common.Enum.MemberRole;
 import com.odos.odos_server.domain.common.Enum.SignupRoute;
-import com.odos.odos_server.domain.challenge.entity.Challenge;
-import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
-import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
-import com.odos.odos_server.domain.diary.entity.Diary;
-import com.odos.odos_server.domain.diary.entity.DiaryLike;
-import com.odos.odos_server.domain.diary.entity.DiaryReport;
-import com.odos.odos_server.domain.friend.Friend;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
-import java.util.List;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import java.time.LocalDate;
+import lombok.*;
 
 @Entity
-@AllArgsConstructor
-@NoArgsConstructor
+@Builder
 @Getter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Table(name = "MEMBER")
 public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @Column(name = "member_id")
   private Long id;
 
-  @Column private String email;
+  @Column(nullable = false, unique = true)
+  private String email;
 
-  @Column
   @Enumerated(EnumType.STRING)
   private SignupRoute signupRoute;
 
-  @Column private String nickname;
+  private String socialId;
+  private String refreshToken;
 
-  @Column private String profileImageUrl;
-
-  @Column
   @Enumerated(EnumType.STRING)
-  private Job job;
+  private MemberRole role;
 
-  @Column private LocalDateTime birth;
+  private String memberNickname;
+  private String memberProfileImageUrl;
 
-  @Column
   @Enumerated(EnumType.STRING)
-  private Gender gender;
+  private Job memberJob;
 
-  @Column private Boolean isPublic;
+  private LocalDate memberBirth;
 
-  @Column
   @Enumerated(EnumType.STRING)
-  private Role role;
+  private Gender memberGender;
 
-  @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
-  private List<Challenge> challenges;
+  private Boolean memberPublic;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<MemberChallenge> memberChallenges;
+  public void updateRefreshToken(String updateRefreshToken) {
+    this.refreshToken = updateRefreshToken;
+  }
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<ChallengeLike> challengeLikes;
-
-  @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
-  private List<Friend> senders;
-
-  @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
-  private List<Friend> receivers;
-
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<MemberInterest> memberInterests;
-
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<DiaryLike> diaryLikes;
-
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<DiaryReport> diaryReports;
-
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<Diary> diaries;
+  public void completeProfile(
+      String nickname,
+      String profileImageUrl,
+      Job job,
+      LocalDate birth,
+      Gender gender,
+      Boolean isPublic) {
+    this.memberNickname = nickname;
+    this.memberProfileImageUrl = profileImageUrl;
+    this.memberJob = job;
+    this.memberBirth = birth;
+    this.memberGender = gender;
+    this.memberPublic = isPublic;
+    this.role = MemberRole.USER;
+  }
 }

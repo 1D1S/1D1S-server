@@ -1,7 +1,7 @@
 package com.odos.odos_server.security.jwt;
 
-import com.odos.odos_server.member.entity.Member;
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

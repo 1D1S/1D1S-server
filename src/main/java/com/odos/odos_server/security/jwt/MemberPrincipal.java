@@ -1,6 +1,6 @@
 package com.odos.odos_server.security.jwt;
 
-import com.odos.odos_server.member.enums.SignupRoute;
+import com.odos.odos_server.domain.common.Enum.SignupRoute;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;

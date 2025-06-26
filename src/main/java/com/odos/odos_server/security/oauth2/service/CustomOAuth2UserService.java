@@ -1,9 +1,9 @@
 package com.odos.odos_server.security.oauth2.service;
 
-import com.odos.odos_server.member.entity.Member;
-import com.odos.odos_server.member.enums.MemberRole;
-import com.odos.odos_server.member.enums.SignupRoute;
-import com.odos.odos_server.member.repository.MemberRepository;
+import com.odos.odos_server.domain.common.Enum.MemberRole;
+import com.odos.odos_server.domain.common.Enum.SignupRoute;
+import com.odos.odos_server.domain.member.entity.Member;
+import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.security.jwt.MemberPrincipal;
 import com.odos.odos_server.security.oauth2.info.OAuth2UserInfo;
 import com.odos.odos_server.security.oauth2.info.OAuth2UserInfoFactory;
