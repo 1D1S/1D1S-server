@@ -3,6 +3,7 @@ package com.odos.odos_server.domain.challenge.entity;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
+import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,4 +30,7 @@ public class MemberChallenge {
   @ManyToOne
   @JoinColumn(name = "challengeId")
   private Challenge challenge;
+
+  @OneToMany(mappedBy = "memberChallenge", cascade = CascadeType.ALL)
+  private List<ChallengeGoal> challengeGoals;
 }

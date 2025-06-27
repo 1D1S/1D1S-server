@@ -5,9 +5,10 @@ import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
+@Builder
 public class Challenge {
 
   @Id
@@ -25,11 +27,11 @@ public class Challenge {
 
   @Column private ChallengeCategory category;
 
-  @Column private LocalDateTime startDate;
+  @Column private LocalDate startDate;
 
-  @Column private LocalDateTime endDate;
+  @Column private LocalDate endDate;
 
-  @Column private Long participantsCnt;
+  @Column private int participantsCnt;
 
   @Column
   @Enumerated(EnumType.STRING)

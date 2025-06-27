@@ -1,32 +1,38 @@
 package com.odos.odos_server.domain.challenge.dto;
 
+import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.challenge.entity.Challenge;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 public record ChallengeInfoDto(
-    LocalDateTime startDate,
-    LocalDateTime endDate,
+    LocalDate startDate,
+    LocalDate endDate,
     int participants,
-    Long maxParticipants,
+    int maxParticipants,
     ChallengeCategory category,
     ChallengeType goalType,
     ChallengeStatus status) {
+
   public static ChallengeInfoDto from(Challenge entity) {
-    int participants =
-        (int)
-            entity.getMemberChallenges().stream()
-                .filter(
-                    mc ->
-                        mc.getMemberChallengeRole() == MemberChallengeRole.HOST
-                            || mc.getMemberChallengeRole() == MemberChallengeRole.APPLICANT)
-                .count();
+    int participants = 0;
+
+    if (entity.getMemberChallenges() != null) {
+      participants =
+          (int)
+              entity.getMemberChallenges().stream()
+                  .filter(
+                      mc ->
+                          mc.getMemberChallengeRole() == MemberChallengeRole.HOST
+                              || mc.getMemberChallengeRole() == MemberChallengeRole.APPLICANT)
+                  .count();
+    }
 
     ChallengeStatus status;
-    LocalDateTime now = LocalDateTime.now();
+    LocalDate now = LocalDate.now();
+
     if (now.isBefore(entity.getStartDate())) {
       status = ChallengeStatus.RECRUITING;
     } else if (now.isAfter(entity.getEndDate())) {

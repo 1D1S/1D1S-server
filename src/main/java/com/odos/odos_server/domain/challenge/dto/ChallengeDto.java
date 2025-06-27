@@ -4,6 +4,7 @@ import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.member.dto.MemberDto;
+import java.util.Collections;
 import java.util.List;
 
 public record ChallengeDto(
@@ -15,15 +16,19 @@ public record ChallengeDto(
     LikesDto like,
     List<ImgDto> img,
     ChallengeInfoDto challengeInfo) {
-  public static ChallengeDto from(Challenge entity) {
+  public static ChallengeDto from(Challenge challenge) {
     return new ChallengeDto(
-        entity.getId(),
-        MemberDto.from(entity.getHostMember()),
-        null,
-        entity.getTitle(),
-        entity.getDescription(),
-        LikesDto.from(entity.getLikes()),
-        entity.getImages().stream().map(ImgDto::from).toList(),
-        ChallengeInfoDto.from(entity));
+        challenge.getId(),
+        MemberDto.from(challenge.getHostMember()),
+        challenge.getMemberChallenges() != null
+            ? challenge.getMemberChallenges().stream().map(ApplicantsDto::from).toList()
+            : Collections.emptyList(),
+        challenge.getTitle(),
+        challenge.getDescription(),
+        LikesDto.from(challenge.getLikes()),
+        challenge.getImages() != null
+            ? challenge.getImages().stream().map(ImgDto::from).toList()
+            : Collections.emptyList(),
+        ChallengeInfoDto.from(challenge));
   }
 }

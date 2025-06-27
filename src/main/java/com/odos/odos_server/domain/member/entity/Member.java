@@ -1,12 +1,12 @@
 package com.odos.odos_server.domain.member.entity;
 
-import com.odos.odos_server.domain.common.Enum.Gender;
-import com.odos.odos_server.domain.common.Enum.Job;
-import com.odos.odos_server.domain.common.Enum.Role;
-import com.odos.odos_server.domain.common.Enum.SignupRoute;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
 import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
+import com.odos.odos_server.domain.common.Enum.Gender;
+import com.odos.odos_server.domain.common.Enum.Job;
+import com.odos.odos_server.domain.common.Enum.MemberRole;
+import com.odos.odos_server.domain.common.Enum.SignupRoute;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.entity.DiaryLike;
 import com.odos.odos_server.domain.diary.entity.DiaryReport;
@@ -52,7 +52,7 @@ public class Member {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Role role;
+  private MemberRole role;
 
   @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
   private List<Challenge> challenges;
