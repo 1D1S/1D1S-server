@@ -27,16 +27,24 @@ public class DiaryController {
 
   @MutationMapping
   public List<Diary> allDiaries() {
-    return diaryService.getAllDiary();
+    // return diaryService.getAllDiary();
+    return null;
   }
 
   @MutationMapping
   public Diary diaryById(@Argument Long diaryId) {
-    return diaryService.getDiaryById(diaryId);
+    // return diaryService.getDiaryById(diaryId);
+    return null;
   }
 
   @MutationMapping
   public List<Diary> isDiaryWrittenByMe(@Argument Long memberId) {
-    return diaryService.getMyDiaries(memberId);
+    // return diaryService.getMyDiaries(memberId);
+    return null;
+  }
+
+  @MutationMapping
+  public Boolean deleteDiary(@Argument Long diaryId) {
+    return null;
   }
 }

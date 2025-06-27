@@ -15,7 +15,7 @@ public class CreateDiaryInput {
   private String title; // 일지 제목
   private String content; // 일지 내용
   private Feeling feeling; // 작성 시 느낀 감정
-  //  private Boolean isPublic; // 공개 여부
+  private Boolean isPublic; // 공개 여부
   private List<Long> goalIds; // 달성한 챌린지 목표 ID 목록
   private DateInput achievedDate; // 일지를 작성한(달성한) 날짜
   private List<String> images; // 이미지 URL 목록

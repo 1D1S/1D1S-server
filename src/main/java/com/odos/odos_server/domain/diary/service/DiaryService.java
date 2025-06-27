@@ -7,6 +7,7 @@ import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.DateInput;
+import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.*;
 import com.odos.odos_server.domain.diary.repository.*;
 import com.odos.odos_server.domain.member.entity.Member;
@@ -119,23 +120,37 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<Diary> getAllDiary() {
-    return diaryRepository.findAll();
+  public List<DiaryResponseDTO> getAllDiary() {
+    // return diaryRepository.findAll();
+    return null;
   }
 
   @Transactional
-  public Diary getDiaryById(Long diaryId) {
-    return diaryRepository
+  public DiaryResponseDTO getDiaryById(Long diaryId) {
+    diaryRepository
         .findById(diaryId)
         .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+    return null;
   }
 
-  @Transactional(readOnly = true)
-  public List<Diary> getMyDiaries(Long memberId) {
+  @Transactional(readOnly = true) // query의 myDiaries
+  public List<DiaryResponseDTO> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
     System.out.println("총 개수: " + myDiaries.size());
     for (Diary d : myDiaries) {
       System.out.println(d.getTitle());
     }
+    return null;
   }
+
+  @Transactional
+  public List<DiaryResponseDTO> makeRandomDiaryList() {
+    return null;
+  }
+
+  @Transactional
+  public Integer createDiaryLike(Long diaryId, CreateDiaryInput input) {
+    return null;
+  }
+  ;
 }
