@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DiaryCreate {
+public class CreateDiaryInput {
 
   private Long challengeId; // 일지에 해당하는 챌린지 ID
   private String title; // 일지 제목
