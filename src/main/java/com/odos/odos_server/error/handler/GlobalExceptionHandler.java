@@ -1,4 +1,4 @@
-package com.odos.odos_server.global.error.handler;
+package com.odos.odos_server.error.handler;
 
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 

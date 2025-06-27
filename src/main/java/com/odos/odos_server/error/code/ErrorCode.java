@@ -1,4 +1,4 @@
-package com.odos.odos_server.global.error.code;
+package com.odos.odos_server.error.code;
 
 import lombok.Getter;
 

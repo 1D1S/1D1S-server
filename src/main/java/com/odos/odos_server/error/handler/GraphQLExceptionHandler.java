@@ -1,6 +1,6 @@
-package com.odos.odos_server.global.error.handler;
+package com.odos.odos_server.error.handler;
 
-import com.odos.odos_server.global.error.exception.CustomException;
+import com.odos.odos_server.error.exception.CustomException;
 import graphql.GraphQLError;
 import graphql.GraphqlErrorBuilder;
 import graphql.schema.DataFetchingEnvironment;

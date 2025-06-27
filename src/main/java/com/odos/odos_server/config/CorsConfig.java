@@ -1,4 +1,4 @@
-package com.odos.odos_server.global.config;
+package com.odos.odos_server.config;
 
 import org.springframework.context.annotation.Configuration;
 

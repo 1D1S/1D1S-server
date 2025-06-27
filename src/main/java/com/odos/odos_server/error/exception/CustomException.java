@@ -1,6 +1,6 @@
-package com.odos.odos_server.global.error.exception;
+package com.odos.odos_server.error.exception;
 
-import com.odos.odos_server.global.error.code.ErrorCode;
+import com.odos.odos_server.error.code.ErrorCode;
 import lombok.Getter;
 
 @Getter
