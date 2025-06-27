@@ -1,10 +1,9 @@
 package com.odos.odos_server.domain.member.entity;
 
-import com.odos.odos_server.Enum.*;
-import com.odos.odos_server.domain.Enum.Gender;
-import com.odos.odos_server.domain.Enum.Job;
-import com.odos.odos_server.domain.Enum.Role;
-import com.odos.odos_server.domain.Enum.SignupRoute;
+import com.odos.odos_server.domain.common.Enum.Gender;
+import com.odos.odos_server.domain.common.Enum.Job;
+import com.odos.odos_server.domain.common.Enum.Role;
+import com.odos.odos_server.domain.common.Enum.SignupRoute;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
 import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
