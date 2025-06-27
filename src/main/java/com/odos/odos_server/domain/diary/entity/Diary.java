@@ -1,7 +1,7 @@
 package com.odos.odos_server.domain.diary.entity;
 
-import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
+import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -58,4 +58,19 @@ public class Diary {
 
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<DiaryReport> diaryReports;
+
+  public void update(
+      String title,
+      String content,
+      Feeling feeling,
+      // Boolean isPublic,
+      LocalDateTime date,
+      Challenge challenge) {
+    this.title = title;
+    this.content = content;
+    this.feeling = feeling;
+    // this.isPublic = isPublic;
+    this.date = date;
+    this.challenge = challenge;
+  }
 }

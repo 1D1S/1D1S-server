@@ -38,6 +38,7 @@ public class DiaryService {
             .findById(input.getChallengeId())
             .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
 
+    // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
     DateInput dateInput = input.getAchievedDate();
     LocalDateTime diaryDate =
         LocalDateTime.of(dateInput.getYear(), dateInput.getMonth(), dateInput.getDay(), 0, 0);
@@ -80,16 +81,61 @@ public class DiaryService {
 
   @Transactional
   public Diary updateDiary(Long diaryId, CreateDiaryInput input) {
-    return null;
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+
+    Challenge challenge =
+        challengeRepository
+            .findById(input.getChallengeId())
+            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
+
+    DateInput dateInput = input.getAchievedDate();
+    LocalDateTime diaryDate =
+        LocalDateTime.of(dateInput.getYear(), dateInput.getMonth(), dateInput.getDay(), 0, 0);
+
+    diary.update(input.getTitle(), input.getContent(), input.getFeeling(), diaryDate, challenge);
+
+    diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음 그래서 넣기?
+    if (input.getImages() != null) {
+      for (String url : input.getImages()) {
+        diaryImageRepository.save(new DiaryImage(null, url, diary));
+      }
+    }
+
+    diary.getDiaryGoals().clear();
+    if (input.getGoalIds() != null) {
+      for (Long goalId : input.getGoalIds()) {
+        ChallengeGoal cg =
+            challengeGoalRepository
+                .findById(goalId)
+                .orElseThrow(() -> new IllegalArgumentException("Goal not found"));
+        diaryGoalRepository.save(new DiaryGoal(null, true, diary, cg, null));
+      }
+    }
+
+    return diaryRepository.save(diary);
   }
 
   @Transactional
   public List<Diary> getAllDiary() {
-    return null;
+    return diaryRepository.findAll();
   }
 
   @Transactional
-  public Diary getOneDiary() {
-    return null;
+  public Diary getDiaryById(Long diaryId) {
+    return diaryRepository
+        .findById(diaryId)
+        .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+  }
+
+  @Transactional(readOnly = true)
+  public List<Diary> getMyDiaries(Long memberId) {
+    List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
+    System.out.println("총 개수: " + myDiaries.size());
+    for (Diary d : myDiaries) {
+      System.out.println(d.getTitle());
+    }
   }
 }

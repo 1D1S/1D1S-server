@@ -1,5 +1,5 @@
 extend type Query {
-    allDiaries: [Diary!]!
+    allDiaries: [Diary!]!  # clear
     myDiaries: [Diary!]!
 
     randomDiaries(first: Int = 10): [Diary!]!
@@ -9,9 +9,9 @@ extend type Query {
         after: String
     ): DiaryConnection
 
-    diaryById(id: ID!): Diary!
+    diaryById(id: ID!): Diary!  # clear - dto 변환 안함
 
-    isDiaryWrittenByMe(id: ID!): Boolean!
+    isDiaryWrittenByMe(id: ID!): Boolean!  # 하는 중
     isDiaryLikedByMe(id: ID!): Boolean!
 
 }
