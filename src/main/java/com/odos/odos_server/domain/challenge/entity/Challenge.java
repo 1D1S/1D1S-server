@@ -1,7 +1,7 @@
 package com.odos.odos_server.domain.challenge.entity;
 
-import com.odos.odos_server.domain.Enum.ChallengeCategory;
-import com.odos.odos_server.domain.Enum.ChallengeType;
+import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
+import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;

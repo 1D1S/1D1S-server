@@ -1,6 +1,6 @@
 type Challenge {
     id: ID!
-    host: Member!
+    hostMember: Member!
     applicants: [Applicant!]!
     title: String!
     description: String!
