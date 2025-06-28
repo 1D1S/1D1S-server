@@ -40,18 +40,18 @@ public class Member {
   @Enumerated(EnumType.STRING)
   private MemberRole role;
 
-  private String memberNickname;
-  private String memberProfileImageUrl;
+  private String nickname;
+  private String profileImageUrl;
 
   @Enumerated(EnumType.STRING)
-  private Job memberJob;
+  private Job job;
 
-  private LocalDate memberBirth;
+  private LocalDate birth;
 
   @Enumerated(EnumType.STRING)
-  private Gender memberGender;
+  private Gender gender;
 
-  private Boolean memberPublic;
+  private Boolean isPublic;
 
   public void updateRefreshToken(String updateRefreshToken) {
     this.refreshToken = updateRefreshToken;
@@ -64,12 +64,12 @@ public class Member {
       LocalDate birth,
       Gender gender,
       Boolean isPublic) {
-    this.memberNickname = nickname;
-    this.memberProfileImageUrl = profileImageUrl;
-    this.memberJob = job;
-    this.memberBirth = birth;
-    this.memberGender = gender;
-    this.memberPublic = isPublic;
+    this.nickname = nickname;
+    this.profileImageUrl = profileImageUrl;
+    this.job = job;
+    this.birth = birth;
+    this.gender = gender;
+    this.isPublic = isPublic;
     this.role = MemberRole.USER;
   }
 
