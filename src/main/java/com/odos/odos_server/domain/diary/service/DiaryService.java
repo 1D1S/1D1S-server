@@ -13,6 +13,7 @@ import com.odos.odos_server.domain.diary.repository.*;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -56,6 +57,7 @@ public class DiaryService {
             false,
             null,
             null,
+            null, // 코드 에러없게 임의로 null 처리, 처음 create시 0으로 세팅해야함
             member,
             challenge,
             null);
@@ -98,7 +100,7 @@ public class DiaryService {
 
     diary.update(input.getTitle(), input.getContent(), input.getFeeling(), diaryDate, challenge);
 
-    diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음 그래서 넣기?
+    diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
     if (input.getImages() != null) {
       for (String url : input.getImages()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
@@ -121,8 +123,12 @@ public class DiaryService {
 
   @Transactional
   public List<DiaryResponseDTO> getAllDiary() {
-    // return diaryRepository.findAll();
-    return null;
+    List<Diary> diaries = diaryRepository.findAll();
+    List<DiaryResponseDTO> result = new ArrayList<>();
+    for (Diary d : diaries) {
+      result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+    }
+    return result;
   }
 
   @Transactional

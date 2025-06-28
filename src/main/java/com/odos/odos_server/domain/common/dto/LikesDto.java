@@ -11,7 +11,8 @@ public record LikesDto(List<MemberDto> members, int count) {
         likes.stream().map(cl -> MemberDto.from(cl.getMember())).toList(), likes.size());
   }
 
-  public static LikesDto from2(List<DiaryLike> diaryLikes) {
-    return null;
+  public static LikesDto fromDiary(List<DiaryLike> likes) {
+    return new LikesDto(
+        likes.stream().map(dl -> MemberDto.from(dl.getMember())).toList(), likes.size());
   }
 }

@@ -1,12 +1,14 @@
 package com.odos.odos_server.domain.diary.controller;
 
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
+import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.service.DiaryService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -26,9 +28,10 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public List<Diary> allDiaries() {
-    // return diaryService.getAllDiary();
-    return null;
+  public ResponseEntity<List<DiaryResponseDTO>> allDiaries() {
+
+    List<DiaryResponseDTO> results = diaryService.getAllDiary();
+    return ResponseEntity.ok(results);
   }
 
   @MutationMapping

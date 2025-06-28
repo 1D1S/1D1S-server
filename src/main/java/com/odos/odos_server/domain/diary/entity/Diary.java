@@ -48,6 +48,9 @@ public class Diary {
   @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
   private List<DiaryImage> diaryImages;
 
+  @OneToMany(mappedBy = "diary", cascade = CascadeType.ALL)
+  private List<DiaryLike> diaryLikes;
+
   @ManyToOne
   @JoinColumn(name = "memberId")
   private Member member;
