@@ -4,6 +4,7 @@ import com.odos.odos_server.domain.diary.entity.DiaryGoal;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Table(name = "ChallengeGoalRepository")
+@Builder
 public class ChallengeGoal {
 
   @Id

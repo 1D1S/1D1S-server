@@ -5,7 +5,8 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
   MEMBER_NOT_FOUND(404, "USER-001", "Member not found"),
-  CHALLENGE_NOT_FOUND(404,"CHALLENGE-001","Challenge not found");
+  CHALLENGE_NOT_FOUND(404,"CHALLENGE-001","Challenge not found"),
+  CHALLENGE_APPLICANT_NOT_FOUND(404,"CHALLENGE-002", "Challenge apllicant not found");
 
   private final int status;
   private final String code;

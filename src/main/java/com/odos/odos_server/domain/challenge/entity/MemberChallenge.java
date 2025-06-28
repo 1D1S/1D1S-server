@@ -5,6 +5,7 @@ import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import java.util.List;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -13,6 +14,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Table(name = "MemberChallenge")
+@Builder
 public class MemberChallenge {
 
   @Id
@@ -33,4 +35,8 @@ public class MemberChallenge {
 
   @OneToMany(mappedBy = "memberChallenge", cascade = CascadeType.ALL)
   private List<ChallengeGoal> challengeGoals;
+
+  public void setMemberChallengeRole(MemberChallengeRole memberChallengeRole) {
+    this.memberChallengeRole = memberChallengeRole;
+  }
 }
