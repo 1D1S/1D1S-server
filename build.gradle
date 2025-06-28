@@ -81,4 +81,5 @@ tasks.register("executableGitHooks", Exec) {
         file("${projectDir}/.git/hooks/pre-commit").exists()
     }
 }
+
 compileJava.dependsOn(executableGitHooks)
