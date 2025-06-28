@@ -1,10 +1,10 @@
 package com.odos.odos_server.domain.challenge.dto;
 
+import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.challenge.entity.Challenge;
 import java.time.LocalDateTime;
 
 public record ChallengeInfoDto(
