@@ -190,5 +190,12 @@ public class DiaryService {
     List<DiaryLike> likes = diaryLikeRepository.findAll();
     return LikesDto.fromDiary(likes).count();
   }
-  ;
+
+  @Transactional
+  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
+    DiaryLike diaryLike = diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+    diaryLikeRepository.delete(diaryLike);
+    List<DiaryLike> diaryLikes = diaryLikeRepository.findAll();
+    return LikesDto.fromDiary(diaryLikes).count();
+  }
 }

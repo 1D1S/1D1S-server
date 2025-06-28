@@ -66,4 +66,10 @@ public class DiaryController {
       return 0;
     }
   }
+
+  @MutationMapping
+  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
+    // memberId = CurrentUserContext.getCurrentMemberId();
+    return diaryService.cancelDiaryLike(diaryId, memberId);
+  }
 }
