@@ -48,9 +48,8 @@ public class ChallengeQueryResolver {
   }
 
   @QueryMapping
-  public ChallengeConnectionDto challengesList(@Argument ChallengeFilterInputDto filter,
-                                               @Argument int first,
-                                               @Argument String after){
+  public ChallengeConnectionDto challengesList(
+      @Argument ChallengeFilterInputDto filter, @Argument int first, @Argument String after) {
     return challengeQueryService.getChallengesWithFilter(filter, first, after);
   }
 }

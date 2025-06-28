@@ -16,7 +16,6 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -25,7 +24,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
-
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -88,18 +86,21 @@ public class ChallengeQueryService {
         .orElse(MemberChallengeRole.NONE);
   }
 
-  public ChallengeConnectionDto getChallengesWithFilter(ChallengeFilterInputDto filter, int first, String after) {
+  public ChallengeConnectionDto getChallengesWithFilter(
+      ChallengeFilterInputDto filter, int first, String after) {
     List<Challenge> all = challengeRepository.findAll();
 
     Long afterId = decodeCursor(after);
 
-    Stream<Challenge> stream = all.stream()
+    Stream<Challenge> stream =
+        all.stream()
             .filter(ch -> afterId == null || ch.getId() > afterId)
             .filter(ch -> filterByKeyword(ch, filter.keyword()))
             .filter(ch -> filterByStatus(ch, filter.status()))
             .filter(ch -> filterByDuration(ch, filter.durationRangeDto()));
 
-    List<ChallengeEdgeDto> edges = stream
+    List<ChallengeEdgeDto> edges =
+        stream
             .sorted(Comparator.comparing(Challenge::getId))
             .limit(first + 1) // hasNext 판단 위해 1개 더
             .map(ch -> new ChallengeEdgeDto(ChallengeDto.from(ch), encodeCursor(ch.getId())))
@@ -108,12 +109,11 @@ public class ChallengeQueryService {
     boolean hasNextPage = edges.size() > first;
     if (hasNextPage) edges = edges.subList(0, first);
 
-    String endCursor = edges.isEmpty() ? null : edges.get(edges.size() - 1).getCursor();
+    String endCursor = edges.isEmpty() ? null : edges.get(edges.size() - 1).cursor();
     PageInfoDto pageInfo = new PageInfoDto(endCursor, hasNextPage);
 
     return new ChallengeConnectionDto(edges, pageInfo);
   }
-
 
   private String encodeCursor(Long id) {
     return Base64.getEncoder().encodeToString(("challenge:" + id).getBytes());
@@ -128,6 +128,7 @@ public class ChallengeQueryService {
       return null;
     }
   }
+
   private ChallengeStatus calculateStatus(Challenge challenge) {
     LocalDate today = LocalDate.now();
     if (today.isBefore(challenge.getStartDate())) return ChallengeStatus.RECRUITING;
@@ -148,6 +149,4 @@ public class ChallengeQueryService {
     long days = ChronoUnit.DAYS.between(challenge.getStartDate(), challenge.getEndDate());
     return days >= range.minDays() && days <= range.maxDays();
   }
-
-
 }
