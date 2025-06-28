@@ -5,6 +5,7 @@ import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.ChallengeGoal;
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
+import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.DateInput;
 import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
@@ -13,6 +14,7 @@ import com.odos.odos_server.domain.diary.repository.*;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
+import com.odos.odos_server.error.exception.CustomException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class DiaryService {
   private final DiaryRepository diaryRepository;
+  private final DiaryLikeRepository diaryLikeRepository;
   private final DiaryImageRepository diaryImageRepository;
   private final DiaryGoalRepository diaryGoalRepository;
   private final MemberRepository memberRepository;
@@ -171,14 +174,21 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryResponseDTO> makeRandomDiaryList(Long first) {
+  public Integer createDiaryLike(Long diaryId, Long memberId) {
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+    Member member =
+        memberRepository
+            .findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    return null;
-  }
+    DiaryLike like = new DiaryLike(null, member, diary);
+    diaryLikeRepository.save(like);
 
-  @Transactional
-  public Integer createDiaryLike(Long diaryId, CreateDiaryInput input) {
-    return null;
+    List<DiaryLike> likes = diaryLikeRepository.findAll();
+    return LikesDto.fromDiary(likes).count();
   }
   ;
 }

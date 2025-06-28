@@ -4,6 +4,7 @@ import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.service.DiaryService;
+import com.odos.odos_server.error.exception.CustomException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -53,6 +54,16 @@ public class DiaryController {
       return true;
     } catch (IllegalArgumentException e) {
       return false;
+    }
+  }
+
+  @MutationMapping
+  public Integer addDiaryLike(Long diaryId, Long memberId) {
+    try {
+      // memberId = CurrentUserContext.getCurrentMemberId();
+      return diaryService.createDiaryLike(diaryId, memberId);
+    } catch (CustomException e) {
+      return 0;
     }
   }
 }
