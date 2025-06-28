@@ -2,6 +2,7 @@ package com.odos.odos_server.domain.diary.entity;
 
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.Feeling;
+import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
