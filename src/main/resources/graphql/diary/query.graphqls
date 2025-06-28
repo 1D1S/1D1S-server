@@ -12,7 +12,7 @@ extend type Query {
     diaryById(id: ID!): Diary!  # clear
 
     isDiaryWrittenByMe(id: ID!): Boolean!  # clear
-    isDiaryLikedByMe(id: ID!): Boolean!
+    isDiaryLikedByMe(id: ID!): Boolean! # clear
 
 }
 

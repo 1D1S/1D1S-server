@@ -210,4 +210,16 @@ public class DiaryService {
     }
     return false;
   }
+
+  @Transactional
+  public Boolean checkIfPressLikeByMe(Long diaryId, Long memberId) {
+    DiaryLike like =
+        diaryLikeRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
+    if ((like.getMember().getId()).equals(memberId)) {
+      return true;
+    }
+    return false;
+  }
 }

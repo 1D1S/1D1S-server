@@ -75,8 +75,15 @@ public class DiaryController {
 
   @MutationMapping
   public Boolean isDiaryWrittenByMe(@Argument Long diaryId) {
-    /* Long memberId = CurrentUserContext.getCurrentMemberId();
-    return diaryService.isMine(diaryId, memberId); */
-    return null;
+    /* Long memberId = CurrentUserContext.getCurrentMemberId(); */
+    Long memberId = 1L;
+    return diaryService.isMine(diaryId, memberId);
+  }
+
+  @MutationMapping
+  public Boolean isDiaryLikedByMe(Long diaryId) {
+    /* Long memberId = CurrentUserContext.getCurrentMemberId(); */
+    Long memberId = 1L;
+    return diaryService.checkIfPressLikeByMe(diaryId, memberId);
   }
 }
