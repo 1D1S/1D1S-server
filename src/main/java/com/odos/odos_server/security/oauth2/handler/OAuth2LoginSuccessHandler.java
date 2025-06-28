@@ -53,12 +53,12 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     }
 
     boolean isProfileComplete =
-        member.getMemberNickname() != null
+        member.getNickname() != null
             // && member.getMemberProfileImageUrl() != null
-            && member.getMemberJob() != null
-            && member.getMemberBirth() != null
-            && member.getMemberGender() != null
-            && member.getMemberPublic() != null;
+            && member.getJob() != null
+            && member.getBirth() != null
+            && member.getGender() != null
+            && member.getPublic() != null;
 
     OAuth2LoginResponse dto =
         OAuth2LoginResponse.builder()
