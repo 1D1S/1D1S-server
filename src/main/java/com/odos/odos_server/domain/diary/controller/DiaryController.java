@@ -35,9 +35,9 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Diary diaryById(@Argument Long diaryId) {
-    // return diaryService.getDiaryById(diaryId);
-    return null;
+  public ResponseEntity<DiaryResponseDTO> diaryById(@Argument Long diaryId) {
+    DiaryResponseDTO result = diaryService.getDiaryById(diaryId);
+    return ResponseEntity.ok(result);
   }
 
   @MutationMapping

@@ -133,10 +133,11 @@ public class DiaryService {
 
   @Transactional
   public DiaryResponseDTO getDiaryById(Long diaryId) {
-    diaryRepository
-        .findById(diaryId)
-        .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
-    return null;
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+    return DiaryResponseDTO.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional(readOnly = true) // query의 myDiaries
