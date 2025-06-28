@@ -6,8 +6,11 @@ spring:
   profiles:
     group:
       dev:
-        - local
-        - datasource
+      - local
+      - datasource
+      - auth
       local:
-        - local
-        - datasource
+       - local
+       - datasource
+       - auth
+
