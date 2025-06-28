@@ -58,7 +58,7 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Integer addDiaryLike(Long diaryId, Long memberId) {
+  public Integer addDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
     try {
       // memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.createDiaryLike(diaryId, memberId);
@@ -68,8 +68,15 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
+  public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
     // memberId = CurrentUserContext.getCurrentMemberId();
     return diaryService.cancelDiaryLike(diaryId, memberId);
+  }
+
+  @MutationMapping
+  public Boolean isDiaryWrittenByMe(@Argument Long diaryId) {
+    /* Long memberId = CurrentUserContext.getCurrentMemberId();
+    return diaryService.isMine(diaryId, memberId); */
+    return null;
   }
 }

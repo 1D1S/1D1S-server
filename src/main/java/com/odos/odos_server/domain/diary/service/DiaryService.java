@@ -198,4 +198,16 @@ public class DiaryService {
     List<DiaryLike> diaryLikes = diaryLikeRepository.findAll();
     return LikesDto.fromDiary(diaryLikes).count();
   }
+
+  @Transactional
+  public Boolean isMine(Long diaryId, Long memberId) {
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+    if ((diary.getMember().getId()).equals(memberId)) {
+      return true;
+    }
+    return false;
+  }
 }
