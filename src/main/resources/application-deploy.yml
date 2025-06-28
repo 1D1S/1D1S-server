@@ -34,3 +34,13 @@ spring:
 
 server:
   port: ${server_port}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      probes:
+        enabled: true
