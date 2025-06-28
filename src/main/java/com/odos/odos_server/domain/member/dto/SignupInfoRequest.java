@@ -8,10 +8,10 @@ import org.antlr.v4.runtime.misc.NotNull;
 
 @Getter
 public class SignupInfoRequest {
-  @NotNull private String memberNickname;
-  private String memberProfileImageUrl;
-  @NotNull private Job memberJob;
-  @NotNull private LocalDate memberBirth;
-  @NotNull private Gender memberGender;
-  @NotNull private Boolean memberPublic;
+  @NotNull private String nickname;
+  private String profileImageUrl;
+  @NotNull private Job job;
+  @NotNull private LocalDate birth;
+  @NotNull private Gender gender;
+  @NotNull private Boolean isPublic;
 }
