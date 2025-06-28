@@ -41,9 +41,9 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public List<Diary> isDiaryWrittenByMe(@Argument Long memberId) {
-    // return diaryService.getMyDiaries(memberId);
-    return null;
+  public ResponseEntity<List<DiaryResponseDTO>> myDiaries(Long memberId) {
+    List<DiaryResponseDTO> result = diaryService.getMyDiaries(memberId);
+    return ResponseEntity.ok(result);
   }
 
   @MutationMapping

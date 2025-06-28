@@ -143,11 +143,15 @@ public class DiaryService {
   @Transactional(readOnly = true) // query의 myDiaries
   public List<DiaryResponseDTO> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
+    List<DiaryResponseDTO> result = new ArrayList<>();
     System.out.println("총 개수: " + myDiaries.size());
     for (Diary d : myDiaries) {
       System.out.println(d.getTitle());
     }
-    return null;
+    for (Diary d : myDiaries) {
+      result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+    }
+    return result;
   }
 
   @Transactional

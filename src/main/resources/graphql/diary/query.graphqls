@@ -9,9 +9,9 @@ extend type Query {
         after: String
     ): DiaryConnection
 
-    diaryById(id: ID!): Diary!  # clear - dto 변환 안함
+    diaryById(id: ID!): Diary!  # clear
 
-    isDiaryWrittenByMe(id: ID!): Boolean!  # 하는 중
+    isDiaryWrittenByMe(id: ID!): Boolean!  # clear
     isDiaryLikedByMe(id: ID!): Boolean!
 
 }
