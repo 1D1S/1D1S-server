@@ -48,6 +48,11 @@ public class DiaryController {
 
   @MutationMapping
   public Boolean deleteDiary(@Argument Long diaryId) {
-    return null;
+    try {
+      diaryService.deleteDiary(diaryId);
+      return true;
+    } catch (IllegalArgumentException e) {
+      return false;
+    }
   }
 }

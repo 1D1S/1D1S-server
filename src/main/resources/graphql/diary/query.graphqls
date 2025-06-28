@@ -1,6 +1,6 @@
 extend type Query {
     allDiaries: [Diary!]!  # clear
-    myDiaries: [Diary!]!
+    myDiaries: [Diary!]! # clear
 
     randomDiaries(first: Int = 10): [Diary!]!
     diariesList(

@@ -1,6 +1,6 @@
 extend type Mutation {
-    createDiary(input: CreateDiaryInput!): Diary!
-    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary!
+    createDiary(input: CreateDiaryInput!): Diary! # 어느정돈 완성 - 다듬어야
+    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary! # 어느정돈 완성 - 다듬어야
     deleteDiary(DiaryId: ID!): Boolean
 
     addDiaryLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수

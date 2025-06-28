@@ -12,6 +12,7 @@ import com.odos.odos_server.domain.diary.entity.*;
 import com.odos.odos_server.domain.diary.repository.*;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
+import com.odos.odos_server.error.code.ErrorCode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -155,7 +156,23 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryResponseDTO> makeRandomDiaryList() {
+  public Boolean deleteDiary(Long diaryId) {
+    try {
+      Diary diary =
+          diaryRepository
+              .findById(diaryId)
+              .orElseThrow(
+                  () -> new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage()));
+      diaryRepository.delete(diary);
+    } catch (Exception e) {
+      throw new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage());
+    }
+    return false;
+  }
+
+  @Transactional
+  public List<DiaryResponseDTO> makeRandomDiaryList(Long first) {
+
     return null;
   }
 
