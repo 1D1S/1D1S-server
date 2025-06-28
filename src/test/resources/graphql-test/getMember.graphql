@@ -1,0 +1,10 @@
+#query getMember($id: ID!) {
+#    getMember(id: $id) {
+#        id
+#    }
+#}
+query getMember($nickname: String!) {
+    getMember(nickname: $nickname) {
+        nickname
+    }
+}
