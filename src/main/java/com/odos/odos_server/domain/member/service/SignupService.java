@@ -21,12 +21,12 @@ public class SignupService {
             .orElseThrow(() -> new RuntimeException("Member not found: " + memberId));
 
     member.completeProfile(
-        request.getMemberNickname(),
-        request.getMemberProfileImageUrl(),
-        request.getMemberJob(),
-        request.getMemberBirth(),
-        request.getMemberGender(),
-        request.getMemberPublic());
+        request.getNickname(),
+        request.getProfileImageUrl(),
+        request.getJob(),
+        request.getBirth(),
+        request.getGender(),
+        request.getPublic());
 
     memberRepository.save(member);
   }
