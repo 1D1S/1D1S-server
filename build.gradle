@@ -38,6 +38,7 @@ spotless {
         trimTrailingWhitespace()
         // 끝부분 New Line 처리
         endWithNewline()
+        lineEndings 'UNIX'
     }
 }
 
@@ -86,4 +87,5 @@ tasks.register("executableGitHooks", Exec) {
         file("${projectDir}/.git/hooks/pre-commit").exists()
     }
 }
+
 compileJava.dependsOn(executableGitHooks)

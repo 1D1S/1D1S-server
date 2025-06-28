@@ -1,9 +1,16 @@
 package com.odos.odos_server.domain.member.entity;
 
+import com.odos.odos_server.domain.challenge.entity.Challenge;
+import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
+import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
 import com.odos.odos_server.domain.common.Enum.Gender;
 import com.odos.odos_server.domain.common.Enum.Job;
 import com.odos.odos_server.domain.common.Enum.MemberRole;
 import com.odos.odos_server.domain.common.Enum.SignupRoute;
+import com.odos.odos_server.domain.diary.entity.Diary;
+import com.odos.odos_server.domain.diary.entity.DiaryLike;
+import com.odos.odos_server.domain.diary.entity.DiaryReport;
+import com.odos.odos_server.domain.friend.Friend;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import lombok.*;
@@ -65,4 +72,32 @@ public class Member {
     this.memberPublic = isPublic;
     this.role = MemberRole.USER;
   }
+
+  @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
+  private List<Challenge> challenges;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<MemberChallenge> memberChallenges;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<ChallengeLike> challengeLikes;
+
+  @OneToMany(mappedBy = "sender", cascade = CascadeType.ALL)
+  private List<Friend> senders;
+
+  @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
+  private List<Friend> receivers;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<MemberInterest> memberInterests;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<DiaryLike> diaryLikes;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<DiaryReport> diaryReports;
+
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  private List<Diary> diaries;
+
 }
