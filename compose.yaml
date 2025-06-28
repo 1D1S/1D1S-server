@@ -5,7 +5,8 @@ services:
     env_file:
       - ./env/server.env
       - ./env/db.env
-    platform: linux/arm64
+      - ./env/security.env
+    platform: linux/arm64ㅊ
     build:
       context: .
     ports:
