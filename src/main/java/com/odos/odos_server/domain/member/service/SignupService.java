@@ -26,7 +26,7 @@ public class SignupService {
         request.getJob(),
         request.getBirth(),
         request.getGender(),
-        request.getPublic());
+        request.getIsPublic());
 
     memberRepository.save(member);
   }
