@@ -17,7 +17,9 @@ import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -224,11 +226,35 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryResponseDTO> getRandomDiaries(Long first, Long memberId) {
+  public List<DiaryResponseDTO> getRandomDiaries(Integer first, Long memberId) {
     /*
-    비가입 회원에게는 리스트만 보이고, 상세접근은 못함, 하려고하면 로그인요구
+    비가입 회원에게는 리스트만 보이고(내용은 프론트가 골라서 넣어주는것?),
+    상세접근은 못함, 하려고하면 로그인요구
      */
+    Member member =
+        memberRepository
+            .findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    List<Diary> diaries = diaryRepository.findAll();
 
-    return null;
+    List<DiaryResponseDTO> result = new ArrayList<>();
+    if (diaries.size() <= first) {
+      for (Diary d : diaries) {
+        DiaryResponseDTO dr = DiaryResponseDTO.from(d, d.getDiaryLikes());
+        result.add(dr);
+      }
+    } else {
+      Set<Integer> selectDiaries = new HashSet<>();
+
+      while (result.size() < first) {
+        int randomIndex = (int) (Math.random() * diaries.size());
+        if (!selectDiaries.contains(randomIndex)) {
+          Diary d = diaries.get(randomIndex);
+          result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+          selectDiaries.add(randomIndex);
+        }
+      }
+    }
+    return result;
   }
 }

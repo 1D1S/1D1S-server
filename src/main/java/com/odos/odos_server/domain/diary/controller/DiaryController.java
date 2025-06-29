@@ -4,6 +4,7 @@ import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.service.DiaryService;
+import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.util.CurrentUserContext;
 import java.util.List;
@@ -89,6 +90,14 @@ public class DiaryController {
 
   @MutationMapping
   public ResponseEntity<List<DiaryResponseDTO>> randomDiaries(Integer first) {
-    return null;
+    try {
+      Long memberId = CurrentUserContext.getCurrentMemberId();
+      List<DiaryResponseDTO> result = diaryService.getRandomDiaries(first, memberId);
+      return ResponseEntity.ok(result);
+    } catch (CustomException e) {
+
+      return ResponseEntity.status(ErrorCode.MEMBER_NOT_FOUND.getStatus())
+          .body(null); // message를 담기 위해 나중에 수정
+    }
   }
 }
