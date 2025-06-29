@@ -5,6 +5,7 @@ import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.service.DiaryService;
 import com.odos.odos_server.error.exception.CustomException;
+import com.odos.odos_server.security.util.CurrentUserContext;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
@@ -82,8 +83,7 @@ public class DiaryController {
 
   @MutationMapping
   public Boolean isDiaryLikedByMe(Long diaryId) {
-    /* Long memberId = CurrentUserContext.getCurrentMemberId(); */
-    Long memberId = 1L;
+    Long memberId = CurrentUserContext.getCurrentMemberId();
     return diaryService.checkIfPressLikeByMe(diaryId, memberId);
   }
 
