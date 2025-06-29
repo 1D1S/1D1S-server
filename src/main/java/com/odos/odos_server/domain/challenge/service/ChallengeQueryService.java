@@ -16,6 +16,7 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
+import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -30,7 +31,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class ChallengeQueryService {
-  private final Long currentMemberId = 1L;
 
   private final ChallengeRepository challengeRepository;
   private final MemberRepository memberRepository;
@@ -43,6 +43,7 @@ public class ChallengeQueryService {
   }
 
   public List<ChallengeDto> getMyChallenges() {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Member member =
         memberRepository
             .findById(currentMemberId)
@@ -68,10 +69,12 @@ public class ChallengeQueryService {
   }
 
   public boolean getIsChallengeLikedByMe(Long challengeId) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     return challengeLikeRepository.existsByChallengeIdAndMemberId(challengeId, currentMemberId);
   }
 
   public MemberChallengeRole getMyChallengeApplicantStatus(Long challengeId) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     return memberChallengeRepository
         .findByMemberIdAndChallengeId(currentMemberId, challengeId)
         .map(

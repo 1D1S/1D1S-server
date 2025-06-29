@@ -8,7 +8,9 @@ public enum ErrorCode {
   CHALLENGE_NOT_FOUND(404, "CHALLENGE-001", "Challenge not found"),
   CHALLENGE_APPLICANT_NOT_FOUND(404, "CHALLENGE-002", "Challenge apllicant not found"),
   UNAUTHORIZED(401, "AUTH-001", "Unauthorized access"),
-  INVALID_AUTH_PRINCIPAL(400, "AUTH-002", "Invalid authentication principal");
+  INVALID_AUTH_PRINCIPAL(400, "AUTH-002", "Invalid authentication principal"),
+  ALREADY_APPLIED(400, "CHALLENGE-003", "Already applied to the challenge"),
+  NO_PERMISSION(403, "AUTH-003", "No permission to perform this action");
 
   private final int status;
   private final String code;

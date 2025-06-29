@@ -15,6 +15,7 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
+import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -33,10 +34,10 @@ public class ChallengeMutationService {
   private final ChallengeGoalRepository challengeGoalRepository;
   private final ChallengeLikeRepository challengeLikeRepository;
 
-  private final Long currentMemberId = 1L;
   private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   public ChallengeDto createChallenge(CreateChallengeInputDto input) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Member member =
         memberRepository
             .findById(currentMemberId)
@@ -55,10 +56,23 @@ public class ChallengeMutationService {
             .build();
 
     challengeRepository.save(challenge);
+    MemberChallenge memberChallenge = MemberChallenge.builder()
+            .member(member)
+            .challenge(challenge)
+            .memberChallengeRole(MemberChallengeRole.HOST).build();
+    memberChallengeRepository.save(memberChallenge);
+    for (String g:input.goals()
+         ) {
+      ChallengeGoal challengeGoal = ChallengeGoal.builder()
+              .content(g)
+              .memberChallenge(memberChallenge).build();
+      challengeGoalRepository.save(challengeGoal);
+    }
     return ChallengeDto.from(challenge);
   }
 
   public ChallengeDto addApplicants(Long challengeId, List<String> goals) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Challenge challenge =
         challengeRepository
             .findById(challengeId)
@@ -67,6 +81,10 @@ public class ChallengeMutationService {
         memberRepository
             .findById(currentMemberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    if (memberChallengeRepository.existsByMemberAndChallenge(member, challenge)) {
+      throw new CustomException(ErrorCode.ALREADY_APPLIED);
+    }
 
     MemberChallenge memberChallenge =
         MemberChallenge.builder()
@@ -86,6 +104,11 @@ public class ChallengeMutationService {
   }
 
   public ChallengeDto acceptApplicants(Long challengeId, List<Long> applicantIds) {
+    Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
+    if (!challenge.getHostMember().getId().equals(currentMemberId)) {
+      throw new CustomException(ErrorCode.NO_PERMISSION);
+    }
     for (Long memberId : applicantIds) {
       MemberChallenge mc =
           memberChallengeRepository
@@ -93,7 +116,7 @@ public class ChallengeMutationService {
               .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
       mc.setMemberChallengeRole(MemberChallengeRole.APPLICANT);
     }
-    return ChallengeDto.from(challengeRepository.findById(challengeId).orElseThrow());
+    return ChallengeDto.from(challenge);
   }
 
   public ChallengeDto rejectApplicants(Long challengeId, List<Long> applicantIds) {
@@ -111,6 +134,7 @@ public class ChallengeMutationService {
   }
 
   public int addChallengeLike(Long challengeId) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Challenge challenge =
         challengeRepository
             .findById(challengeId)
@@ -126,6 +150,7 @@ public class ChallengeMutationService {
   }
 
   public int cancelChallengeLike(Long challengeId) {
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     ChallengeLike like =
         challengeLikeRepository.findByChallengeIdAndMemberId(challengeId, currentMemberId);
     if (like != null) {
