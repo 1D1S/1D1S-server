@@ -36,7 +36,7 @@ env:
   ECR_REPOSITORY: 1d1s-repository                 # set this to your Amazon ECR repository name
   ECS_SERVICE: 1d1s-api-service-prod                 # set this to your Amazon ECS service name
   ECS_CLUSTER: 1d1s-server                 # set this to your Amazon ECS cluster name
-  ECS_TASK_DEFINITION: .aws/1d1s-api-revision8.json # set this to the path to your Amazon ECS task definition
+  ECS_TASK_DEFINITION: .aws/1d1s-api-prod-revision4.json # set this to the path to your Amazon ECS task definition
   CONTAINER_NAME: server          # set this to the name of the container in the
 
 permissions:

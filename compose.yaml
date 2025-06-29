@@ -3,7 +3,6 @@ services:
     environment:
       - SPRING_PROFILES_ACTIVE=dev
     env_file:
-      - ./env/server.env
       - ./env/db.env
     platform: linux/arm64
     build:
