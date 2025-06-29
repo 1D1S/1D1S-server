@@ -13,6 +13,7 @@ import com.odos.odos_server.domain.diary.entity.DiaryReport;
 import com.odos.odos_server.domain.friend.Friend;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 import lombok.*;
 
 @Entity
@@ -99,5 +100,4 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Diary> diaries;
-
 }

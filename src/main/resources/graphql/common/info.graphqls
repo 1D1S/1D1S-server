@@ -32,8 +32,10 @@ type DiaryInfo {
 }
 
 type ChallengeInfo{
-    startDate: Date!
-    endDate: Date!
+    """ "yyyy-mm-dd" 형식"""
+    startDate: String!
+    """ "yyyy-mm-dd" 형식"""
+    endDate: String!
     participants: Int!
     maxParticipants: Int!
     category: Category!

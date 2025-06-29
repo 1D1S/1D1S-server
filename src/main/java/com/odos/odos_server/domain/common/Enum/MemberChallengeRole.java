@@ -4,5 +4,6 @@ public enum MemberChallengeRole {
   HOST,
   APPLICANT,
   REQUESTED,
+  REJECTED,
   NONE
 }
