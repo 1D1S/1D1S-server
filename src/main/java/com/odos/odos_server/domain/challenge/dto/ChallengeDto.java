@@ -1,6 +1,7 @@
 package com.odos.odos_server.domain.challenge.dto;
 
 import com.odos.odos_server.domain.challenge.entity.Challenge;
+import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.member.dto.MemberDto;
@@ -21,7 +22,13 @@ public record ChallengeDto(
         challenge.getId(),
         MemberDto.from(challenge.getHostMember()),
         challenge.getMemberChallenges() != null
-            ? challenge.getMemberChallenges().stream().map(ApplicantsDto::from).toList()
+            ? challenge.getMemberChallenges().stream()
+                .filter(
+                    mc ->
+                        mc.getMemberChallengeRole() == MemberChallengeRole.APPLICANT
+                            || mc.getMemberChallengeRole() == MemberChallengeRole.HOST)
+                .map(ApplicantsDto::from)
+                .toList()
             : Collections.emptyList(),
         challenge.getTitle(),
         challenge.getDescription(),

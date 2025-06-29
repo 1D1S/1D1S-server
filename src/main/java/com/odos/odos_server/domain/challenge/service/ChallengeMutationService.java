@@ -10,6 +10,7 @@ import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeLikeRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.challenge.repository.MemberChallengeRepository;
+import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
@@ -17,7 +18,7 @@ import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,8 +35,6 @@ public class ChallengeMutationService {
   private final ChallengeGoalRepository challengeGoalRepository;
   private final ChallengeLikeRepository challengeLikeRepository;
 
-  private final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
   public ChallengeDto createChallenge(CreateChallengeInputDto input) {
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Member member =
@@ -43,12 +42,25 @@ public class ChallengeMutationService {
             .findById(currentMemberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
+    LocalDate startDate;
+    try {
+      startDate = LocalDate.parse(input.startDate());
+    } catch (DateTimeParseException e) {
+      throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
+    }
+
+    LocalDate endDate;
+    try {
+      endDate = LocalDate.parse(input.endDate());
+    } catch (DateTimeParseException e) {
+      throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
+    }
     Challenge challenge =
         Challenge.builder()
             .title(input.title())
             .category(input.category())
-            .startDate(LocalDate.parse(input.startDate(), formatter))
-            .endDate(LocalDate.parse(input.endDate(), formatter))
+            .startDate(startDate)
+            .endDate(endDate)
             .participantsCnt(input.participantCount())
             .type(input.goalType())
             .description(input.description())
@@ -85,7 +97,6 @@ public class ChallengeMutationService {
     if (memberChallengeRepository.existsByMemberAndChallenge(member, challenge)) {
       throw new CustomException(ErrorCode.ALREADY_APPLIED);
     }
-
     MemberChallenge memberChallenge =
         MemberChallenge.builder()
             .challenge(challenge)
@@ -94,10 +105,27 @@ public class ChallengeMutationService {
             .build();
     memberChallengeRepository.save(memberChallenge);
 
-    for (String g : goals) {
-      ChallengeGoal goal =
-          ChallengeGoal.builder().content(g).memberChallenge(memberChallenge).build();
-      challengeGoalRepository.save(goal);
+    if (challenge.getType().equals(ChallengeType.FLEXIBLE)) {
+      for (String g : goals) {
+        ChallengeGoal goal =
+            ChallengeGoal.builder().content(g).memberChallenge(memberChallenge).build();
+        challengeGoalRepository.save(goal);
+      }
+    } else {
+      MemberChallenge hostMemberChallenge =
+          memberChallengeRepository
+              .findByMemberIdAndChallengeId(challenge.getHostMember().getId(), challengeId)
+              .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+      List<ChallengeGoal> challengeGoals =
+          challengeGoalRepository.findByMemberChallenge(hostMemberChallenge);
+      for (ChallengeGoal cg : challengeGoals) {
+
+        challengeGoalRepository.save(
+            ChallengeGoal.builder()
+                .memberChallenge(memberChallenge)
+                .content(cg.getContent())
+                .build());
+      }
     }
 
     return ChallengeDto.from(challenge);
@@ -126,6 +154,14 @@ public class ChallengeMutationService {
   }
 
   public ChallengeDto rejectApplicants(Long challengeId, List<Long> applicantIds) {
+    Challenge challenge =
+        challengeRepository
+            .findById(challengeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+    Long currentMemberId = CurrentUserContext.getCurrentMemberId();
+    if (!challenge.getHostMember().getId().equals(currentMemberId)) {
+      throw new CustomException(ErrorCode.NO_PERMISSION);
+    }
     for (Long memberId : applicantIds) {
       MemberChallenge mc =
           memberChallengeRepository
@@ -161,10 +197,9 @@ public class ChallengeMutationService {
   public int cancelChallengeLike(Long challengeId) {
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     ChallengeLike like =
-        challengeLikeRepository.findByChallengeIdAndMemberId(challengeId, currentMemberId);
-    if (like != null) {
-      challengeLikeRepository.delete(like);
-    }
+        challengeLikeRepository
+            .findByChallengeIdAndMemberId(challengeId, currentMemberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_LIKE_NOT_FOUND));
     return challengeLikeRepository.findByChallengeId(challengeId).size();
   }
 }

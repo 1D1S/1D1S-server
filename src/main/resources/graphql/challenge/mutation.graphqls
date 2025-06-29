@@ -15,7 +15,7 @@ input CreateChallengeInput {
     title: String!
     description: String!
     startDate: String!
-    endDate: String!
+    endDate: String
     participantCount: Int!
     goalType: ChallengeType!         # FIXED or FLEXIBLE
     goals: [String!]                     # FIXED일 경우 사용
