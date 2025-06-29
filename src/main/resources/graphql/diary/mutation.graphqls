@@ -6,7 +6,7 @@ extend type Mutation {
     addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear
     cancelDiaryLike(diaryId: ID!, memberId: ID!): Int! # clear
 
-    reportDiary(input: CreateDiaryReportInput!): Boolean!
+    reportDiary(input: CreateDiaryReportInput!): Boolean! # clear
 }
 
 input CreateDiaryInput {

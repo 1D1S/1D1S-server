@@ -8,6 +8,7 @@ import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.DateInput;
+import com.odos.odos_server.domain.diary.dto.DiaryReportDTO;
 import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.*;
 import com.odos.odos_server.domain.diary.repository.*;
@@ -15,6 +16,7 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
+import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -30,6 +32,7 @@ public class DiaryService {
   private final DiaryRepository diaryRepository;
   private final DiaryLikeRepository diaryLikeRepository;
   private final DiaryImageRepository diaryImageRepository;
+  private final DiaryReportRepository diaryReportRepository;
   private final DiaryGoalRepository diaryGoalRepository;
   private final MemberRepository memberRepository;
   private final ChallengeRepository challengeRepository;
@@ -256,5 +259,22 @@ public class DiaryService {
       }
     }
     return result;
+  }
+
+  @Transactional
+  public Boolean makeDiaryReport(DiaryReportDTO input) {
+    Long memberId = CurrentUserContext.getCurrentMemberId();
+    Member member =
+        memberRepository
+            .findById(memberId)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    Diary diary =
+        diaryRepository
+            .findById(input.getDiaryId())
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+    DiaryReport report =
+        new DiaryReport(null, input.getReportType(), input.getContent(), member, diary);
+    diaryReportRepository.save(report);
+    return true;
   }
 }

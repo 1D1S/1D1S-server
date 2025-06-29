@@ -2,8 +2,8 @@ extend type Query {
     allDiaries: [Diary!]!  # clear
     myDiaries: [Diary!]! # clear
 
-    randomDiaries(first: Int = 10): [Diary!]!
-    diariesList(
+    randomDiaries(first: Int = 10): [Diary!]! # clear
+    diariesList(  # 2순위
         filter: DiaryFilterInput,
         first: Int = 10,
         after: String

@@ -1,6 +1,7 @@
 package com.odos.odos_server.domain.diary.controller;
 
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
+import com.odos.odos_server.domain.diary.dto.DiaryReportDTO;
 import com.odos.odos_server.domain.diary.dto.DiaryResponseDTO;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.service.DiaryService;
@@ -98,6 +99,17 @@ public class DiaryController {
 
       return ResponseEntity.status(ErrorCode.MEMBER_NOT_FOUND.getStatus())
           .body(null); // message를 담기 위해 나중에 수정
+    }
+  }
+
+  // reportDiary(input: CreateDiaryReportInput!): Boolean!
+  @MutationMapping
+  public ResponseEntity<Boolean> reportDiary(@Argument DiaryReportDTO input) {
+    try {
+      Boolean check = diaryService.makeDiaryReport(input);
+      return ResponseEntity.ok(check);
+    } catch (CustomException e) {
+      return ResponseEntity.status(ErrorCode.DIARYREPORT_NOT_FOUND.getStatus()).body(false);
     }
   }
 }

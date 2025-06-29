@@ -7,6 +7,7 @@ public enum ErrorCode {
   MEMBER_NOT_FOUND(404, "USER-001", "Member not found"),
   DIARY_NOT_FOUND(404, "DIARY-001", "Diary not found"),
   DIARYLIKE_NOT_FOUND(404, "DIARY-002", "DiaryLike not found"),
+  DIARYREPORT_NOT_FOUND(404, "DIARY-003", "DiaryReport not found"),
   UNAUTHORIZED(401, "AUTH-001", "Unauthorized access"),
   INVALID_AUTH_PRINCIPAL(400, "AUTH-002", "Invalid authentication principal");
 
