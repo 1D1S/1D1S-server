@@ -222,4 +222,13 @@ public class DiaryService {
     }
     return false;
   }
+
+  @Transactional
+  public List<DiaryResponseDTO> getRandomDiaries(Long first, Long memberId) {
+    /*
+    비가입 회원에게는 리스트만 보이고, 상세접근은 못함, 하려고하면 로그인요구
+     */
+
+    return null;
+  }
 }

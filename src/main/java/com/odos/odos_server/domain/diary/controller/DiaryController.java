@@ -86,4 +86,9 @@ public class DiaryController {
     Long memberId = 1L;
     return diaryService.checkIfPressLikeByMe(diaryId, memberId);
   }
+
+  @MutationMapping
+  public ResponseEntity<List<DiaryResponseDTO>> randomDiaries(Integer first) {
+    return null;
+  }
 }
