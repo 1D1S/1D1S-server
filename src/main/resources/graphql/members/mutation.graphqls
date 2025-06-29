@@ -1,27 +1,15 @@
 extend type Mutation {
-    createMember(input: CreateMemberInput!): Member!
     updateMemberProfile(input: UpdateMemberProfileInput): Member!
     deleteMember(memberId: ID!): Boolean!
     deleteMemberMe: Boolean!
 }
 
-input CreateMemberInput{
-    email: String!
-    signupSource: signupRoute!
-    nickname: String!
-    profileImageUrl: String
-    job: String!
-    category: [Category!]!
-    birthday: DateInput!
-    gender: String!
-    public: Boolean
-}
 input UpdateMemberProfileInput{
     nickname: String
     profileImageUrl: String
     job: String
     category: [Category]
-    birthday: DateInput
+    birthday: String
     gender: String
     public: Boolean
 }
