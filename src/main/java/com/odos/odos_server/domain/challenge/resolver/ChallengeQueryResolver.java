@@ -1,8 +1,6 @@
 package com.odos.odos_server.domain.challenge.resolver;
 
-import com.odos.odos_server.domain.challenge.dto.ChallengeConnectionDto;
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
-import com.odos.odos_server.domain.challenge.dto.ChallengeFilterInputDto;
 import com.odos.odos_server.domain.challenge.service.ChallengeQueryService;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import java.util.List;
@@ -47,9 +45,12 @@ public class ChallengeQueryResolver {
     return challengeQueryService.getMyChallengeApplicantStatus(id);
   }
 
+  /*
   @QueryMapping
   public ChallengeConnectionDto challengesList(
       @Argument ChallengeFilterInputDto filter, @Argument int first, @Argument String after) {
     return challengeQueryService.getChallengesWithFilter(filter, first, after);
   }
+
+   */
 }

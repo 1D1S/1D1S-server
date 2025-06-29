@@ -56,16 +56,16 @@ public class ChallengeMutationService {
             .build();
 
     challengeRepository.save(challenge);
-    MemberChallenge memberChallenge = MemberChallenge.builder()
+    MemberChallenge memberChallenge =
+        MemberChallenge.builder()
             .member(member)
             .challenge(challenge)
-            .memberChallengeRole(MemberChallengeRole.HOST).build();
+            .memberChallengeRole(MemberChallengeRole.HOST)
+            .build();
     memberChallengeRepository.save(memberChallenge);
-    for (String g:input.goals()
-         ) {
-      ChallengeGoal challengeGoal = ChallengeGoal.builder()
-              .content(g)
-              .memberChallenge(memberChallenge).build();
+    for (String g : input.goals()) {
+      ChallengeGoal challengeGoal =
+          ChallengeGoal.builder().content(g).memberChallenge(memberChallenge).build();
       challengeGoalRepository.save(challengeGoal);
     }
     return ChallengeDto.from(challenge);
@@ -104,7 +104,10 @@ public class ChallengeMutationService {
   }
 
   public ChallengeDto acceptApplicants(Long challengeId, List<Long> applicantIds) {
-    Challenge challenge = challengeRepository.findById(challengeId).orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+    Challenge challenge =
+        challengeRepository
+            .findById(challengeId)
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     if (!challenge.getHostMember().getId().equals(currentMemberId)) {
       throw new CustomException(ErrorCode.NO_PERMISSION);
@@ -114,6 +117,9 @@ public class ChallengeMutationService {
           memberChallengeRepository
               .findByMemberIdAndChallengeId(memberId, challengeId)
               .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+      if (mc.getMemberChallengeRole() != MemberChallengeRole.REQUESTED) {
+        throw new CustomException(ErrorCode.INVALID_REQUEST);
+      }
       mc.setMemberChallengeRole(MemberChallengeRole.APPLICANT);
     }
     return ChallengeDto.from(challenge);
@@ -125,6 +131,9 @@ public class ChallengeMutationService {
           memberChallengeRepository
               .findByMemberIdAndChallengeId(memberId, challengeId)
               .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_APPLICANT_NOT_FOUND));
+      if (mc.getMemberChallengeRole() != MemberChallengeRole.REQUESTED) {
+        throw new CustomException(ErrorCode.INVALID_REQUEST);
+      }
       mc.setMemberChallengeRole(MemberChallengeRole.REJECTED);
     }
     return ChallengeDto.from(

@@ -1,9 +1,6 @@
 package com.odos.odos_server.domain.challenge.service;
 
-import com.odos.odos_server.domain.challenge.dto.ChallengeConnectionDto;
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
-import com.odos.odos_server.domain.challenge.dto.ChallengeEdgeDto;
-import com.odos.odos_server.domain.challenge.dto.ChallengeFilterInputDto;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.repository.ChallengeLikeRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
@@ -11,7 +8,6 @@ import com.odos.odos_server.domain.challenge.repository.MemberChallengeRepositor
 import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import com.odos.odos_server.domain.common.dto.DurationRangeDto;
-import com.odos.odos_server.domain.common.dto.PageInfoDto;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
@@ -20,11 +16,8 @@ import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -89,6 +82,7 @@ public class ChallengeQueryService {
         .orElse(MemberChallengeRole.NONE);
   }
 
+  /*
   public ChallengeConnectionDto getChallengesWithFilter(
       ChallengeFilterInputDto filter, int first, String after) {
     List<Challenge> all = challengeRepository.findAll();
@@ -131,6 +125,8 @@ public class ChallengeQueryService {
       return null;
     }
   }
+
+   */
 
   private ChallengeStatus calculateStatus(Challenge challenge) {
     LocalDate today = LocalDate.now();
