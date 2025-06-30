@@ -27,8 +27,8 @@ type DiaryInfo {
     createdAt: Date!
     date: Date!
     feeling: Feeling!
-    achievement: [DiaryGoal!]!
-    AchievementRate: Int!
+    achievement: [DiaryGoal!]#!
+    AchievementRate: Int#!
 }
 
 type ChallengeInfo{

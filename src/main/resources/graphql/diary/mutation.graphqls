@@ -10,13 +10,14 @@ extend type Mutation {
 }
 
 input CreateDiaryInput {
-    challengeId: ID!
+   # challengeId: ID#!
     title: String!
     content: String!
     feeling: Feeling!
-    public: Boolean
-    achievedGoalIds: [ID!]!
-    achievedDate: DateInput!
+    isPublic: Boolean
+    #achievedGoalIds: [ID!]#!
+    achievedDate: DateInput
+    images : [String!]
 }
 
 input CreateDiaryReportInput{

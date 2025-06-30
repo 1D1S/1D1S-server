@@ -35,7 +35,7 @@ public class Diary {
   @Enumerated(EnumType.STRING)
   private Feeling feeling;
 
-  @Column private Boolean isPublic;
+  @Column private Boolean isPublic = true;
 
   @Column(columnDefinition = "TEXT")
   private String content;
@@ -63,17 +63,13 @@ public class Diary {
   private List<DiaryReport> diaryReports;
 
   public void update(
-      String title,
-      String content,
-      Feeling feeling,
-      // Boolean isPublic,
-      LocalDateTime date,
-      Challenge challenge) {
+      String title, String content, Feeling feeling, Boolean isPublic, LocalDateTime date) {
+    // Challenge challenge) {
     this.title = title;
     this.content = content;
     this.feeling = feeling;
-    // this.isPublic = isPublic;
+    this.isPublic = isPublic;
     this.date = date;
-    this.challenge = challenge;
+    // this.challenge = challenge;
   }
 }

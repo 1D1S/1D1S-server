@@ -1,12 +1,12 @@
 type Diary {
     id: ID!
-    challenge: Challenge!
-    author: Member!
+    challenge: Challenge#!
+    author: Member#!
     title: String!
     content: String!
-    img: [Img!]! #사진 여러개 받을 수 있으면 [Img]
-    like: Likes!
-    public: DiaryPublic! # 공개 여부
+    img: [Img!]#! #사진 여러개 받을 수 있으면 [Img]
+    like: Likes#!
+    isPublic: DiaryPublic! # 공개 여부
 
     diaryInfo: DiaryInfo!
 }

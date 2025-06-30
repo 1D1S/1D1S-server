@@ -1,5 +1,6 @@
 extend type Query {
-    allDiaries: [Diary!]!  # clear
+    #allDiaries: [Diary!]!  # clear
+    allDiaries(first: Int = 10, after: String): DiaryConnection!
     myDiaries: [Diary!]! # clear
 
     randomDiaries(first: Int = 10): [Diary!]! # clear
@@ -24,6 +25,7 @@ input DiaryFilterInput{
 type DiaryConnection {
     edges: [DiaryEdge]
     pageInfo: PageInfo!
+    totalCount: Int!
 }
 
 type DiaryEdge {
