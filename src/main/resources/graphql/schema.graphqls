@@ -17,3 +17,5 @@ input DateInput {
     month: Int!
     day: Int!
 }
+
+scalar Upload
