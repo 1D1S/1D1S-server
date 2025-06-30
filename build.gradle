@@ -69,6 +69,12 @@ dependencies {
     testImplementation 'org.springframework.graphql:spring-graphql-test'
     testImplementation 'org.springframework.security:spring-security-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    //S3
+    //implementation platform('software.amazon.awssdk:bom:2.20.172')
+    implementation("software.amazon.awssdk:s3:2.20.100")
+    implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:15.0.0'
+    implementation 'com.graphql-java-kickstart:graphql-multipart-request:15.0.0'
 }
 
 tasks.named('test') {
