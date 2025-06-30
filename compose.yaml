@@ -6,6 +6,7 @@ services:
       - ./env/server.env
       - ./env/db.env
       - ./env/security.env
+      - ./env/s3.env
     platform: linux/arm64
     build:
       context: .

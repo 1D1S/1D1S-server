@@ -72,7 +72,7 @@ dependencies {
 
     //S3
     //implementation platform('software.amazon.awssdk:bom:2.20.172')
-    implementation("software.amazon.awssdk:s3:2.20.100")
+    implementation "software.amazon.awssdk:s3:2.20.100"
 }
 
 tasks.named('test') {

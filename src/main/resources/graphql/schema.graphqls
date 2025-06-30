@@ -19,3 +19,12 @@ input DateInput {
 }
 
 scalar Upload
+
+type Mutation {
+    generateUploadUrl(fileName: String!): String!
+}
+type Query {
+    getImageUrl(fileName: String!): String!
+}
+
+
