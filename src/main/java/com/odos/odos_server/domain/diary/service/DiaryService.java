@@ -3,7 +3,6 @@ package com.odos.odos_server.domain.diary.service;
 
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
-import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
 import com.odos.odos_server.domain.diary.dto.*;
 import com.odos.odos_server.domain.diary.entity.*;
@@ -213,17 +212,13 @@ public class DiaryService {
 
   @Transactional
   public Boolean deleteDiary(Long diaryId) {
-    try {
-      Diary diary =
-          diaryRepository
-              .findById(diaryId)
-              .orElseThrow(
-                  () -> new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage()));
-      diaryRepository.delete(diary);
-    } catch (Exception e) {
-      throw new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage());
-    }
-    return false;
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(
+                () -> new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage()));
+    diaryRepository.delete(diary);
+    return true;
   }
 
   @Transactional
@@ -237,19 +232,47 @@ public class DiaryService {
             .findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
-    DiaryLike like = new DiaryLike(null, member, diary);
-    diaryLikeRepository.save(like);
-
-    List<DiaryLike> likes = diaryLikeRepository.findAll();
-    return LikesDto.fromDiary(likes).count();
+    Optional<DiaryLike> like =
+        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+    if (like.isEmpty()) {
+      DiaryLike newLike = new DiaryLike(null, member, diary);
+      diaryLikeRepository.save(newLike);
+      List<DiaryLike> diaryLikes = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
+      System.out.println(diaryLikes.size());
+      return diaryLikes.size();
+    } else {
+      return null;
+    }
   }
+
+  //  @Transactional
+  //  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
+  //    Optional<DiaryLike> diaryLike =
+  //        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+  //    if (diaryLike.isEmpty()) {
+  //      throw new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND);
+  //    } else {
+  //      DiaryLike diaryLike1 =
+  //          diaryLike.orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
+  //      diaryLikeRepository.delete(diaryLike1);
+  //      List<DiaryLike> diaryLikes = diaryLikeRepository.findAll();
+  //      return LikesDto.fromDiary(diaryLikes).count();
+  //    }
+  //  }
 
   @Transactional
   public Integer cancelDiaryLike(Long diaryId, Long memberId) {
-    DiaryLike diaryLike = diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
-    diaryLikeRepository.delete(diaryLike);
-    List<DiaryLike> diaryLikes = diaryLikeRepository.findAll();
-    return LikesDto.fromDiary(diaryLikes).count();
+    Optional<DiaryLike> diaryLike =
+        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+
+    if (diaryLike.isEmpty()) {
+      throw new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND);
+    }
+
+    diaryLikeRepository.delete(diaryLike.get());
+
+    // 삭제 후에도 카운트 정확히 반영 가능 (쿼리 기준이 다이어리 하나만 보기 때문)
+    return diaryLikeRepository.findDiaryLikesByDiaryId(diaryId).size();
   }
 
   @Transactional
@@ -268,12 +291,9 @@ public class DiaryService {
   public Boolean checkIfPressLikeByMe(Long diaryId, Long memberId) {
     DiaryLike like =
         diaryLikeRepository
-            .findById(diaryId)
+            .findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-    if ((like.getMember().getId()).equals(memberId)) {
-      return true;
-    }
-    return false;
+    return (like.getMember().getId()).equals(memberId);
   }
 
   @Transactional
@@ -298,26 +318,6 @@ public class DiaryService {
         .limit(size)
         .map(d -> DiaryResponseDTO.from(d, d.getDiaryLikes()))
         .toList();
-
-    //    List<DiaryResponseDTO> result = new ArrayList<>();
-    //    if (diaries.size() <= first) {
-    //      for (Diary d : diaries) {
-    //        DiaryResponseDTO dr = DiaryResponseDTO.from(d, d.getDiaryLikes());
-    //        result.add(dr);
-    //      }
-    //    } else {
-    //      Set<Integer> selectDiaries = new HashSet<>();
-    //
-    //      while (result.size() < first) {
-    //        int randomIndex = (int) (Math.random() * diaries.size());
-    //        if (!selectDiaries.contains(randomIndex)) {
-    //          Diary d = diaries.get(randomIndex);
-    //          result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
-    //          selectDiaries.add(randomIndex);
-    //        }
-    //      }
-    //    }
-    //    return result;
   }
 
   @Transactional

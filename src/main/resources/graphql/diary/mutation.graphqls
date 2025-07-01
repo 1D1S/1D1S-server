@@ -4,7 +4,7 @@ extend type Mutation {
     deleteDiary(DiaryId: ID!): Boolean # clear - 잘 응답옴
 
     addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear - 성공, 잘 돌아옴
-    cancelDiaryLike(diaryId: ID!, memberId: ID!): Int! # clear
+    cancelDiaryLike(diaryId: ID!, memberId: ID!): Int! # clear - 삭제되는데 return false/true 아직 고치는중
 
     reportDiary(input: CreateDiaryReportInput!): Boolean! # clear - 잘 응답 오고 db 저장됨
 }

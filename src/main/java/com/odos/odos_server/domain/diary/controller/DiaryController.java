@@ -41,8 +41,8 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public DiaryConnectionDTO allDiaries(@Argument Integer first, @Argument String after) {
-    return diaryService.getPublicDiaryList(first, after);
+  public List<DiaryResponseDTO> allDiaries() {
+    return diaryService.getAllDiary();
   }
 
   @QueryMapping
@@ -59,9 +59,8 @@ public class DiaryController {
   @MutationMapping
   public Boolean deleteDiary(@Argument Long DiaryId) {
     try {
-      diaryService.deleteDiary(DiaryId);
-      return true;
-    } catch (IllegalArgumentException e) {
+      return diaryService.deleteDiary(DiaryId);
+    } catch (CustomException e) {
       return false;
     }
   }
@@ -110,7 +109,6 @@ public class DiaryController {
     }
   }
 
-  // reportDiary(input: CreateDiaryReportInput!): Boolean!
   @MutationMapping
   public Boolean reportDiary(@Argument CreateDiaryReportInput input) {
     try {
@@ -119,6 +117,11 @@ public class DiaryController {
       log.info(e.getMessage());
       return null;
     }
+  }
+
+  @QueryMapping
+  public DiaryConnectionDTO diariesList(@Argument Integer first, @Argument String after) {
+    return diaryService.getPublicDiaryList(first, after);
   }
 
   //  @QueryMapping

@@ -4,6 +4,7 @@ import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.common.dto.DateDto;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,15 +20,25 @@ public record DiaryInfoDTO(
   public static DiaryInfoDTO from(Diary diary) {
     DateDto created = toDateDto(diary.getCreatedDate());
     DateDto target = toDateDto(diary.getDate());
+
     List<DiaryGoalDTO> goals =
         diary.getDiaryGoals() == null
             ? Collections.emptyList()
             : diary.getDiaryGoals().stream().map(DiaryGoalDTO::from).toList();
 
-    int achievementRate;
-    // Integer all = diary.getDiaryGoals().stream().count();
+    List<DiaryGoalDTO> achievedGoals = new ArrayList<>();
+    for (DiaryGoalDTO d : goals) {
+      if (d.isAchieved()) {
+        achievedGoals.add(d);
+      }
+    }
 
-    return new DiaryInfoDTO(created, target, diary.getFeeling(), goals, 0);
+    int achievementRate = 0;
+    if (!goals.isEmpty()) {
+      achievementRate = (int) Math.round((double) achievedGoals.size() * 100 / goals.size());
+    }
+
+    return new DiaryInfoDTO(created, target, diary.getFeeling(), goals, achievementRate);
   }
 
   private static DateDto toDateDto(LocalDateTime time) {
