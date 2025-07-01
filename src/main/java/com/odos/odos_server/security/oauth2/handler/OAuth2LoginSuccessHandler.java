@@ -58,7 +58,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
             && member.getJob() != null
             && member.getBirth() != null
             && member.getGender() != null
-            && member.getPublic() != null;
+            && member.getIsPublic() != null;
 
     OAuth2LoginResponse dto =
         OAuth2LoginResponse.builder()
