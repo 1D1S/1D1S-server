@@ -10,9 +10,9 @@ extend type Query {
         after: String
     ): DiaryConnection
 
-    diaryById(id: ID!): Diary!  # clear
+    diaryById(id: ID!): Diary!  # clear - 잘 옴
 
-    isDiaryWrittenByMe(id: ID!): Boolean!  # clear
+    isDiaryWrittenByMe(id: ID!): Boolean!  # clear - 잘 옴
     isDiaryLikedByMe(id: ID!): Boolean! # clear
 
 }

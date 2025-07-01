@@ -1,7 +1,7 @@
 extend type Mutation {
-    createDiary(input: CreateDiaryInput!): Diary! # clear - but 다듬어야
-    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary! # clear - but 다듬어야
-    deleteDiary(DiaryId: ID!): Boolean # clear
+    createDiary(input: CreateDiaryInput!): Diary! # clear - 응답 잘 돌아옴
+    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary! # clear - 잘 수정 응답옴
+    deleteDiary(DiaryId: ID!): Boolean # clear - 응답옴
 
     addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear
     cancelDiaryLike(diaryId: ID!, memberId: ID!): Int! # clear

@@ -310,7 +310,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public Boolean makeDiaryReport(DiaryReportDTO input) {
+  public Boolean makeDiaryReport(CreateDiaryReportInput input) {
     Long memberId = CurrentUserContext.getCurrentMemberId();
     Member member =
         memberRepository
