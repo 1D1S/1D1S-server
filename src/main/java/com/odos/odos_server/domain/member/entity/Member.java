@@ -14,7 +14,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -57,7 +56,7 @@ public class Member {
   @Enumerated(EnumType.STRING)
   private MemberPublic isPublic;
 
-  @LastModifiedDate private LocalDateTime nicknameLastModifiedAt;
+  private LocalDateTime nicknameLastModifiedAt;
 
   public void updateRefreshToken(String updateRefreshToken) {
     this.refreshToken = updateRefreshToken;

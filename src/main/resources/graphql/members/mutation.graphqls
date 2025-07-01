@@ -9,7 +9,5 @@ input UpdateMemberProfileInput{
     profileImageUrl: String
     job: String
     category: [Category]
-    birthday: String
-    gender: String
     public: Boolean
 }

@@ -36,30 +36,38 @@ public class MemberService {
             .orElseThrow(() -> new RuntimeException("Member not found: " + memberId));
 
     if (in.getNickname() != null) {
-      validateNicknameUpdatable(m);
+      validateNicknameSpelling(in.getNickname());
+      validateNicknameTime(m);
       m.updateNickname(in.getNickname());
     }
     if (in.getProfileImageUrl() != null) m.updateProfileImageUrl(in.getProfileImageUrl());
     if (in.getJob() != null) m.updateJob(in.getJob());
     if (in.getIsPublic() != null) m.updateIsPublic(in.getIsPublic());
 
-    List<ChallengeCategory> cats = in.getCategories();
-    if (cats != null) {
-      if (cats.isEmpty()) {
+    List<ChallengeCategory> list = in.getCategories();
+    if (list != null) {
+      if (list.isEmpty()) {
         throw new IllegalArgumentException("관심 카테고리를 최소 하나 선택해야 합니다.");
       }
-      if (cats.size() > 3) {
+      if (list.size() > 3) {
         throw new IllegalArgumentException("관심 카테고리는 최대 3개까지 선택 가능합니다.");
       }
-      m.updateCategories(cats);
+      m.updateCategories(list);
     }
     return m;
   }
 
-  private void validateNicknameUpdatable(Member member) {
+  private void validateNicknameTime(Member member) {
     LocalDateTime lastModified = member.getNicknameLastModifiedAt();
     if (lastModified != null && lastModified.plusMonths(1).isAfter(LocalDateTime.now())) {
       throw new IllegalStateException("닉네임은 한 달에 한 번만 변경 가능합니다.");
+    }
+  }
+
+  public void validateNicknameSpelling(String nickname) {
+    String regex = "^[가-힣a-zA-Z]{1,8}$";
+    if (!nickname.matches(regex)) {
+      throw new IllegalArgumentException("닉네임은 한글과 영어만 가능하며, 특수문자 없이 8자 이내여야 합니다.");
     }
   }
 

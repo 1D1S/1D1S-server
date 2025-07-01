@@ -30,6 +30,11 @@ public class SignupService {
       throw new IllegalArgumentException("관심 카테고리는 최대 3개까지 선택 가능합니다.");
     }
 
+    String regex = "^[가-힣a-zA-Z]{1,8}$";
+    if (!request.getNickname().matches(regex)) {
+      throw new IllegalArgumentException("닉네임은 한글과 영어만 가능하며, 특수문자 없이 8자 이내여야 합니다.");
+    }
+
     member.completeProfile(
         request.getNickname(),
         request.getProfileImageUrl(),
