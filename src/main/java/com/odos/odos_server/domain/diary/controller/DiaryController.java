@@ -67,9 +67,9 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Integer addDiaryLike(@Argument Long id, @Argument Long memberId) {
+  public Integer addDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
     try {
-      return diaryService.createDiaryLike(id, memberId);
+      return diaryService.createDiaryLike(diaryId, memberId);
     } catch (CustomException e) {
       log.info(e.getMessage());
       return null;

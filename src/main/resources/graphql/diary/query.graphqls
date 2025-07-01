@@ -1,9 +1,9 @@
 extend type Query {
     #allDiaries: [Diary!]!  # clear
     allDiaries(first: Int = 10, after: String): DiaryConnection!
-    myDiaries: [Diary!]! # clear
+    myDiaries: [Diary!]! # clear - 잘 들어옴, diaryInfo 좀 더 손 봄 돼(date관련)
 
-    randomDiaries(first: Int = 10): [Diary!]! # clear
+    randomDiaries(first: Int = 10): [Diary!]! # clear - 랜덤으로 잘 들어옴,
     diariesList(  # 2순위
         filter: DiaryFilterInput,
         first: Int = 10,

@@ -286,27 +286,38 @@ public class DiaryService {
         memberRepository
             .findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-    List<Diary> diaries = diaryRepository.findAll();
 
-    List<DiaryResponseDTO> result = new ArrayList<>();
-    if (diaries.size() <= first) {
-      for (Diary d : diaries) {
-        DiaryResponseDTO dr = DiaryResponseDTO.from(d, d.getDiaryLikes());
-        result.add(dr);
-      }
-    } else {
-      Set<Integer> selectDiaries = new HashSet<>();
-
-      while (result.size() < first) {
-        int randomIndex = (int) (Math.random() * diaries.size());
-        if (!selectDiaries.contains(randomIndex)) {
-          Diary d = diaries.get(randomIndex);
-          result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
-          selectDiaries.add(randomIndex);
-        }
-      }
+    int size = first != null ? first : 10;
+    List<Diary> diaries = diaryRepository.findAllPublicDiaries();
+    if (diaries.isEmpty()) {
+      return Collections.emptyList();
     }
-    return result;
+
+    Collections.shuffle(diaries);
+    return diaries.stream()
+        .limit(size)
+        .map(d -> DiaryResponseDTO.from(d, d.getDiaryLikes()))
+        .toList();
+
+    //    List<DiaryResponseDTO> result = new ArrayList<>();
+    //    if (diaries.size() <= first) {
+    //      for (Diary d : diaries) {
+    //        DiaryResponseDTO dr = DiaryResponseDTO.from(d, d.getDiaryLikes());
+    //        result.add(dr);
+    //      }
+    //    } else {
+    //      Set<Integer> selectDiaries = new HashSet<>();
+    //
+    //      while (result.size() < first) {
+    //        int randomIndex = (int) (Math.random() * diaries.size());
+    //        if (!selectDiaries.contains(randomIndex)) {
+    //          Diary d = diaries.get(randomIndex);
+    //          result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+    //          selectDiaries.add(randomIndex);
+    //        }
+    //      }
+    //    }
+    //    return result;
   }
 
   @Transactional

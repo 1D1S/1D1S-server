@@ -9,7 +9,7 @@ import java.util.List;
 
 public record DiaryInfoDTO(
     DateDto createdAt,
-    DateDto challengedDate,
+    DateDto date,
     Feeling feeling,
     List<DiaryGoalDTO> achievement,
     Integer achievementRate) {
@@ -23,6 +23,9 @@ public record DiaryInfoDTO(
         diary.getDiaryGoals() == null
             ? Collections.emptyList()
             : diary.getDiaryGoals().stream().map(DiaryGoalDTO::from).toList();
+
+    int achievementRate;
+    // Integer all = diary.getDiaryGoals().stream().count();
 
     return new DiaryInfoDTO(created, target, diary.getFeeling(), goals, 0);
   }

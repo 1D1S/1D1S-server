@@ -1,12 +1,12 @@
 extend type Mutation {
     createDiary(input: CreateDiaryInput!): Diary! # clear - 응답 잘 돌아옴
     updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary! # clear - 잘 수정 응답옴
-    deleteDiary(DiaryId: ID!): Boolean # clear - 응답옴
+    deleteDiary(DiaryId: ID!): Boolean # clear - 잘 응답옴
 
-    addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear
+    addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear - 성공, 잘 돌아옴
     cancelDiaryLike(diaryId: ID!, memberId: ID!): Int! # clear
 
-    reportDiary(input: CreateDiaryReportInput!): Boolean! # clear
+    reportDiary(input: CreateDiaryReportInput!): Boolean! # clear - 잘 응답 오고 db 저장됨
 }
 
 input CreateDiaryInput {
