@@ -36,9 +36,9 @@ public record ChallengeInfoDto(
 
     if (now.isBefore(entity.getStartDate())) {
       status = ChallengeStatus.RECRUITING;
-    } else if(entity.getEndDate() == null){
+    } else if (entity.getEndDate() == null) {
       status = ChallengeStatus.IN_PROGRESS;
-    }else if (now.isAfter(entity.getEndDate())) {
+    } else if (now.isAfter(entity.getEndDate())) {
       status = ChallengeStatus.COMPLETED;
     } else {
       status = ChallengeStatus.IN_PROGRESS;

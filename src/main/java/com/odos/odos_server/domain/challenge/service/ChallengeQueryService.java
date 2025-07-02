@@ -1,25 +1,29 @@
 package com.odos.odos_server.domain.challenge.service;
 
+import com.odos.odos_server.domain.challenge.dto.ChallengeConnectionDto;
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
+import com.odos.odos_server.domain.challenge.dto.ChallengeEdgeDto;
+import com.odos.odos_server.domain.challenge.dto.ChallengeFilterInputDto;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
 import com.odos.odos_server.domain.challenge.repository.ChallengeLikeRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.challenge.repository.MemberChallengeRepository;
-import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.common.dto.DurationRangeDto;
+import com.odos.odos_server.domain.common.dto.PageInfoDto;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.util.CurrentUserContext;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,9 +73,54 @@ public class ChallengeQueryService {
   public MemberChallengeRole getMyChallengeApplicantStatus(Long challengeId) {
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     return memberChallengeRepository
-            .findByMemberIdAndChallengeId(currentMemberId, challengeId)
-            .map(MemberChallenge::getMemberChallengeRole)
-            .orElse(MemberChallengeRole.NONE);
+        .findByMemberIdAndChallengeId(currentMemberId, challengeId)
+        .map(MemberChallenge::getMemberChallengeRole)
+        .orElse(MemberChallengeRole.NONE);
+  }
+
+  public ChallengeConnectionDto challengesList(
+      ChallengeFilterInputDto filter, int first, String after) {
+
+    Long cursorId = decodeCursorToId(after); // ✅ 커서를 id로 바꿔줌
+    Pageable pageable = PageRequest.of(0, first, Sort.by("id").descending()); // ✅ 항상 첫 페이지 조회
+
+    String keyword = (filter != null && filter.keyword() != null) ? filter.keyword() : "";
+
+    Page<Challenge> pageResult;
+
+    if (cursorId == null) {
+      pageResult = challengeRepository.findByTitleContaining(keyword, pageable);
+    } else {
+      pageResult =
+          challengeRepository.findByTitleContainingAndIdLessThanOrderByIdDesc(
+              keyword, cursorId, pageable);
+    }
+
+    List<ChallengeEdgeDto> edges =
+        pageResult.getContent().stream()
+            .map(ch -> new ChallengeEdgeDto(ChallengeDto.from(ch), encodeCursor(ch.getId())))
+            .toList();
+
+    PageInfoDto pageInfo =
+        new PageInfoDto(
+            edges.isEmpty() ? null : edges.get(edges.size() - 1).cursor(), pageResult.hasNext());
+
+    return new ChallengeConnectionDto(edges, pageInfo);
+  }
+
+  // ✅ 커서 인코딩
+  public String encodeCursor(Long id) {
+    return Base64.getEncoder().encodeToString(("cursor:" + id).getBytes());
+  }
+
+  public Long decodeCursorToId(String cursor) {
+    if (cursor == null) return null;
+    try {
+      String decoded = new String(Base64.getDecoder().decode(cursor));
+      return Long.parseLong(decoded.split(":")[1]);
+    } catch (Exception e) {
+      return null;
+    }
   }
 
   /*
