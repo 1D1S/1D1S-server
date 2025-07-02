@@ -49,12 +49,14 @@ public class ChallengeMutationService {
       throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
     }
 
-    LocalDate endDate;
-    try {
-      endDate = LocalDate.parse(input.endDate());
-    } catch (DateTimeParseException e) {
-      throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
-    }
+    LocalDate endDate = null;
+      if (input.endDate() != null && !input.endDate().isBlank()) {
+          try {
+              endDate = LocalDate.parse(input.endDate());
+          } catch (DateTimeParseException e) {
+              throw new CustomException(ErrorCode.INVALID_DATE_FORMAT);
+          }
+      }
     Challenge challenge =
         Challenge.builder()
             .title(input.title())
@@ -189,6 +191,9 @@ public class ChallengeMutationService {
             .findById(currentMemberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
+    if(challengeLikeRepository.existsByMemberAndChallenge(member, challenge)){
+      throw new CustomException(ErrorCode.ALREADY_LIKED);
+    }
     ChallengeLike like = ChallengeLike.builder().challenge(challenge).member(member).build();
     challengeLikeRepository.save(like);
     return challengeLikeRepository.findByChallengeId(challengeId).size();
@@ -200,6 +205,7 @@ public class ChallengeMutationService {
         challengeLikeRepository
             .findByChallengeIdAndMemberId(challengeId, currentMemberId)
             .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_LIKE_NOT_FOUND));
+    challengeLikeRepository.delete(like);
     return challengeLikeRepository.findByChallengeId(challengeId).size();
   }
 }

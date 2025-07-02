@@ -6,10 +6,11 @@ import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
 import java.time.LocalDate;
+import java.util.Optional;
 
 public record ChallengeInfoDto(
     LocalDate startDate,
-    LocalDate endDate,
+    Optional<LocalDate> endDate,
     int participants,
     int maxParticipants,
     ChallengeCategory category,
@@ -35,7 +36,9 @@ public record ChallengeInfoDto(
 
     if (now.isBefore(entity.getStartDate())) {
       status = ChallengeStatus.RECRUITING;
-    } else if (now.isAfter(entity.getEndDate())) {
+    } else if(entity.getEndDate() == null){
+      status = ChallengeStatus.IN_PROGRESS;
+    }else if (now.isAfter(entity.getEndDate())) {
       status = ChallengeStatus.COMPLETED;
     } else {
       status = ChallengeStatus.IN_PROGRESS;
@@ -43,7 +46,7 @@ public record ChallengeInfoDto(
 
     return new ChallengeInfoDto(
         entity.getStartDate(),
-        entity.getEndDate(),
+        Optional.ofNullable(entity.getEndDate()),
         participants,
         entity.getParticipantsCnt(),
         entity.getCategory(),

@@ -2,6 +2,7 @@ package com.odos.odos_server.domain.challenge.service;
 
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
+import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
 import com.odos.odos_server.domain.challenge.repository.ChallengeLikeRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.challenge.repository.MemberChallengeRepository;
@@ -29,7 +30,6 @@ public class ChallengeQueryService {
   private final MemberRepository memberRepository;
   private final ChallengeLikeRepository challengeLikeRepository;
   private final MemberChallengeRepository memberChallengeRepository;
-  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
   public List<ChallengeDto> getAllChallenges() {
     return challengeRepository.findAll().stream().map(ChallengeDto::from).toList();
@@ -69,17 +69,9 @@ public class ChallengeQueryService {
   public MemberChallengeRole getMyChallengeApplicantStatus(Long challengeId) {
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     return memberChallengeRepository
-        .findByMemberIdAndChallengeId(currentMemberId, challengeId)
-        .map(
-            mc ->
-                switch (mc.getMemberChallengeRole()) {
-                  case HOST -> MemberChallengeRole.HOST;
-                  case APPLICANT -> MemberChallengeRole.APPLICANT;
-                  case REQUESTED -> MemberChallengeRole.REQUESTED;
-                  case REJECTED -> MemberChallengeRole.REJECTED;
-                  default -> MemberChallengeRole.NONE;
-                })
-        .orElse(MemberChallengeRole.NONE);
+            .findByMemberIdAndChallengeId(currentMemberId, challengeId)
+            .map(MemberChallenge::getMemberChallengeRole)
+            .orElse(MemberChallengeRole.NONE);
   }
 
   /*
@@ -126,7 +118,7 @@ public class ChallengeQueryService {
     }
   }
 
-   */
+
 
   private ChallengeStatus calculateStatus(Challenge challenge) {
     LocalDate today = LocalDate.now();
@@ -148,4 +140,5 @@ public class ChallengeQueryService {
     long days = ChronoUnit.DAYS.between(challenge.getStartDate(), challenge.getEndDate());
     return days >= range.minDays() && days <= range.maxDays();
   }
+  */
 }
