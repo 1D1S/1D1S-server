@@ -1,8 +1,6 @@
 package com.odos.odos_server.domain.member.controller;
 
-import com.odos.odos_server.domain.common.dto.ImgDto;
-import com.odos.odos_server.domain.member.dto.MemberInfoDto;
-import com.odos.odos_server.domain.member.dto.MemberPublicDto;
+import com.odos.odos_server.domain.member.dto.MemberDto;
 import com.odos.odos_server.domain.member.dto.UpdateMemberProfileInput;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.service.MemberService;
@@ -12,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
-import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -22,25 +19,28 @@ public class MemberGraphQLController {
   private final MemberService memberService;
 
   @QueryMapping(name = "memberMe")
-  public Member memberMe() {
+  public MemberDto memberMe() {
     Long id = CurrentUserContext.getCurrentMemberId();
-    return memberService.getMemberById(id);
+    Member member = memberService.getMemberById(id);
+    return MemberDto.from(member);
   }
 
   @QueryMapping(name = "memberById")
-  public Member memberById(@Argument Long id) {
-    return memberService.getMemberById(id);
+  public MemberDto memberById(@Argument Long id) {
+    Member member = memberService.getMemberById(id);
+    return MemberDto.from(member);
   }
 
   @QueryMapping(name = "allMembers")
-  public List<Member> allMembers() {
-    return memberService.getAllMembers();
+  public List<MemberDto> allMembers() {
+    return memberService.getAllMembers().stream().map(MemberDto::from).toList();
   }
 
   @MutationMapping(name = "updateMemberProfile")
-  public Member updateMemberProfile(@Argument UpdateMemberProfileInput input) {
+  public MemberDto updateMemberProfile(@Argument UpdateMemberProfileInput input) {
     Long id = CurrentUserContext.getCurrentMemberId();
-    return memberService.updateMemberProfile(id, input);
+    Member updated = memberService.updateMemberProfile(id, input);
+    return MemberDto.from(updated);
   }
 
   @MutationMapping(name = "deleteMember")
@@ -52,29 +52,5 @@ public class MemberGraphQLController {
   public Boolean deleteMemberMe() {
     Long id = CurrentUserContext.getCurrentMemberId();
     return memberService.deleteById(id);
-  }
-
-  @SchemaMapping(typeName = "Member", field = "info")
-  public MemberInfoDto info(Member member) {
-    return new MemberInfoDto(
-        member.getJob().name(),
-        member.getMemberInterests().stream().map(mi -> mi.getCategory().name()).toList(),
-        member.getBirth().toString(),
-        member.getGender().name());
-  }
-
-  @SchemaMapping(typeName = "Member", field = "isPublic")
-  public MemberPublicDto resolveMemberPublic(Member member) {
-    boolean flag = member.getIsPublic();
-    return new MemberPublicDto(flag);
-  }
-
-  @SchemaMapping(typeName = "Member", field = "profileImageUrl")
-  public ImgDto resolveProfileImageUrl(Member member) {
-    String raw = member.getProfileImageUrl();
-    if (raw == null) {
-      return null;
-    }
-    return new ImgDto(raw);
   }
 }
