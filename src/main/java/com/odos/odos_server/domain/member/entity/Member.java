@@ -104,7 +104,7 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Diary> diaries;
-
+  
   public void updateNickname(String nickname) {
     this.nickname = nickname;
     this.nicknameLastModifiedAt = LocalDateTime.now();
@@ -129,4 +129,5 @@ public class Member {
   public void updateIsPublic(Boolean isPublic) {
     this.isPublic = isPublic;
   }
+
 }
