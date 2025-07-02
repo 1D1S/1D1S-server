@@ -1,5 +1,8 @@
 package com.odos.odos_server.domain.member.controller;
 
+import com.odos.odos_server.domain.common.dto.ImgDto;
+import com.odos.odos_server.domain.member.dto.MemberInfoDto;
+import com.odos.odos_server.domain.member.dto.MemberPublicDto;
 import com.odos.odos_server.domain.member.dto.UpdateMemberProfileInput;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.service.MemberService;
@@ -9,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SchemaMapping;
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -48,5 +52,29 @@ public class MemberGraphQLController {
   public Boolean deleteMemberMe() {
     Long id = CurrentUserContext.getCurrentMemberId();
     return memberService.deleteById(id);
+  }
+
+  @SchemaMapping(typeName = "Member", field = "info")
+  public MemberInfoDto info(Member member) {
+    return new MemberInfoDto(
+        member.getJob().name(),
+        member.getMemberInterests().stream().map(mi -> mi.getCategory().name()).toList(),
+        member.getBirth().toString(),
+        member.getGender().name());
+  }
+
+  @SchemaMapping(typeName = "Member", field = "isPublic")
+  public MemberPublicDto resolveMemberPublic(Member member) {
+    boolean flag = member.getIsPublic();
+    return new MemberPublicDto(flag);
+  }
+
+  @SchemaMapping(typeName = "Member", field = "profileImageUrl")
+  public ImgDto resolveProfileImageUrl(Member member) {
+    String raw = member.getProfileImageUrl();
+    if (raw == null) {
+      return null;
+    }
+    return new ImgDto(raw);
   }
 }

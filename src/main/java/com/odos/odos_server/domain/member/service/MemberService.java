@@ -4,12 +4,16 @@ import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import com.odos.odos_server.domain.member.dto.UpdateMemberProfileInput;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
+import com.odos.odos_server.error.code.ErrorCode;
+import com.odos.odos_server.error.exception.CustomException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -20,7 +24,7 @@ public class MemberService {
   public Member getMemberById(Long memberId) {
     return memberRepository
         .findById(memberId)
-        .orElseThrow(() -> new RuntimeException("Member not found: " + memberId));
+        .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
   }
 
   @Transactional(readOnly = true)
@@ -30,10 +34,11 @@ public class MemberService {
 
   @Transactional
   public Member updateMemberProfile(Long memberId, UpdateMemberProfileInput in) {
+    log.debug(">>> in.getCategory() = {}", in.getCategory());
     Member m =
         memberRepository
             .findById(memberId)
-            .orElseThrow(() -> new RuntimeException("Member not found: " + memberId));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     if (in.getNickname() != null) {
       validateNicknameSpelling(in.getNickname());
@@ -44,30 +49,30 @@ public class MemberService {
     if (in.getJob() != null) m.updateJob(in.getJob());
     if (in.getIsPublic() != null) m.updateIsPublic(in.getIsPublic());
 
-    List<ChallengeCategory> list = in.getCategories();
-    if (list != null) {
-      if (list.isEmpty()) {
-        throw new IllegalArgumentException("관심 카테고리를 최소 하나 선택해야 합니다.");
-      }
-      if (list.size() > 3) {
-        throw new IllegalArgumentException("관심 카테고리는 최대 3개까지 선택 가능합니다.");
-      }
-      m.updateCategories(list);
+    List<ChallengeCategory> list = in.getCategory();
+
+    if (list == null || list.isEmpty()) {
+      throw new CustomException(ErrorCode.CATEGORY_EMPTY);
     }
+    if (list.size() > 3) {
+      throw new CustomException(ErrorCode.CATEGORY_TOO_MANY);
+    }
+    m.updateCategories(list);
+
     return m;
   }
 
   private void validateNicknameTime(Member member) {
     LocalDateTime lastModified = member.getNicknameLastModifiedAt();
     if (lastModified != null && lastModified.plusMonths(1).isAfter(LocalDateTime.now())) {
-      throw new IllegalStateException("닉네임은 한 달에 한 번만 변경 가능합니다.");
+      throw new CustomException(ErrorCode.NICKNAME_CHANGE_TOO_SOON);
     }
   }
 
   public void validateNicknameSpelling(String nickname) {
     String regex = "^[가-힣a-zA-Z]{1,8}$";
     if (!nickname.matches(regex)) {
-      throw new IllegalArgumentException("닉네임은 한글과 영어만 가능하며, 특수문자 없이 8자 이내여야 합니다.");
+      throw new CustomException(ErrorCode.INVALID_NICKNAME_FORMAT);
     }
   }
 

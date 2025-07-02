@@ -9,5 +9,5 @@ input UpdateMemberProfileInput{
     profileImageUrl: String
     job: String
     category: [Category]
-    public: Boolean
+    isPublic: Boolean
 }

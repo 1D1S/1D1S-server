@@ -1,5 +1,5 @@
 type MemberPublic {
-    public: Boolean!
+    isPublic: Boolean!
 }
 
 type DiaryPublic {

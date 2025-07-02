@@ -3,7 +3,6 @@ package com.odos.odos_server.domain.member.dto;
 import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import com.odos.odos_server.domain.common.Enum.Gender;
 import com.odos.odos_server.domain.common.Enum.Job;
-import com.odos.odos_server.domain.common.Enum.MemberPublic;
 import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
@@ -25,7 +24,7 @@ public class SignupInfoRequest {
 
   @NotNull private Gender gender;
 
-  @NotNull private MemberPublic isPublic;
+  @NotNull private Boolean isPublic;
 
-  @NotNull private List<ChallengeCategory> categories;
+  @NotNull private List<ChallengeCategory> category;
 }

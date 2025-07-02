@@ -53,8 +53,7 @@ public class Member {
   @Enumerated(EnumType.STRING)
   private Gender gender;
 
-  @Enumerated(EnumType.STRING)
-  private MemberPublic isPublic;
+  private Boolean isPublic;
 
   private LocalDateTime nicknameLastModifiedAt;
 
@@ -68,7 +67,7 @@ public class Member {
       Job job,
       LocalDate birth,
       Gender gender,
-      MemberPublic isPublic) {
+      Boolean isPublic) {
     this.nickname = nickname;
     this.profileImageUrl = profileImageUrl;
     this.job = job;
@@ -82,7 +81,7 @@ public class Member {
   @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
   private List<Challenge> challenges;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MemberChallenge> memberChallenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -127,7 +126,7 @@ public class Member {
     this.job = job;
   }
 
-  public void updateIsPublic(MemberPublic isPublic) {
+  public void updateIsPublic(Boolean isPublic) {
     this.isPublic = isPublic;
   }
 }

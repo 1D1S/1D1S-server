@@ -2,6 +2,8 @@ package com.odos.odos_server.security.jwt;
 
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
+import com.odos.odos_server.error.code.ErrorCode;
+import com.odos.odos_server.error.exception.CustomException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -18,7 +20,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
@@ -140,7 +141,7 @@ public class JwtTokenProvider {
               memberRepository.save(member);
             },
             () -> {
-              throw new UsernameNotFoundException("User not found with email: " + email);
+              throw new CustomException(ErrorCode.EMAIL_USER_NOT_FOUND);
             });
   }
 }
