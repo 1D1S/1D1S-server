@@ -8,26 +8,26 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public record DiaryInfoDTO(
+public record DiaryInfoDto(
     DateDto createdAt,
     DateDto date,
     Feeling feeling,
-    List<DiaryGoalDTO> achievement,
+    List<DiaryGoalDto> achievement,
     Integer achievementRate) {
 
   // DTO는 객체들간의 정보를 수합해서 내가 원하는 정보들과 타입으로 바꿔서 하나의 묶음으로 프론트에 보내주는 것.
   // 그래서 from이라는 메서드를 사용하고 빌드하는 것. 그 메서드를 DTO 안에 넣거나 converter를 씀
-  public static DiaryInfoDTO from(Diary diary) {
+  public static DiaryInfoDto from(Diary diary) {
     DateDto created = toDateDto(diary.getCreatedDate());
     DateDto target = toDateDto(diary.getDate());
 
-    List<DiaryGoalDTO> goals =
+    List<DiaryGoalDto> goals =
         diary.getDiaryGoals() == null
             ? Collections.emptyList()
-            : diary.getDiaryGoals().stream().map(DiaryGoalDTO::from).toList();
+            : diary.getDiaryGoals().stream().map(DiaryGoalDto::from).toList();
 
-    List<DiaryGoalDTO> achievedGoals = new ArrayList<>();
-    for (DiaryGoalDTO d : goals) {
+    List<DiaryGoalDto> achievedGoals = new ArrayList<>();
+    for (DiaryGoalDto d : goals) {
       if (d.isAchieved()) {
         achievedGoals.add(d);
       }
@@ -38,7 +38,7 @@ public record DiaryInfoDTO(
       achievementRate = (int) Math.round((double) achievedGoals.size() * 100 / goals.size());
     }
 
-    return new DiaryInfoDTO(created, target, diary.getFeeling(), goals, achievementRate);
+    return new DiaryInfoDto(created, target, diary.getFeeling(), goals, achievementRate);
   }
 
   private static DateDto toDateDto(LocalDateTime time) {

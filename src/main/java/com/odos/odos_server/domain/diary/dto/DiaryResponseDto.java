@@ -7,7 +7,7 @@ import com.odos.odos_server.domain.diary.entity.DiaryLike;
 import java.util.Collections;
 import java.util.List;
 
-public record DiaryResponseDTO(
+public record DiaryResponseDto(
     Long id,
     // ChallengeDto challenge,
     // MemberDto author,
@@ -16,10 +16,10 @@ public record DiaryResponseDTO(
     LikesDto likes,
     List<ImgDto> img,
     Boolean isPublic,
-    DiaryInfoDTO diaryInfo) {
+    DiaryInfoDto diaryInfo) {
 
   /** Convert Diary entity to DiaryResponseDTO. */
-  public static DiaryResponseDTO from(
+  public static DiaryResponseDto from(
       Diary entity, List<DiaryLike> likes /* + Member, Challenge 넣기 */) {
     // likes 정보 안 불러와짐 개수 안나와 왜지? 저번에 됏던거 같은데
     List<ImgDto> images =
@@ -29,7 +29,7 @@ public record DiaryResponseDTO(
     LikesDto likesDto =
         likes == null ? new LikesDto(Collections.emptyList(), 0) : LikesDto.fromDiary(likes);
 
-    return new DiaryResponseDTO(
+    return new DiaryResponseDto(
         entity.getId(),
         // entity.getChallenge() == null ? null : ChallengeDto.from(entity.getChallenge()),
         // MemberDto.from(entity.getMember()),
@@ -38,10 +38,10 @@ public record DiaryResponseDTO(
         likesDto,
         images,
         Boolean.TRUE.equals(entity.getIsPublic()),
-        DiaryInfoDTO.from(entity));
+        DiaryInfoDto.from(entity));
   }
 
-  public static List<DiaryResponseDTO> from(List<Diary> diaries, List<DiaryLike> likes) {
+  public static List<DiaryResponseDto> from(List<Diary> diaries, List<DiaryLike> likes) {
     return diaries.stream().map(d -> from(d, likes)).toList();
   }
 }

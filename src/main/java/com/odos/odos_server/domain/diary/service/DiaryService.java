@@ -38,7 +38,7 @@ public class DiaryService {
   Diary에서 빌더 패턴으로 객체 생성하기
    */
   @Transactional
-  public DiaryResponseDTO createDiary(Long memberId, CreateDiaryInput input) {
+  public DiaryResponseDto createDiary(Long memberId, CreateDiaryInput input) {
     Member member =
         memberRepository
             .findById(memberId)
@@ -87,11 +87,11 @@ public class DiaryService {
     //        diaryGoalRepository.save(new DiaryGoal(null, true, diary, cg, null));
     //      }
     //    }
-    return DiaryResponseDTO.from(diary, diary.getDiaryLikes());
+    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional
-  public DiaryResponseDTO updateDiary(Long diaryId, CreateDiaryInput input) {
+  public DiaryResponseDto updateDiary(Long diaryId, CreateDiaryInput input) {
     Diary diary =
         diaryRepository
             .findById(diaryId)
@@ -132,42 +132,42 @@ public class DiaryService {
     //    }
 
     diaryRepository.save(diary);
-    return DiaryResponseDTO.from(diary, diary.getDiaryLikes());
+    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional
-  public List<DiaryResponseDTO> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
+  public List<DiaryResponseDto> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
     List<Diary> diaries = diaryRepository.findAllPublicDiaries();
-    List<DiaryResponseDTO> result = new ArrayList<>();
+    List<DiaryResponseDto> result = new ArrayList<>();
     for (Diary d : diaries) {
-      result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+      result.add(DiaryResponseDto.from(d, d.getDiaryLikes()));
     }
     return result;
   }
 
   @Transactional(readOnly = true)
-  public DiaryConnectionDTO getPublicDiaryList(Integer first, String after) {
+  public DiaryConnectionDto getPublicDiaryList(Integer first, String after) {
     int size = (first != null) ? first : 10;
     int page = decodePageCursor(after); // 커서 디코딩
 
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
     Page<Diary> pageResult = diaryRepository.findByIsPublicTrue(pageable);
 
-    List<DiaryEdgeDTO> edges = new ArrayList<>();
+    List<DiaryEdgeDto> edges = new ArrayList<>();
     int startOffset = page * size;
     List<Diary> diaries = pageResult.getContent();
 
     for (int i = 0; i < diaries.size(); i++) {
       Diary d = diaries.get(i);
       String cursor = encodeItemCursor(startOffset + i);
-      edges.add(new DiaryEdgeDTO(DiaryResponseDTO.from(d, d.getDiaryLikes()), cursor));
+      edges.add(new DiaryEdgeDto(DiaryResponseDto.from(d, d.getDiaryLikes()), cursor));
     }
 
     String endCursor = pageResult.hasNext() ? encodePageCursor(page + 1) : null;
     PageInfoDto pageInfo = new PageInfoDto(endCursor, pageResult.hasNext());
     long totalCount = diaryRepository.countByIsPublicTrue();
 
-    return new DiaryConnectionDTO(edges, pageInfo, (int) totalCount);
+    return new DiaryConnectionDto(edges, pageInfo, (int) totalCount);
   }
 
   /* 페이지네이션 관련 메서드 */
@@ -191,21 +191,21 @@ public class DiaryService {
   }
 
   @Transactional
-  public DiaryResponseDTO getDiaryById(Long diaryId) {
+  public DiaryResponseDto getDiaryById(Long diaryId) {
     Diary diary =
         diaryRepository
             .findById(diaryId)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-    return DiaryResponseDTO.from(diary, diary.getDiaryLikes());
+    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional(readOnly = true) // query의 myDiaries
-  public List<DiaryResponseDTO> getMyDiaries(Long memberId) {
+  public List<DiaryResponseDto> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
-    List<DiaryResponseDTO> result = new ArrayList<>();
+    List<DiaryResponseDto> result = new ArrayList<>();
 
     for (Diary d : myDiaries) {
-      result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
+      result.add(DiaryResponseDto.from(d, d.getDiaryLikes()));
     }
     return result;
   }
@@ -279,7 +279,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryResponseDTO> getRandomDiaries(Integer first, Long memberId) {
+  public List<DiaryResponseDto> getRandomDiaries(Integer first, Long memberId) {
     /*
     비가입 회원에게는 리스트만 보이고(내용은 프론트가 골라서 넣어주는것?),
     상세접근은 못함, 하려고하면 로그인요구
@@ -298,7 +298,7 @@ public class DiaryService {
     Collections.shuffle(diaries);
     return diaries.stream()
         .limit(size)
-        .map(d -> DiaryResponseDTO.from(d, d.getDiaryLikes()))
+        .map(d -> DiaryResponseDto.from(d, d.getDiaryLikes()))
         .toList();
   }
 
