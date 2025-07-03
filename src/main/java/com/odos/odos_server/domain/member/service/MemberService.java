@@ -9,11 +9,9 @@ import com.odos.odos_server.error.exception.CustomException;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -34,7 +32,6 @@ public class MemberService {
 
   @Transactional
   public Member updateMemberProfile(Long memberId, UpdateMemberProfileInput in) {
-    log.debug(">>> in.getCategory() = {}", in.getCategory());
     Member m =
         memberRepository
             .findById(memberId)
