@@ -8,7 +8,7 @@ RUN chmod +x gradlew
 RUN ./gradlew dependencies --no-daemon
 
 COPY ./src /builder/src
-RUN ./gradlew build
+RUN ./gradlew build --no-daemon
 
 FROM eclipse-temurin:17
 WORKDIR /app

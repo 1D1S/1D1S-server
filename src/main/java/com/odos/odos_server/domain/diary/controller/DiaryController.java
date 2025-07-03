@@ -26,8 +26,6 @@ public class DiaryController {
   public DiaryResponseDTO createDiary(@Argument CreateDiaryInput input) {
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
-      System.out.println("****************************************************");
-      System.out.println("memberId= " + memberId);
       return diaryService.createDiary(memberId, input);
     } catch (Exception e) {
       log.info(e.getMessage());
@@ -40,7 +38,7 @@ public class DiaryController {
     return diaryService.updateDiary(DiaryId, input);
   }
 
-  @QueryMapping
+  @QueryMapping // memberId 없이 다 보일 수 있게 또 수정?
   public List<DiaryResponseDTO> allDiaries() {
     return diaryService.getAllDiary();
   }
@@ -75,7 +73,7 @@ public class DiaryController {
     }
   }
 
-  @MutationMapping
+  @MutationMapping // 수정 필요, 삭제 되고 조회하려고 함
   public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
     try {
       diaryService.cancelDiaryLike(diaryId, memberId);

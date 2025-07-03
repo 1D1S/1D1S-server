@@ -21,6 +21,7 @@ public record DiaryResponseDTO(
   /** Convert Diary entity to DiaryResponseDTO. */
   public static DiaryResponseDTO from(
       Diary entity, List<DiaryLike> likes /* + Member, Challenge 넣기 */) {
+    // likes 정보 안 불러와짐 개수 안나와 왜지? 저번에 됏던거 같은데
     List<ImgDto> images =
         entity.getDiaryImages() == null
             ? Collections.emptyList()

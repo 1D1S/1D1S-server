@@ -13,6 +13,7 @@ public record DiaryGoalDTO(Long id, GoalDto goal, Boolean isAchieved, Integer st
             ? null
             : new GoalDto(
                 entity.getChallengeGoal().getId(), entity.getChallengeGoal().getContent());
+    // streakCount 로직 구현 필요
     return new DiaryGoalDTO(
         entity.getId(), goalDto, Boolean.TRUE.equals(entity.getGoalCompleted()), 0);
   }
