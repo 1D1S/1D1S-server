@@ -1,6 +1,6 @@
 package com.odos.odos_server.domain.member.entity;
 
-import com.odos.odos_server.domain.common.Enum.Interest;
+import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -18,9 +18,14 @@ public class MemberInterest {
 
   @Column
   @Enumerated(EnumType.STRING)
-  private Interest category;
+  private ChallengeCategory category;
 
   @ManyToOne
   @JoinColumn(name = "memberId")
   private Member member;
+
+  public MemberInterest(Member member, ChallengeCategory category) {
+    this.member = member;
+    this.category = category;
+  }
 }

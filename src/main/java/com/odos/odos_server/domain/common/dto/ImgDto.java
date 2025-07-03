@@ -11,4 +11,8 @@ public record ImgDto(String url) {
   public static ImgDto from(DiaryImage image) {
     return new ImgDto(image.getUrl());
   }
+
+  public static ImgDto from(String url) {
+    return new ImgDto(url);
+  }
 }
