@@ -21,6 +21,8 @@ public enum ErrorCode {
   OAUTH_USER_NOT_FOUND(404, "AUTH-003", "User not found from OAuth provider"),
   INVALID_SIGNUP_PROVIDER(400, "AUTH-004", "Unexpected signup provider"),
   EMAIL_USER_NOT_FOUND(404, "AUTH-005", "User not found with given email"),
+
+  CHALLENGE_NOT_FOUND(404, "CHALLENGE-001", "Challenge not found"),
   ;
 
   private final int status;

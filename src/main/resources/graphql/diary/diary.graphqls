@@ -12,10 +12,10 @@ type Diary {
 }
 
 type DiaryGoal {
-    id: ID!
-    goal: Goal!
-    achieved: Boolean!
-    streakCount: Int!
+    id: ID#!
+    goal: Goal#!
+    achieved: Boolean#!
+    streakCount: Int#!
 }
 
 

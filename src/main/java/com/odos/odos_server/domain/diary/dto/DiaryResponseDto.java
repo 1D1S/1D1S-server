@@ -18,16 +18,17 @@ public record DiaryResponseDto(
     Boolean isPublic,
     DiaryInfoDto diaryInfo) {
 
-  /** Convert Diary entity to DiaryResponseDTO. */
   public static DiaryResponseDto from(
       Diary entity, List<DiaryLike> likes /* + Member, Challenge 넣기 */) {
-    // likes 정보 안 불러와짐 개수 안나와 왜지? 저번에 됏던거 같은데
+
+    // s3로 사진 저장 로직으로 변경해야함
     List<ImgDto> images =
         entity.getDiaryImages() == null
             ? Collections.emptyList()
             : entity.getDiaryImages().stream().map(ImgDto::from).toList();
-    LikesDto likesDto =
-        likes == null ? new LikesDto(Collections.emptyList(), 0) : LikesDto.fromDiary(likes);
+
+    // 이 다이어리에 좋아요 누른 사람의 정보를 가져오고 다이어리의 총 좋아요 개수 가져오는거 맞죠??
+    LikesDto likesDto = LikesDto.fromDiary(likes);
 
     return new DiaryResponseDto(
         entity.getId(),
@@ -39,9 +40,5 @@ public record DiaryResponseDto(
         images,
         Boolean.TRUE.equals(entity.getIsPublic()),
         DiaryInfoDto.from(entity));
-  }
-
-  public static List<DiaryResponseDto> from(List<Diary> diaries, List<DiaryLike> likes) {
-    return diaries.stream().map(d -> from(d, likes)).toList();
   }
 }

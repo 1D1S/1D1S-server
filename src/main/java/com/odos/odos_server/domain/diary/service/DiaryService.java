@@ -1,5 +1,6 @@
 package com.odos.odos_server.domain.diary.service;
 
+import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
@@ -42,34 +43,31 @@ public class DiaryService {
     Member member =
         memberRepository
             .findById(memberId)
-            .orElseThrow(() -> new IllegalArgumentException("Member not found"));
-    //    Challenge challenge =
-    //        challengeRepository
-    //            .findById(input.getChallengeId())
-    //            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    Challenge challenge =
+        challengeRepository
+            .findById(input.challengeId())
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
-    DateInput dateInput = input.achievedDate();
-    LocalDateTime diaryDate =
-        LocalDateTime.of(dateInput.year(), dateInput.month(), dateInput.day(), 0, 0);
-
+    LocalDateTime diaryDate = LocalDateTime.parse(input.achievedDate());
     Diary diary =
-        new Diary(
-            null,
-            input.title(),
-            null,
-            diaryDate,
-            input.feeling(),
-            input.isPublic(),
-            input.content(),
-            false,
-            null,
-            null,
-            null,
-            member,
-            null,
-            null);
-
+        Diary.builder()
+            .id(null)
+            .title(input.title())
+            .createdDate(LocalDateTime.now())
+            .date(diaryDate)
+            .feeling(input.feeling())
+            .isPublic(input.isPublic())
+            .content(input.content())
+            .deleted(false) // ?
+            // .diaryGoals(diaryGoalRepository.findByChallengeId())
+            // .diaryImages(input.images())
+            .diaryLikes(null)
+            .member(member)
+            .challenge(challenge)
+            .diaryReports(null)
+            .build();
     diary = diaryRepository.save(diary);
 
     if (input.images() != null) {
@@ -78,6 +76,7 @@ public class DiaryService {
       }
     }
 
+    // 챌린지에서 목표 가져오면 이 코드 필요없을듯
     //    if (input.getGoalIds() != null) {
     //      for (Long goalId : input.getGoalIds()) {
     //        ChallengeGoal cg =
@@ -95,16 +94,14 @@ public class DiaryService {
     Diary diary =
         diaryRepository
             .findById(diaryId)
-            .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
 
     //    Challenge challenge =
     //        challengeRepository
     //            .findById(input.getChallengeId())
     //            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
 
-    DateInput dateInput = input.achievedDate();
-    LocalDateTime diaryDate =
-        LocalDateTime.of(dateInput.year(), dateInput.month(), dateInput.day(), 0, 0);
+    LocalDateTime diaryDate = LocalDateTime.parse(input.achievedDate());
 
     diary.update(
         input.title(),
@@ -245,16 +242,18 @@ public class DiaryService {
 
   @Transactional
   public Integer cancelDiaryLike(Long diaryId, Long memberId) {
-    Optional<DiaryLike> diaryLike =
-        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+    DiaryLike like =
+        diaryLikeRepository
+            .findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
+    diaryLikeRepository.delete(like);
 
-    if (diaryLike.isEmpty()) {
-      throw new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND);
+    List<DiaryLike> likeList = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
+    if (likeList.isEmpty()) {
+      return 0;
+    } else {
+      return likeList.size();
     }
-    int diaryLikeCount = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId).size();
-    diaryLikeRepository.delete(diaryLike.get());
-    // null이면 0으로 처리로 수정하는게 나을지 main 머지 후 처리 일단 숫자만 리턴하는걸로
-    return diaryLikeCount - 1;
   }
 
   @Transactional
