@@ -1,7 +1,7 @@
 type MemberInfo {
     job: String!
     category: [Category!]!
-    birthday: Date!
+    birthday: String!
     gender: String!
 }
 type Streak {
@@ -19,21 +19,21 @@ type Streak {
     calendar: [DailyStreak!]! # 잔디
 }
 type DailyStreak{
-    date: Date!
+    date: String!
     count: Int!
 }
 
 type DiaryInfo {
-    createdAt: Date!
-    date: Date!
+    createdAt: String!
+    date: String!
     feeling: Feeling!
     achievement: [DiaryGoal!]!
     AchievementRate: Int!
 }
 
 type ChallengeInfo{
-    startDate: Date!
-    endDate: Date!
+    startDate: String!
+    endDate: String!
     participants: Int!
     maxParticipants: Int!
     category: Category!

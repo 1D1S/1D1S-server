@@ -3,6 +3,8 @@ package com.odos.odos_server.security.oauth2.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
+import com.odos.odos_server.error.code.ErrorCode;
+import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.jwt.JwtTokenProvider;
 import com.odos.odos_server.security.jwt.MemberPrincipal;
 import com.odos.odos_server.security.oauth2.OAuth2LoginResponse;
@@ -12,7 +14,6 @@ import java.io.IOException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -36,7 +37,7 @@ public class OAuth2LoginSuccessHandler implements AuthenticationSuccessHandler {
     Member member =
         memberRepository
             .findByEmail(email)
-            .orElseThrow(() -> new UsernameNotFoundException("User not found: " + email));
+            .orElseThrow(() -> new CustomException(ErrorCode.OAUTH_USER_NOT_FOUND));
 
     String accessToken = jwtTokenProvider.createAccessToken(member);
 
