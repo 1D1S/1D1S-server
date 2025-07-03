@@ -1,4 +1,3 @@
-// src/main/java/com/odos/odos_server/domain/diary/service/DiaryService.java
 package com.odos.odos_server.domain.diary.service;
 
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
@@ -34,6 +33,10 @@ public class DiaryService {
   private final ChallengeRepository challengeRepository;
   private final ChallengeGoalRepository challengeGoalRepository;
 
+  /*
+  Diary가 있는지 없는지 등의 권한 처리하는 코드 부족함 없는 거 있으니 추가하기
+  Diary에서 빌더 패턴으로 객체 생성하기
+   */
   @Transactional
   public DiaryResponseDTO createDiary(Long memberId, CreateDiaryInput input) {
     Member member =
@@ -192,7 +195,7 @@ public class DiaryService {
     Diary diary =
         diaryRepository
             .findById(diaryId)
-            .orElseThrow(() -> new IllegalArgumentException("Diary not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
     return DiaryResponseDTO.from(diary, diary.getDiaryLikes());
   }
 
@@ -200,10 +203,7 @@ public class DiaryService {
   public List<DiaryResponseDTO> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
     List<DiaryResponseDTO> result = new ArrayList<>();
-    System.out.println("총 개수: " + myDiaries.size());
-    for (Diary d : myDiaries) {
-      System.out.println(d.getTitle());
-    }
+
     for (Diary d : myDiaries) {
       result.add(DiaryResponseDTO.from(d, d.getDiaryLikes()));
     }
@@ -215,8 +215,7 @@ public class DiaryService {
     Diary diary =
         diaryRepository
             .findById(diaryId)
-            .orElseThrow(
-                () -> new IllegalArgumentException(ErrorCode.DIARY_NOT_FOUND.getMessage()));
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
     diaryRepository.delete(diary);
     return true;
   }
@@ -238,27 +237,11 @@ public class DiaryService {
       DiaryLike newLike = new DiaryLike(null, member, diary);
       diaryLikeRepository.save(newLike);
       List<DiaryLike> diaryLikes = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
-      System.out.println(diaryLikes.size());
       return diaryLikes.size();
     } else {
       return null;
     }
   }
-
-  //  @Transactional
-  //  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
-  //    Optional<DiaryLike> diaryLike =
-  //        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
-  //    if (diaryLike.isEmpty()) {
-  //      throw new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND);
-  //    } else {
-  //      DiaryLike diaryLike1 =
-  //          diaryLike.orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-  //      diaryLikeRepository.delete(diaryLike1);
-  //      List<DiaryLike> diaryLikes = diaryLikeRepository.findAll();
-  //      return LikesDto.fromDiary(diaryLikes).count();
-  //    }
-  //  }
 
   @Transactional
   public Integer cancelDiaryLike(Long diaryId, Long memberId) {
@@ -268,11 +251,10 @@ public class DiaryService {
     if (diaryLike.isEmpty()) {
       throw new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND);
     }
-
+    int diaryLikeCount = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId).size();
     diaryLikeRepository.delete(diaryLike.get());
-
-    // 삭제 후에도 카운트 정확히 반영 가능 (쿼리 기준이 다이어리 하나만 보기 때문)
-    return diaryLikeRepository.findDiaryLikesByDiaryId(diaryId).size();
+    // null이면 0으로 처리로 수정하는게 나을지 main 머지 후 처리 일단 숫자만 리턴하는걸로
+    return diaryLikeCount - 1;
   }
 
   @Transactional
