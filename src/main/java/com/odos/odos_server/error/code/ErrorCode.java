@@ -14,10 +14,10 @@ public enum ErrorCode {
 
   UNAUTHORIZED(401, "AUTH-001", "Unauthorized access"),
   INVALID_AUTH_PRINCIPAL(400, "AUTH-002", "Invalid authentication principal"),
-  INVALID_EMAIL(400, "AUTH-002", "Email is missing or invalid"),
-  OAUTH_USER_NOT_FOUND(404, "AUTH-003", "User not found from OAuth provider"),
-  INVALID_SIGNUP_PROVIDER(400, "AUTH-004", "Unexpected signup provider"),
-  EMAIL_USER_NOT_FOUND(404, "AUTH-005", "User not found with given email"),
+  INVALID_EMAIL(400, "AUTH-003", "Email is missing or invalid"),
+  OAUTH_USER_NOT_FOUND(404, "AUTH-004", "User not found from OAuth provider"),
+  INVALID_SIGNUP_PROVIDER(400, "AUTH-005", "Unexpected signup provider"),
+  EMAIL_USER_NOT_FOUND(404, "AUTH-006", "User not found with given email"),
   ;
 
   private final int status;
