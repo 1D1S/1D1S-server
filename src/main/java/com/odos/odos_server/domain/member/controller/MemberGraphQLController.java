@@ -53,4 +53,9 @@ public class MemberGraphQLController {
     Long id = CurrentUserContext.getCurrentMemberId();
     return memberService.deleteById(id);
   }
+
+  @MutationMapping
+  public String updateMemberProfileImg(String fileName){
+    return memberService.updateMemberProfileImg(fileName);
+  }
 }

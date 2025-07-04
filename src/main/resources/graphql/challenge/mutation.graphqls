@@ -1,7 +1,7 @@
 extend type Mutation {
     createChallenge(input: CreateChallengeInput!): Challenge!
-    updateChallenge(challengeId:Int, input: CreateChallengeInput!): Challenge!
-    deleteChallenge(challengeId: ID!): Boolean!
+    # updateChallenge(challengeId:Int, input: CreateChallengeInput!): Challenge!
+    # deleteChallenge(challengeId: ID!): Boolean!
 
     addApplicants(challengeId: ID!, applicants: [ApplicantCreate]!): Challenge!
     acceptApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
