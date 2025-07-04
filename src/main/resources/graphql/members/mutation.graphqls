@@ -2,11 +2,13 @@ extend type Mutation {
     updateMemberProfile(input: UpdateMemberProfileInput): Member!
     deleteMember(memberId: ID!): Boolean!
     deleteMemberMe: Boolean!
+
+    updateMemberProfileImg(fileName : String!): String!
 }
 
 input UpdateMemberProfileInput{
     nickname: String
-    profileImageUrl: String
+    #profileImageUrl: String
     job: String
     category: [Category]
     isPublic: Boolean

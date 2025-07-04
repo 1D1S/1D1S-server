@@ -7,6 +7,8 @@ extend type Mutation {
     cancelDairyLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수
 
     reportDiary(input: CreateDiaryReportInput!): Boolean!
+
+    addDiaryImg(diaryId: ID!, fileName: String!):String!
 }
 
 input CreateDiaryInput {

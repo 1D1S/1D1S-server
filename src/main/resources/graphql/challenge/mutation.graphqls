@@ -13,7 +13,7 @@ extend type Mutation {
 
 input CreateChallengeInput {
     title: String!
-    description: String!
+    description: String
     startDate: String!
     endDate: String!
     participantCount: Int!
