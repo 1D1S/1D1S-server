@@ -8,10 +8,9 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
+import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.odos.odos_server.security.util.CurrentUserContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,7 +87,10 @@ public class MemberService {
   @Transactional
   public String updateMemberProfileImg(String fileName) {
     Long id = CurrentUserContext.getCurrentMemberId();
-    Member member = memberRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+    Member member =
+        memberRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     S3Dto s3Dto = s3Service.generatePresignedUrl(fileName);
     member.updateProfileImageUrl(s3Dto.key());
