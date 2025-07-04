@@ -3,7 +3,7 @@ extend type Mutation {
     updateChallenge(challengeId:Int, input: CreateChallengeInput!): Challenge!
     deleteChallenge(challengeId: ID!): Boolean!
 
-    addApplicants(challengeId: ID!, goals: [String!]): Challenge!
+    applyMe(challengeId: ID!, goals: [String!]): Challenge!
     acceptApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
     rejectApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
 

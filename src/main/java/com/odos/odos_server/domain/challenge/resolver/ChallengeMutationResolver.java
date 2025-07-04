@@ -23,8 +23,8 @@ public class ChallengeMutationResolver {
   }
 
   @MutationMapping
-  public ChallengeDto addApplicants(@Argument Long challengeId, @Argument List<String> goals) {
-    return challengeMutationService.addApplicants(challengeId, goals);
+  public ChallengeDto applyMe(@Argument Long challengeId, @Argument List<String> goals) {
+    return challengeMutationService.applyMe(challengeId, goals);
   }
 
   @MutationMapping

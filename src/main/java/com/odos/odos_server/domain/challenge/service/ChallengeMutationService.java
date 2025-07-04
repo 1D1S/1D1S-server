@@ -85,7 +85,7 @@ public class ChallengeMutationService {
     return ChallengeDto.from(challenge);
   }
 
-  public ChallengeDto addApplicants(Long challengeId, List<String> goals) {
+  public ChallengeDto applyMe(Long challengeId, List<String> goals) {
     Long currentMemberId = CurrentUserContext.getCurrentMemberId();
     Challenge challenge =
         challengeRepository
