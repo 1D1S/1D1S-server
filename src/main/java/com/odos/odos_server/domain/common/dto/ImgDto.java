@@ -7,7 +7,11 @@ public record ImgDto(String url) {
     return new ImgDto(image.getUrl());
   }
 
-  public static ImgDto from(String url) {
+  // 수정 필요
+  public static ImgDto from(String key) {
+    String bucket = "1d1s-image-bucket";
+    String region = "ap-northeast-2";
+    String url = "https://" + bucket + ".s3." + region + ".amazonaws.com/" + key;
     return new ImgDto(url);
   }
 }
