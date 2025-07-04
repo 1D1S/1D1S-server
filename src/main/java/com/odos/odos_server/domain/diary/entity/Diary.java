@@ -4,7 +4,7 @@ import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,9 +29,9 @@ public class Diary {
 
   @CreatedDate
   @Column(updatable = false)
-  private LocalDateTime createdDate;
+  private LocalDate createdDate;
 
-  @Column private LocalDateTime date;
+  @Column private LocalDate date;
 
   @Column
   @Enumerated(EnumType.STRING)
@@ -65,7 +65,7 @@ public class Diary {
   private List<DiaryReport> diaryReports;
 
   public void update(
-      String title, String content, Feeling feeling, Boolean isPublic, LocalDateTime date) {
+      String title, String content, Feeling feeling, Boolean isPublic, LocalDate date) {
     // Challenge challenge) {
     this.title = title;
     this.content = content;

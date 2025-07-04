@@ -7,6 +7,7 @@ public enum ErrorCode {
   MEMBER_NOT_FOUND(404, "USER-001", "Member not found"),
   DIARY_NOT_FOUND(404, "DIARY-001", "Diary not found"),
   DIARYLIKE_NOT_FOUND(404, "DIARY-002", "DiaryLike not found"),
+  DIARYLIKE_ALREADY_FOUND(404, "DIARY-002", "DiaryLike Already exist"),
   DIARYREPORT_NOT_FOUND(404, "DIARY-003", "DiaryReport not found"),
   INVALID_NICKNAME_FORMAT(
       400, "USER-002", "Nickname must be Korean or English, max 8 chars, no special characters"),

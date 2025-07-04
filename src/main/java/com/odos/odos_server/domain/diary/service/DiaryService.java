@@ -1,6 +1,5 @@
 package com.odos.odos_server.domain.diary.service;
 
-import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
@@ -12,7 +11,7 @@ import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.util.CurrentUserContext;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -44,18 +43,17 @@ public class DiaryService {
         memberRepository
             .findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-    Challenge challenge =
-        challengeRepository
-            .findById(input.challengeId())
-            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+    //    Challenge challenge =
+    //        challengeRepository
+    //            .findById(input.challengeId())
+    //            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
-    LocalDateTime diaryDate = LocalDateTime.parse(input.achievedDate());
+    LocalDate diaryDate = LocalDate.parse(input.achievedDate());
     Diary diary =
         Diary.builder()
-            .id(null)
             .title(input.title())
-            .createdDate(LocalDateTime.now())
+            .createdDate(LocalDate.now())
             .date(diaryDate)
             .feeling(input.feeling())
             .isPublic(input.isPublic())
@@ -65,10 +63,10 @@ public class DiaryService {
             // .diaryImages(input.images())
             .diaryLikes(null)
             .member(member)
-            .challenge(challenge)
+            // .challenge(challenge)
             .diaryReports(null)
             .build();
-    diary = diaryRepository.save(diary);
+    diaryRepository.save(diary);
 
     if (input.images() != null) {
       for (String url : input.images()) {
@@ -101,7 +99,7 @@ public class DiaryService {
     //            .findById(input.getChallengeId())
     //            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
 
-    LocalDateTime diaryDate = LocalDateTime.parse(input.achievedDate());
+    LocalDate diaryDate = LocalDate.parse(input.achievedDate());
 
     diary.update(
         input.title(),
@@ -236,22 +234,19 @@ public class DiaryService {
       List<DiaryLike> diaryLikes = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
       return diaryLikes.size();
     } else {
-      return null;
+      throw new CustomException(ErrorCode.DIARYLIKE_ALREADY_FOUND);
     }
   }
 
   @Transactional
   public Integer cancelDiaryLike(Long diaryId, Long memberId) {
-    DiaryLike like =
-        diaryLikeRepository
-            .findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId)
-            .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-    diaryLikeRepository.delete(like);
-
-    List<DiaryLike> likeList = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
-    if (likeList.isEmpty()) {
-      return 0;
-    } else {
+    Optional<DiaryLike> like =
+        diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
+    // DiaryLike가 없어서 예외처리 던지면 GrapahQL 스키마 상 무조건 INT! 리턴이라 에러터짐
+    if (like.isEmpty()) return 0;
+    else {
+      diaryLikeRepository.delete(like.get());
+      List<DiaryLike> likeList = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
       return likeList.size();
     }
   }

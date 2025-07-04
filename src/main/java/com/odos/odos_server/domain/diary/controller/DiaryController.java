@@ -28,9 +28,9 @@ public class DiaryController {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.createDiary(memberId, input);
     } catch (Exception e) {
-      log.info(e.getMessage());
+      log.error("createDiary 내부 에러 발생", e);
+      throw e; // 다시 던져야 GraphQL에 전달됨
     }
-    return null;
   }
 
   @MutationMapping
@@ -65,22 +65,12 @@ public class DiaryController {
 
   @MutationMapping
   public Integer addDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
-    try {
-      return diaryService.createDiaryLike(diaryId, memberId);
-    } catch (CustomException e) {
-      log.info(e.getMessage());
-      return null;
-    }
+    return diaryService.createDiaryLike(diaryId, memberId);
   }
 
   @MutationMapping // 수정 필요, 삭제 되고 조회하려고 함
   public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
-    try {
-      diaryService.cancelDiaryLike(diaryId, memberId);
-    } catch (CustomException e) {
-      log.info(e.getMessage());
-    }
-    return null;
+    return diaryService.cancelDiaryLike(diaryId, memberId);
   }
 
   @QueryMapping
