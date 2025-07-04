@@ -14,7 +14,7 @@ public enum ErrorCode {
 
   MEMBER_NOT_FOUND(404, "USER-001", "Member not found"),
   INVALID_NICKNAME_FORMAT(
-          400, "USER-002", "Nickname must be Korean or English, max 8 chars, no special characters"),
+      400, "USER-002", "Nickname must be Korean or English, max 8 chars, no special characters"),
   NICKNAME_CHANGE_TOO_SOON(400, "USER-003", "Nickname can be changed only once a month"),
   CATEGORY_EMPTY(400, "USER-004", "At least one interest category must be selected"),
   CATEGORY_TOO_MANY(400, "USER-005", "Up to 3 interest categories can be selected"),
