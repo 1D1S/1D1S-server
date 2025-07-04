@@ -40,7 +40,7 @@ public class SecurityConfig {
             session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth ->
-                auth.requestMatchers("/", "/auth/**", "/oauth2/**", "/css/**", "/js/**")
+                auth.requestMatchers("/", "/auth/**", "/oauth2/**", "/css/**", "/js/**", "/graphql")
                     .permitAll()
                     .anyRequest()
                     .authenticated())
