@@ -1,7 +1,7 @@
 type Member {
     id: ID!
-    public: MemberPublic! # 공개 여부
-    profileImageUrl: Img
+    isPublic: MemberPublic! # 공개 여부
+    profileImageUrl: Img!
     role: MemberRole! # enums
     email: String!
     nickname: String!

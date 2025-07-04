@@ -6,4 +6,8 @@ public record ImgDto(String url) {
   public static ImgDto from(ChallengeImage image) {
     return new ImgDto(image.getUrl());
   }
+
+  public static ImgDto from(String url) {
+    return new ImgDto(url);
+  }
 }

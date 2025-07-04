@@ -3,20 +3,21 @@ package com.odos.odos_server.domain.member.entity;
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
 import com.odos.odos_server.domain.challenge.entity.MemberChallenge;
-import com.odos.odos_server.domain.common.Enum.Gender;
-import com.odos.odos_server.domain.common.Enum.Job;
-import com.odos.odos_server.domain.common.Enum.MemberRole;
-import com.odos.odos_server.domain.common.Enum.SignupRoute;
+import com.odos.odos_server.domain.common.Enum.*;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.entity.DiaryLike;
 import com.odos.odos_server.domain.diary.entity.DiaryReport;
 import com.odos.odos_server.domain.friend.Friend;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +27,7 @@ public class Member {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "member_id")
+  @Column(name = "memberId")
   private Long id;
 
   @Column(nullable = false, unique = true)
@@ -54,6 +55,8 @@ public class Member {
 
   private Boolean isPublic;
 
+  private LocalDateTime nicknameLastModifiedAt;
+
   public void updateRefreshToken(String updateRefreshToken) {
     this.refreshToken = updateRefreshToken;
   }
@@ -72,12 +75,13 @@ public class Member {
     this.gender = gender;
     this.isPublic = isPublic;
     this.role = MemberRole.USER;
+    this.nicknameLastModifiedAt = LocalDateTime.now();
   }
 
   @OneToMany(mappedBy = "hostMember", cascade = CascadeType.ALL)
   private List<Challenge> challenges;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<MemberChallenge> memberChallenges;
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
@@ -89,8 +93,8 @@ public class Member {
   @OneToMany(mappedBy = "receiver", cascade = CascadeType.ALL)
   private List<Friend> receivers;
 
-  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
-  private List<MemberInterest> memberInterests;
+  @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<MemberInterest> memberInterests = new ArrayList<>();
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<DiaryLike> diaryLikes;
@@ -100,4 +104,30 @@ public class Member {
 
   @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
   private List<Diary> diaries;
+  
+  public void updateNickname(String nickname) {
+    this.nickname = nickname;
+    this.nicknameLastModifiedAt = LocalDateTime.now();
+  }
+
+  public void updateProfileImageUrl(String profileImageUrl) {
+    this.profileImageUrl = profileImageUrl;
+  }
+
+  public void updateCategories(List<ChallengeCategory> categories) {
+    this.memberInterests.clear();
+
+    for (ChallengeCategory category : categories) {
+      this.memberInterests.add(new MemberInterest(this, category));
+    }
+  }
+
+  public void updateJob(Job job) {
+    this.job = job;
+  }
+
+  public void updateIsPublic(Boolean isPublic) {
+    this.isPublic = isPublic;
+  }
+
 }
