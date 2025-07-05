@@ -40,18 +40,34 @@ public class DiaryController {
 
   @QueryMapping // memberId 없이 다 보일 수 있게 또 수정?
   public List<DiaryResponseDto> allDiaries() {
-    return diaryService.getAllDiary();
+    try {
+      return diaryService.getAllDiary();
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      throw e;
+      // throw new GraphQlClientException("알 수 없는 오류가 발생했습니다.");
+    }
   }
 
   @QueryMapping
   public DiaryResponseDto diaryById(@Argument Long id) {
-    return diaryService.getDiaryById(id);
+    try {
+      return diaryService.getDiaryById(id);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      throw e;
+    }
   }
 
   @QueryMapping
   public List<DiaryResponseDto> myDiaries() {
-    Long memberId = CurrentUserContext.getCurrentMemberId();
-    return diaryService.getMyDiaries(memberId);
+    try {
+      Long memberId = CurrentUserContext.getCurrentMemberId();
+      return diaryService.getMyDiaries(memberId);
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      throw e;
+    }
   }
 
   @MutationMapping

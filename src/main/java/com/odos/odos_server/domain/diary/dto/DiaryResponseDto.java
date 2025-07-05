@@ -28,7 +28,9 @@ public record DiaryResponseDto(
             : entity.getDiaryImages().stream().map(ImgDto::from).toList();
 
     // 이 다이어리에 좋아요 누른 사람의 정보를 가져오고 다이어리의 총 좋아요 개수 가져오는거 맞죠??
-    LikesDto likesDto = LikesDto.fromDiary(likes == null ? List.of() : likes);
+    // LikesDto likesDto = LikesDto.fromDiary(likes == null ? List.of() : likes);
+    LikesDto likesDto =
+        likes == null ? new LikesDto(Collections.emptyList(), 0) : LikesDto.fromDiary(likes);
 
     return new DiaryResponseDto(
         entity.getId(),
