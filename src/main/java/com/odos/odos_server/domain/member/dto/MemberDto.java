@@ -2,14 +2,13 @@ package com.odos.odos_server.domain.member.dto;
 
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
 import com.odos.odos_server.domain.common.Enum.MemberRole;
-import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.member.entity.Member;
 import java.util.List;
 
 public record MemberDto(
     Long id,
     MemberPublicDto isPublic,
-    ImgDto profileImageUrl,
+    // ImgDto profileImageUrl,
     MemberRole role,
     String email,
     String nickname,
@@ -22,7 +21,7 @@ public record MemberDto(
     return new MemberDto(
         member.getId(),
         MemberPublicDto.from(member.getIsPublic()),
-        ImgDto.from(member.getProfileImageUrl()),
+        // ImgDto.from(member.getProfileImageUrl()),
         MemberRole.valueOf(member.getRole().name()), // 도메인 Role → DTO Role
         member.getEmail(),
         member.getNickname(),

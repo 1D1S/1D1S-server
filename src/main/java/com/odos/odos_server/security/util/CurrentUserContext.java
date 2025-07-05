@@ -14,6 +14,7 @@ public class CurrentUserContext {
 
   public static MemberPrincipal getCurrentMemberPrincipal() {
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    System.out.println(">>>> principal class = " + auth.getPrincipal().getClass());
     if (auth == null) {
       throw new CustomException(ErrorCode.UNAUTHORIZED);
     }
