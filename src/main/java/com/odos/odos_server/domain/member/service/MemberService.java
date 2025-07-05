@@ -8,7 +8,6 @@ import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
 import com.odos.odos_server.error.code.ErrorCode;
 import com.odos.odos_server.error.exception.CustomException;
-import com.odos.odos_server.security.util.CurrentUserContext;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -85,8 +84,7 @@ public class MemberService {
   }
 
   @Transactional
-  public String updateMemberProfileImg(String fileName) {
-    Long id = CurrentUserContext.getCurrentMemberId();
+  public String updateMemberProfileImg(Long id, String fileName) {
     Member member =
         memberRepository
             .findById(id)
