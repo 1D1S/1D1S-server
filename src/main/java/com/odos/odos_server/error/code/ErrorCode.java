@@ -13,6 +13,10 @@ public enum ErrorCode {
   EMAIL_USER_NOT_FOUND(404, "AUTH-005", "User not found with given email"),
 
   MEMBER_NOT_FOUND(404, "USER-001", "Member not found"),
+  DIARY_NOT_FOUND(404, "DIARY-001", "Diary not found"),
+  DIARYLIKE_NOT_FOUND(404, "DIARY-002", "DiaryLike not found"),
+  DIARYLIKE_ALREADY_FOUND(404, "DIARY-002", "DiaryLike Already exist"),
+  DIARYREPORT_NOT_FOUND(404, "DIARY-003", "DiaryReport not found"),
   INVALID_NICKNAME_FORMAT(
       400, "USER-002", "Nickname must be Korean or English, max 8 chars, no special characters"),
   NICKNAME_CHANGE_TOO_SOON(400, "USER-003", "Nickname can be changed only once a month"),
@@ -27,8 +31,7 @@ public enum ErrorCode {
   ALREADY_LIKED(400, "CHALLENGE-006", "You already liked this challenge"),
 
   INVALID_DATE_FORMAT(400, "COMMON-001", "Invalid date format. Please use yyyy-MM-dd"),
-  INVALID_CURSOR(400, "COMMON-002", "Invalid cursor"),
-  ;
+  INVALID_CURSOR(400, "COMMON-002", "Invalid cursor");
 
   private final int status;
   private final String code;
