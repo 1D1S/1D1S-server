@@ -18,7 +18,7 @@ public class DiaryGoal {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column private Boolean goalCompleted;
+  @Column private Boolean goalCompleted = false; // 기본값 false로 설정
 
   @ManyToOne
   @JoinColumn(name = "diaryId")

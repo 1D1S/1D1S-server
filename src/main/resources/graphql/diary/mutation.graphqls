@@ -1,23 +1,24 @@
 extend type Mutation {
-    createDiary(input: CreateDiaryInput!): Diary!
-    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary!
-    deleteDiary(DiaryId: ID!): Boolean
+    createDiary(input: CreateDiaryInput!): Diary! # clear - 응답 잘 돌아옴
+    updateDiary(DiaryId: ID!, input: CreateDiaryInput): Diary! # clear - 잘 수정 응답옴
+    deleteDiary(DiaryId: ID!): Boolean # clear - 잘 응답옴
 
-    addDiaryLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수
-    cancelDairyLike(diaryId: ID!, memberId: ID!): Int! # 좋아요 개수
+    addDiaryLike(diaryId: ID!, memberId: ID!): Int! #clear - 완전 성공
+    cancelDiaryLike(diaryId: ID!, memberId: ID!): Int # clear - 완전 성공
 
-    reportDiary(input: CreateDiaryReportInput!): Boolean!
-
+    reportDiary(input: CreateDiaryReportInput!): Boolean! # clear - 완전 성공
     addDiaryImg(diaryId: ID!, fileName: String!):String!
 }
 
 input CreateDiaryInput {
-    challengeId: ID!
+   # challengeId: ID#!
     title: String!
     content: String!
     feeling: Feeling!
+    isPublic: Boolean
+    images : [String!]
     public: Boolean
-    achievedGoalIds: [ID!]!
+    achievedGoalIds: [ID!]
     achievedDate: String!
 }
 

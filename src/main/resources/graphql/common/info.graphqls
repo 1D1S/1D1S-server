@@ -27,13 +27,15 @@ type DiaryInfo {
     createdAt: String!
     date: String!
     feeling: Feeling!
-    achievement: [DiaryGoal!]!
-    AchievementRate: Int!
+    achievement: [DiaryGoal!]#!
+    achievementRate: Int#!
 }
 
 type ChallengeInfo{
-    startDate: String!
-    endDate: String!
+    """ "yyyy-mm-dd" 형식"""
+    startDate: String
+    """ "yyyy-mm-dd" 형식"""
+    endDate: String
     participants: Int!
     maxParticipants: Int!
     category: Category!
