@@ -1,6 +1,8 @@
 package com.odos.odos_server.domain.member.service;
 
 import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
+import com.odos.odos_server.domain.common.S3Service;
+import com.odos.odos_server.domain.common.dto.S3Dto;
 import com.odos.odos_server.domain.member.dto.SignupInfoRequest;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class SignupService {
 
   private final MemberRepository memberRepository;
+  private final S3Service s3Service;
 
   @Transactional
   public void completeSignupInfo(Long memberId, SignupInfoRequest request) {
@@ -37,9 +40,12 @@ public class SignupService {
       throw new CustomException(ErrorCode.INVALID_NICKNAME_FORMAT);
     }
 
+    String profileFileName = request.getProfileFileName();
+    S3Dto s3Dto = s3Service.generatePresignedUrl(profileFileName);
+
     member.completeProfile(
         request.getNickname(),
-        request.getProfileImageUrl(),
+        s3Dto.key(),
         request.getJob(),
         request.getBirth(),
         request.getGender(),

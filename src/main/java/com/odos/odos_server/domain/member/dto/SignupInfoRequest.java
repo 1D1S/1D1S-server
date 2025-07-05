@@ -16,7 +16,7 @@ public class SignupInfoRequest {
 
   @NotNull private String nickname;
 
-  private String profileImageUrl;
+  private String profileFileName;
 
   @NotNull private Job job;
 
