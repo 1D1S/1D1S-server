@@ -5,30 +5,39 @@ import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
 import com.odos.odos_server.domain.common.Enum.ChallengeStatus;
 import com.odos.odos_server.domain.common.Enum.ChallengeType;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Optional;
 
 public record ChallengeInfoDto(
-    LocalDateTime startDate,
-    LocalDateTime endDate,
+    LocalDate startDate,
+    Optional<LocalDate> endDate,
     int participants,
-    Long maxParticipants,
+    int maxParticipants,
     ChallengeCategory category,
     ChallengeType goalType,
     ChallengeStatus status) {
+
   public static ChallengeInfoDto from(Challenge entity) {
-    int participants =
-        (int)
-            entity.getMemberChallenges().stream()
-                .filter(
-                    mc ->
-                        mc.getMemberChallengeRole() == MemberChallengeRole.HOST
-                            || mc.getMemberChallengeRole() == MemberChallengeRole.APPLICANT)
-                .count();
+    int participants = 0;
+
+    if (entity.getMemberChallenges() != null) {
+      participants =
+          (int)
+              entity.getMemberChallenges().stream()
+                  .filter(
+                      mc ->
+                          mc.getMemberChallengeRole() == MemberChallengeRole.HOST
+                              || mc.getMemberChallengeRole() == MemberChallengeRole.APPLICANT)
+                  .count();
+    }
 
     ChallengeStatus status;
-    LocalDateTime now = LocalDateTime.now();
+    LocalDate now = LocalDate.now();
+
     if (now.isBefore(entity.getStartDate())) {
       status = ChallengeStatus.RECRUITING;
+    } else if (entity.getEndDate() == null) {
+      status = ChallengeStatus.IN_PROGRESS;
     } else if (now.isAfter(entity.getEndDate())) {
       status = ChallengeStatus.COMPLETED;
     } else {
@@ -37,7 +46,7 @@ public record ChallengeInfoDto(
 
     return new ChallengeInfoDto(
         entity.getStartDate(),
-        entity.getEndDate(),
+        Optional.ofNullable(entity.getEndDate()),
         participants,
         entity.getParticipantsCnt(),
         entity.getCategory(),
