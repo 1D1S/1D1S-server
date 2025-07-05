@@ -17,10 +17,6 @@ extend type Query {
 
 input ChallengeFilterInput {
     keyword: String
-    job: Job
-    status: ChallengeStatus
-    ageGroup: AgeGroup
-    duration: DurationRange
 }
 
 input DurationRange {
