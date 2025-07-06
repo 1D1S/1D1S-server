@@ -10,7 +10,6 @@ import lombok.Getter;
 @Getter
 public class UpdateMemberProfileInput {
   private final String nickname;
-  private final String profileImageUrl;
   private final Job job;
   private final Boolean isPublic;
   private final List<ChallengeCategory> category;
@@ -18,12 +17,10 @@ public class UpdateMemberProfileInput {
   @JsonCreator
   public UpdateMemberProfileInput(
       @JsonProperty("nickname") String nickname,
-      @JsonProperty("profileImageUrl") String profileImageUrl,
       @JsonProperty("job") Job job,
       @JsonProperty("category") List<ChallengeCategory> category,
       @JsonProperty("public") Boolean isPublic) {
     this.nickname = nickname;
-    this.profileImageUrl = profileImageUrl;
     this.job = job;
     this.category = category;
     this.isPublic = isPublic;

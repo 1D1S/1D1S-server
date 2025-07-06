@@ -7,7 +7,7 @@ extend type Mutation {
     cancelDiaryLike(diaryId: ID!, memberId: ID!): Int # clear - 완전 성공
 
     reportDiary(input: CreateDiaryReportInput!): Boolean! # clear - 완전 성공
-    addDiaryImg(diaryId: ID!, fileName: String!):String!
+    addDiaryImg(diaryId: ID!, fileNameList: [String!]!):[String]
 }
 
 input CreateDiaryInput {
@@ -16,7 +16,7 @@ input CreateDiaryInput {
     content: String!
     feeling: Feeling!
     isPublic: Boolean
-    images : [String!]
+    # images : [String!]
     public: Boolean
     achievedGoalIds: [ID!]
     achievedDate: String!

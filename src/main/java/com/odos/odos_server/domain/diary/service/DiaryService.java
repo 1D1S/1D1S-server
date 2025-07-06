@@ -2,7 +2,9 @@ package com.odos.odos_server.domain.diary.service;
 
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
+import com.odos.odos_server.domain.common.S3Service;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
+import com.odos.odos_server.domain.common.dto.S3Dto;
 import com.odos.odos_server.domain.diary.dto.*;
 import com.odos.odos_server.domain.diary.entity.*;
 import com.odos.odos_server.domain.diary.repository.*;
@@ -32,6 +34,7 @@ public class DiaryService {
   private final MemberRepository memberRepository;
   private final ChallengeRepository challengeRepository;
   private final ChallengeGoalRepository challengeGoalRepository;
+  private final S3Service s3Service;
 
   /*
   Diary가 있는지 없는지 등의 권한 처리하는 코드 부족함 없는 거 있으니 추가하기
@@ -68,11 +71,11 @@ public class DiaryService {
             .build();
     diaryRepository.save(diary);
 
-    if (input.images() != null) {
+    /*if (input.images() != null) {
       for (String url : input.images()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
       }
-    }
+    }*/
 
     // 챌린지에서 목표 가져오면 이 코드 필요없을듯
     //    if (input.getGoalIds() != null) {
@@ -108,12 +111,12 @@ public class DiaryService {
         input.isPublic(),
         diaryDate); // , challenge);
 
-    diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
+    /*diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
     if (input.images() != null) {
       for (String url : input.images()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
       }
-    }
+    }*/
 
     //    diary.getDiaryGoals().clear();
     //    if (input.getGoalIds() != null) {
@@ -128,6 +131,24 @@ public class DiaryService {
 
     diaryRepository.save(diary);
     return DiaryResponseDto.from(diary, diary.getDiaryLikes());
+  }
+
+  public List<String> addDiaryImg(Long diaryId, List<String> fileNameList) {
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+    diary.getDiaryImages().clear();
+
+    List<String> presignedUrls = new ArrayList<>();
+    for (String fileName : fileNameList) {
+      S3Dto s3Dto = s3Service.generatePresignedUrl(fileName);
+      presignedUrls.add(s3Dto.presignedUrl());
+
+      diaryImageRepository.save(DiaryImage.builder().diary(diary).url(s3Dto.key()).build());
+    }
+
+    return presignedUrls;
   }
 
   @Transactional

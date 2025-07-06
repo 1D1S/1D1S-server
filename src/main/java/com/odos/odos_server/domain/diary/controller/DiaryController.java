@@ -135,4 +135,8 @@ public class DiaryController {
   //    return ResponseEntity.ok(result);
   //  }
 
+  @MutationMapping
+  public List<String> addDiaryImg(@Argument Long diaryId, @Argument List<String> fileNameList) {
+    return diaryService.addDiaryImg(diaryId, fileNameList);
+  }
 }

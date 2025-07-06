@@ -45,7 +45,6 @@ public class MemberService {
       validateNicknameTime(m);
       m.updateNickname(in.getNickname());
     }
-    if (in.getProfileImageUrl() != null) m.updateProfileImageUrl(in.getProfileImageUrl());
     if (in.getJob() != null) m.updateJob(in.getJob());
     if (in.getIsPublic() != null) m.updateIsPublic(in.getIsPublic());
 

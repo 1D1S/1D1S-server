@@ -9,6 +9,7 @@ extend type Mutation {
 
     addChallengeLike(challengeId: ID!): Int! # 좋아요 개수
     cancelChallengeLike(challengeId: ID!): Int! # 좋아요 개수
+    #addChallengeImg(fileName : String!): String
 }
 
 input CreateChallengeInput {
@@ -20,7 +21,7 @@ input CreateChallengeInput {
     goalType: ChallengeType!         # FIXED or FLEXIBLE
     goals: [String!]                     # FIXED일 경우 사용
     category: Category!
-    img: [String!]
+    #img: [String!]
 }
 
 input ApplicantCreate {
