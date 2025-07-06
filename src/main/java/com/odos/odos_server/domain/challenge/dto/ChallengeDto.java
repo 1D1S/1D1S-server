@@ -2,24 +2,24 @@ package com.odos.odos_server.domain.challenge.dto;
 
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
+import com.odos.odos_server.domain.common.dto.MemberCoreInfoDto;
 import java.util.Collections;
 import java.util.List;
 
 public record ChallengeDto(
     Long id,
-    // MemberDto hostMember,
+    MemberCoreInfoDto hostMember,
     List<ApplicantsDto> applicants,
     String title,
     String description,
     LikesDto like,
-    List<ImgDto> img,
+    // List<ImgDto> img,
     ChallengeInfoDto challengeInfo) {
   public static ChallengeDto from(Challenge challenge) {
     return new ChallengeDto(
         challenge.getId(),
-        // MemberDto.from(challenge.getHostMember()),
+        MemberCoreInfoDto.from(challenge.getHostMember()),
         challenge.getMemberChallenges() != null
             ? challenge.getMemberChallenges().stream()
                 .filter(
@@ -32,9 +32,9 @@ public record ChallengeDto(
         challenge.getTitle(),
         challenge.getDescription(),
         LikesDto.from(challenge.getLikes()),
-        challenge.getImages() != null
-            ? challenge.getImages().stream().map(ImgDto::from).toList()
-            : Collections.emptyList(),
+        /*challenge.getImages() != null
+        ? challenge.getImages().stream().map(ImgDto::from).toList()
+        : Collections.emptyList(),*/
         ChallengeInfoDto.from(challenge));
   }
 }

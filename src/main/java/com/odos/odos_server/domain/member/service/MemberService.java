@@ -1,6 +1,8 @@
 package com.odos.odos_server.domain.member.service;
 
 import com.odos.odos_server.domain.common.Enum.ChallengeCategory;
+import com.odos.odos_server.domain.common.S3Service;
+import com.odos.odos_server.domain.common.dto.S3Dto;
 import com.odos.odos_server.domain.member.dto.UpdateMemberProfileInput;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.repository.MemberRepository;
@@ -17,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemberService {
 
   private final MemberRepository memberRepository;
+  private final S3Service s3Service;
 
   @Transactional(readOnly = true)
   public Member getMemberById(Long memberId) {
@@ -42,7 +45,7 @@ public class MemberService {
       validateNicknameTime(m);
       m.updateNickname(in.getNickname());
     }
-    if (in.getProfileImageUrl() != null) m.updateProfileImageUrl(in.getProfileImageUrl());
+    // if (in.getProfileImageUrl() != null) m.updateProfileImageUrl(in.getProfileImageUrl());
     if (in.getJob() != null) m.updateJob(in.getJob());
     if (in.getIsPublic() != null) m.updateIsPublic(in.getIsPublic());
 
@@ -78,5 +81,17 @@ public class MemberService {
     if (!memberRepository.existsById(memberId)) return false;
     memberRepository.deleteById(memberId);
     return true;
+  }
+
+  @Transactional
+  public String updateMemberProfileImg(Long id, String fileName) {
+    Member member =
+        memberRepository
+            .findById(id)
+            .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+    S3Dto s3Dto = s3Service.generatePresignedUrl(fileName);
+    member.updateProfileImageKey(s3Dto.key());
+    return s3Dto.presignedUrl();
   }
 }

@@ -4,7 +4,9 @@ import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.challenge.entity.ChallengeGoal;
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
+import com.odos.odos_server.domain.common.S3Service;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
+import com.odos.odos_server.domain.common.dto.S3Dto;
 import com.odos.odos_server.domain.diary.dto.*;
 import com.odos.odos_server.domain.diary.entity.*;
 import com.odos.odos_server.domain.diary.repository.*;
@@ -34,13 +36,14 @@ public class DiaryService {
   private final MemberRepository memberRepository;
   private final ChallengeRepository challengeRepository;
   private final ChallengeGoalRepository challengeGoalRepository;
+  private final S3Service s3Service;
 
   /*
   Diary가 있는지 없는지 등의 권한 처리하는 코드 부족함 없는 거 있으니 추가하기
   Diary에서 빌더 패턴으로 객체 생성하기
    */
   @Transactional
-  public DiaryResponseDto createDiary(Long memberId, CreateDiaryInput input) {
+  public DiaryDto createDiary(Long memberId, CreateDiaryInput input) {
     Member member =
         memberRepository
             .findById(memberId)
@@ -68,11 +71,11 @@ public class DiaryService {
             .build();
     diaryRepository.save(diary);
 
-    if (input.images() != null) {
+    /*if (input.images() != null) {
       for (String url : input.images()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
       }
-    }
+    }*/
 
     // 챌린지에서 목표 가져오면 이 코드 필요없을듯
     if (input.goalIds() != null) {
@@ -87,11 +90,11 @@ public class DiaryService {
       }
     }
 
-    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional
-  public DiaryResponseDto updateDiary(Long diaryId, CreateDiaryInput input) {
+  public DiaryDto updateDiary(Long diaryId, CreateDiaryInput input) {
     Diary diary =
         diaryRepository
             .findById(diaryId)
@@ -111,11 +114,12 @@ public class DiaryService {
       diaryImageRepository.deleteAll(diary.getDiaryImages());
     }
 
+    /*diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
     if (input.images() != null) {
       for (String url : input.images()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
       }
-    }
+    }*/
 
     // 기존 체크한 목표 삭제하고 다시 체크한거로
     if (diary.getDiaryGoals() != null && !diary.getDiaryGoals().isEmpty()) {
@@ -135,15 +139,33 @@ public class DiaryService {
     }
 
     diaryRepository.save(diary);
-    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diary.getDiaryLikes());
+  }
+
+  public List<String> addDiaryImg(Long diaryId, List<String> fileNameList) {
+    Diary diary =
+        diaryRepository
+            .findById(diaryId)
+            .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
+    diary.getDiaryImages().clear();
+
+    List<String> presignedUrls = new ArrayList<>();
+    for (String fileName : fileNameList) {
+      S3Dto s3Dto = s3Service.generatePresignedUrl(fileName);
+      presignedUrls.add(s3Dto.presignedUrl());
+
+      diaryImageRepository.save(DiaryImage.builder().diary(diary).url(s3Dto.key()).build());
+    }
+
+    return presignedUrls;
   }
 
   @Transactional
-  public List<DiaryResponseDto> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
+  public List<DiaryDto> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
     List<Diary> diaries = diaryRepository.findAllPublicDiaries();
-    List<DiaryResponseDto> result = new ArrayList<>();
+    List<DiaryDto> result = new ArrayList<>();
     for (Diary d : diaries) {
-      result.add(DiaryResponseDto.from(d, d.getDiaryLikes()));
+      result.add(DiaryDto.from(d, d.getDiaryLikes()));
     }
     return result;
   }
@@ -163,7 +185,7 @@ public class DiaryService {
     for (int i = 0; i < diaries.size(); i++) {
       Diary d = diaries.get(i);
       String cursor = encodeItemCursor(startOffset + i);
-      edges.add(new DiaryEdgeDto(DiaryResponseDto.from(d, d.getDiaryLikes()), cursor));
+      edges.add(new DiaryEdgeDto(DiaryDto.from(d, d.getDiaryLikes()), cursor));
     }
 
     String endCursor = pageResult.hasNext() ? encodePageCursor(page + 1) : null;
@@ -194,21 +216,21 @@ public class DiaryService {
   }
 
   @Transactional
-  public DiaryResponseDto getDiaryById(Long diaryId) {
+  public DiaryDto getDiaryById(Long diaryId) {
     Diary diary =
         diaryRepository
             .findById(diaryId)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-    return DiaryResponseDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diary.getDiaryLikes());
   }
 
   @Transactional(readOnly = true) // query의 myDiaries
-  public List<DiaryResponseDto> getMyDiaries(Long memberId) {
+  public List<DiaryDto> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
-    List<DiaryResponseDto> result = new ArrayList<>();
+    List<DiaryDto> result = new ArrayList<>();
 
     for (Diary d : myDiaries) {
-      result.add(DiaryResponseDto.from(d, d.getDiaryLikes()));
+      result.add(DiaryDto.from(d, d.getDiaryLikes()));
     }
     return result;
   }
@@ -281,7 +303,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryResponseDto> getRandomDiaries(Integer first, Long memberId) {
+  public List<DiaryDto> getRandomDiaries(Integer first, Long memberId) {
     /*
     비가입 회원에게는 리스트만 보이고(내용은 프론트가 골라서 넣어주는것?),
     상세접근은 못함, 하려고하면 로그인요구
@@ -298,10 +320,7 @@ public class DiaryService {
     }
 
     Collections.shuffle(diaries);
-    return diaries.stream()
-        .limit(size)
-        .map(d -> DiaryResponseDto.from(d, d.getDiaryLikes()))
-        .toList();
+    return diaries.stream().limit(size).map(d -> DiaryDto.from(d, d.getDiaryLikes())).toList();
   }
 
   @Transactional
