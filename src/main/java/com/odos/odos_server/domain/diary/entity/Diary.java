@@ -65,13 +65,17 @@ public class Diary {
   private List<DiaryReport> diaryReports;
 
   public void update(
-      String title, String content, Feeling feeling, Boolean isPublic, LocalDate date) {
-    // Challenge challenge) {
+      String title,
+      String content,
+      Feeling feeling,
+      Boolean isPublic,
+      LocalDate date,
+      Challenge challenge) {
     this.title = title;
     this.content = content;
     this.feeling = feeling;
     this.isPublic = isPublic;
     this.date = date;
-    // this.challenge = challenge;
+    this.challenge = challenge;
   }
 }

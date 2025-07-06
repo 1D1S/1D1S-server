@@ -12,5 +12,6 @@ public record CreateChallengeInputDto(
     int participantCount,
     ChallengeType goalType,
     List<String> goals,
-    ChallengeCategory category,
-    List<String> img) {}
+    ChallengeCategory category
+    // List<String> img
+    ) {}

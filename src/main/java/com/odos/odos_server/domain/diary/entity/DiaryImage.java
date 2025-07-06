@@ -2,6 +2,7 @@ package com.odos.odos_server.domain.diary.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Getter
 @Table(name = "DiaryImage")
+@Builder
 public class DiaryImage {
 
   @Id

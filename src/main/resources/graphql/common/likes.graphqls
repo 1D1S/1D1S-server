@@ -1,4 +1,4 @@
 type Likes {
-    members: [Member]!
+    members: [MemberCoreInfo]!
     count: Int!
 }

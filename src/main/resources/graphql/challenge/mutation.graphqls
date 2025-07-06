@@ -1,7 +1,7 @@
 extend type Mutation {
     createChallenge(input: CreateChallengeInput!): Challenge!
-    updateChallenge(challengeId:Int, input: CreateChallengeInput!): Challenge!
-    deleteChallenge(challengeId: ID!): Boolean!
+    # updateChallenge(challengeId:Int, input: CreateChallengeInput!): Challenge!
+    # deleteChallenge(challengeId: ID!): Boolean!
 
     applyMe(challengeId: ID!, goals: [String!]): Challenge!
     acceptApplicants(challengeId: ID!, applicants: [ID]!): Challenge!
@@ -9,18 +9,19 @@ extend type Mutation {
 
     addChallengeLike(challengeId: ID!): Int! # 좋아요 개수
     cancelChallengeLike(challengeId: ID!): Int! # 좋아요 개수
+    #addChallengeImg(fileName : String!): String
 }
 
 input CreateChallengeInput {
     title: String!
-    description: String!
+    description: String
     startDate: String!
     endDate: String
     participantCount: Int!
     goalType: ChallengeType!         # FIXED or FLEXIBLE
     goals: [String!]                     # FIXED일 경우 사용
     category: Category!
-    img: [String!]
+    #img: [String!]
 }
 
 input ApplicantCreate {

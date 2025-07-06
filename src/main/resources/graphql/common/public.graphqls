@@ -3,5 +3,5 @@ type MemberPublic {
 }
 
 type DiaryPublic {
-    public: Boolean!
+    isPublic: Boolean!
 }

@@ -1,17 +1,17 @@
 type Challenge {
     id: ID!
-    hostMember: Member!
+    hostMember: MemberCoreInfo!
     applicants: [Applicant!]!
     title: String!
     description: String!
     like: Likes!
-    img: [Img!]!
+    #img: [Img!]!
 
     challengeInfo: ChallengeInfo!
 }
 
 type Applicant {
-    member: Member!
+    member: MemberCoreInfo!
     status: ChallengeApplicantStatus!
     goals: [Goal]!
 }
