@@ -1,5 +1,7 @@
 package com.odos.odos_server.domain.diary.service;
 
+import com.odos.odos_server.domain.challenge.entity.Challenge;
+import com.odos.odos_server.domain.challenge.entity.ChallengeGoal;
 import com.odos.odos_server.domain.challenge.repository.ChallengeGoalRepository;
 import com.odos.odos_server.domain.challenge.repository.ChallengeRepository;
 import com.odos.odos_server.domain.common.dto.PageInfoDto;
@@ -43,10 +45,10 @@ public class DiaryService {
         memberRepository
             .findById(memberId)
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
-    //    Challenge challenge =
-    //        challengeRepository
-    //            .findById(input.challengeId())
-    //            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
+    Challenge challenge =
+        challengeRepository
+            .findById(input.challengeId())
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
@@ -58,12 +60,10 @@ public class DiaryService {
             .feeling(input.feeling())
             .isPublic(input.isPublic())
             .content(input.content())
-            .deleted(false) // ?
-            // .diaryGoals(diaryGoalRepository.findByChallengeId())
-            // .diaryImages(input.images())
+            .deleted(false)
             .diaryLikes(null)
             .member(member)
-            // .challenge(challenge)
+            .challenge(challenge)
             .diaryReports(null)
             .build();
     diaryRepository.save(diary);
@@ -75,15 +75,18 @@ public class DiaryService {
     }
 
     // 챌린지에서 목표 가져오면 이 코드 필요없을듯
-    //    if (input.getGoalIds() != null) {
-    //      for (Long goalId : input.getGoalIds()) {
-    //        ChallengeGoal cg =
-    //            challengeGoalRepository
-    //                .findById(goalId)
-    //                .orElseThrow(() -> new IllegalArgumentException("Goal not found"));
-    //        diaryGoalRepository.save(new DiaryGoal(null, true, diary, cg, null));
-    //      }
-    //    }
+    if (input.goalIds() != null) {
+      for (Long goalId : input.goalIds()) {
+        ChallengeGoal cg =
+            challengeGoalRepository
+                .findById(goalId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
+
+        DiaryGoal diaryGoal = new DiaryGoal(null, true, diary, cg, null);
+        diaryGoalRepository.save(diaryGoal);
+      }
+    }
+
     return DiaryResponseDto.from(diary, diary.getDiaryLikes());
   }
 
@@ -94,37 +97,42 @@ public class DiaryService {
             .findById(diaryId)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARY_NOT_FOUND));
 
-    //    Challenge challenge =
-    //        challengeRepository
-    //            .findById(input.getChallengeId())
-    //            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
+    Challenge challenge =
+        challengeRepository
+            .findById(input.challengeId())
+            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
 
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
 
     diary.update(
-        input.title(),
-        input.content(),
-        input.feeling(),
-        input.isPublic(),
-        diaryDate); // , challenge);
+        input.title(), input.content(), input.feeling(), input.isPublic(), diaryDate, challenge);
 
-    diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
+    if (diary.getDiaryImages() != null && !diary.getDiaryImages().isEmpty()) {
+      diaryImageRepository.deleteAll(diary.getDiaryImages());
+    }
+
     if (input.images() != null) {
       for (String url : input.images()) {
         diaryImageRepository.save(new DiaryImage(null, url, diary));
       }
     }
 
-    //    diary.getDiaryGoals().clear();
-    //    if (input.getGoalIds() != null) {
-    //      for (Long goalId : input.getGoalIds()) {
-    //        ChallengeGoal cg =
-    //            challengeGoalRepository
-    //                .findById(goalId)
-    //                .orElseThrow(() -> new IllegalArgumentException("Goal not found"));
-    //        diaryGoalRepository.save(new DiaryGoal(null, true, diary, cg, null));
-    //      }
-    //    }
+    // 기존 체크한 목표 삭제하고 다시 체크한거로
+    if (diary.getDiaryGoals() != null && !diary.getDiaryGoals().isEmpty()) {
+      diaryGoalRepository.deleteAll(diary.getDiaryGoals());
+    }
+
+    if (input.goalIds() != null) {
+      for (Long goalId : input.goalIds()) {
+        ChallengeGoal cg =
+            challengeGoalRepository
+                .findById(goalId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
+
+        DiaryGoal diaryGoal = new DiaryGoal(null, true, diary, cg, null);
+        diaryGoalRepository.save(diaryGoal);
+      }
+    }
 
     diaryRepository.save(diary);
     return DiaryResponseDto.from(diary, diary.getDiaryLikes());

@@ -2,7 +2,6 @@ package com.odos.odos_server.domain.diary.dto;
 
 import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.diary.entity.Diary;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -24,17 +23,9 @@ public record DiaryInfoDto(
             ? Collections.emptyList()
             : diary.getDiaryGoals().stream().map(DiaryGoalDto::from).toList();
 
-    List<DiaryGoalDto> achievedGoals = new ArrayList<>();
-    for (DiaryGoalDto d : goals) {
-      if (d.isAchieved()) {
-        achievedGoals.add(d);
-      }
-    }
-
-    int achievementRate = 0;
-    if (!goals.isEmpty()) {
-      achievementRate = (int) Math.round((double) achievedGoals.size() * 100 / goals.size());
-    }
+    long achievedCount = goals.stream().filter(DiaryGoalDto::isAchieved).count();
+    int achievementRate =
+        goals.isEmpty() ? 0 : (int) Math.round((double) achievedCount * 100 / goals.size());
 
     return new DiaryInfoDto(created, diaryDate, diary.getFeeling(), goals, achievementRate);
   }
