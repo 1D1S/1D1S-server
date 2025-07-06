@@ -21,7 +21,7 @@ public class SignupService {
   private final S3Service s3Service;
 
   @Transactional
-  public void completeSignupInfo(Long memberId, SignupInfoRequest request) {
+  public S3Dto completeSignupInfo(Long memberId, SignupInfoRequest request) {
     Member member =
         memberRepository
             .findById(memberId)
@@ -54,5 +54,7 @@ public class SignupService {
     member.updateCategories(list);
 
     memberRepository.save(member);
+
+    return s3Dto;
   }
 }
