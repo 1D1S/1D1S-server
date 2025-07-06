@@ -45,6 +45,7 @@ public class MemberService {
       validateNicknameTime(m);
       m.updateNickname(in.getNickname());
     }
+    // if (in.getProfileImageUrl() != null) m.updateProfileImageUrl(in.getProfileImageUrl());
     if (in.getJob() != null) m.updateJob(in.getJob());
     if (in.getIsPublic() != null) m.updateIsPublic(in.getIsPublic());
 
@@ -90,7 +91,7 @@ public class MemberService {
             .orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
 
     S3Dto s3Dto = s3Service.generatePresignedUrl(fileName);
-    member.updateProfileImageUrl(s3Dto.key());
+    member.updateProfileImageKey(s3Dto.key());
     return s3Dto.presignedUrl();
   }
 }

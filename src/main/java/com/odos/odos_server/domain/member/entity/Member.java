@@ -43,7 +43,7 @@ public class Member {
   private MemberRole role;
 
   private String nickname;
-  private String profileImageUrl;
+  private String profileImageKey;
 
   @Enumerated(EnumType.STRING)
   private Job job;
@@ -63,13 +63,13 @@ public class Member {
 
   public void completeProfile(
       String nickname,
-      String profileImageUrl,
+      String profileImageKey,
       Job job,
       LocalDate birth,
       Gender gender,
       Boolean isPublic) {
     this.nickname = nickname;
-    this.profileImageUrl = profileImageUrl;
+    this.profileImageKey = profileImageKey;
     this.job = job;
     this.birth = birth;
     this.gender = gender;
@@ -110,8 +110,8 @@ public class Member {
     this.nicknameLastModifiedAt = LocalDateTime.now();
   }
 
-  public void updateProfileImageUrl(String profileImageUrl) {
-    this.profileImageUrl = profileImageUrl;
+  public void updateProfileImageKey(String profileImageKey) {
+    this.profileImageKey = profileImageKey;
   }
 
   public void updateCategories(List<ChallengeCategory> categories) {

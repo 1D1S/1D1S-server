@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Override
   protected boolean shouldNotFilter(HttpServletRequest request) {
     String path = request.getRequestURI();
-    return path.startsWith("/oauth2/") || path.startsWith("/auth/") || path.equals("/login");
+    return path.startsWith("/oauth2/") || path.startsWith("/auth/token") || path.equals("/login");
   }
 
   @Override
