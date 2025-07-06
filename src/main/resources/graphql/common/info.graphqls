@@ -47,3 +47,9 @@ type PageInfo {
     endCursor: String
     hasNextPage: Boolean!
 }
+
+type MemberCoreInfo{
+    id : ID!
+    nickname : String!
+    profileUrl : Img!
+}

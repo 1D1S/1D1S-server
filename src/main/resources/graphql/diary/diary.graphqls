@@ -1,7 +1,7 @@
 type Diary {
     id: ID!
     challenge: Challenge#!
-    author: Member#!
+    author: MemberCoreInfo#!
     title: String!
     content: String!
     img: [Img!]#! #사진 여러개 받을 수 있으면 [Img]

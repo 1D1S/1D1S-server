@@ -1,6 +1,6 @@
 type Challenge {
     id: ID!
-    hostMember: Member!
+    hostMember: MemberCoreInfo!
     applicants: [Applicant!]!
     title: String!
     description: String!
@@ -11,7 +11,7 @@ type Challenge {
 }
 
 type Applicant {
-    member: Member!
+    member: MemberCoreInfo!
     status: ChallengeApplicantStatus!
     goals: [Goal]!
 }
