@@ -77,7 +77,7 @@ jobs:
           # push it to ECR so that it can
           # be deployed to ECS.
           docker buildx build \
-          --platform linux/amd64, linux/arm64 \
+          --platform linux/amd64,linux/arm64 \
           -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG \
           --push \
           .
