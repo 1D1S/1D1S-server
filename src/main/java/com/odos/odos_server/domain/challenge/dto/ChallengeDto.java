@@ -2,7 +2,6 @@ package com.odos.odos_server.domain.challenge.dto;
 
 import com.odos.odos_server.domain.challenge.entity.Challenge;
 import com.odos.odos_server.domain.common.Enum.MemberChallengeRole;
-import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.member.dto.MemberDto;
 import java.util.Collections;
@@ -15,7 +14,7 @@ public record ChallengeDto(
     String title,
     String description,
     LikesDto like,
-    List<ImgDto> img,
+    // List<ImgDto> img,
     ChallengeInfoDto challengeInfo) {
   public static ChallengeDto from(Challenge challenge) {
     return new ChallengeDto(
@@ -33,9 +32,9 @@ public record ChallengeDto(
         challenge.getTitle(),
         challenge.getDescription(),
         LikesDto.from(challenge.getLikes()),
-        challenge.getImages() != null
-            ? challenge.getImages().stream().map(ImgDto::from).toList()
-            : Collections.emptyList(),
+        /*challenge.getImages() != null
+        ? challenge.getImages().stream().map(ImgDto::from).toList()
+        : Collections.emptyList(),*/
         ChallengeInfoDto.from(challenge));
   }
 }

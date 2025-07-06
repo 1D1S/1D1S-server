@@ -8,8 +8,9 @@ import com.odos.odos_server.domain.diary.entity.DiaryLike;
 import com.odos.odos_server.domain.member.dto.MemberDto;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
-public record DiaryResponseDto(
+public record DiaryDto(
     Long id,
     ChallengeDto challenge,
     MemberDto author,
@@ -20,20 +21,20 @@ public record DiaryResponseDto(
     DiaryPublicDto isPublic,
     DiaryInfoDto diaryInfo) {
 
-  public static DiaryResponseDto from(Diary diary, List<DiaryLike> likes) {
+  public static DiaryDto from(Diary diary, List<DiaryLike> likes) {
 
     // s3로 사진 저장 로직으로 변경해야함
     List<ImgDto> images =
-        diary.getDiaryImages() == null
-            ? Collections.emptyList()
-            : diary.getDiaryImages().stream().map(ImgDto::from).toList();
+        Optional.ofNullable(diary.getDiaryImages()).orElse(List.of()).stream()
+            .map(i -> ImgDto.from(i.getUrl()))
+            .toList();
 
     // 이 다이어리에 좋아요 누른 사람의 정보를 가져오고 다이어리의 총 좋아요 개수 가져오는거 맞죠??
     // LikesDto likesDto = LikesDto.fromDiary(likes == null ? List.of() : likes);
     LikesDto likesDto =
         likes == null ? new LikesDto(Collections.emptyList(), 0) : LikesDto.fromDiary(likes);
 
-    return new DiaryResponseDto(
+    return new DiaryDto(
         diary.getId(),
         diary.getChallenge() == null ? null : ChallengeDto.from(diary.getChallenge()),
         MemberDto.from(diary.getMember()),

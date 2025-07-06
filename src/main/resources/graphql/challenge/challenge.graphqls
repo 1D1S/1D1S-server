@@ -5,7 +5,7 @@ type Challenge {
     title: String!
     description: String!
     like: Likes!
-    img: [Img!]!
+    #img: [Img!]!
 
     challengeInfo: ChallengeInfo!
 }

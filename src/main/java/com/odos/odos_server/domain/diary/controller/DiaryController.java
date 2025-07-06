@@ -3,7 +3,7 @@ package com.odos.odos_server.domain.diary.controller;
 import com.odos.odos_server.domain.diary.dto.CreateDiaryInput;
 import com.odos.odos_server.domain.diary.dto.CreateDiaryReportInput;
 import com.odos.odos_server.domain.diary.dto.DiaryConnectionDto;
-import com.odos.odos_server.domain.diary.dto.DiaryResponseDto;
+import com.odos.odos_server.domain.diary.dto.DiaryDto;
 import com.odos.odos_server.domain.diary.service.DiaryService;
 import com.odos.odos_server.error.exception.CustomException;
 import com.odos.odos_server.security.util.CurrentUserContext;
@@ -23,7 +23,7 @@ public class DiaryController {
   private final DiaryService diaryService;
 
   @MutationMapping
-  public DiaryResponseDto createDiary(@Argument CreateDiaryInput input) {
+  public DiaryDto createDiary(@Argument CreateDiaryInput input) {
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.createDiary(memberId, input);
@@ -34,12 +34,12 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public DiaryResponseDto updateDiary(@Argument Long DiaryId, @Argument CreateDiaryInput input) {
+  public DiaryDto updateDiary(@Argument Long DiaryId, @Argument CreateDiaryInput input) {
     return diaryService.updateDiary(DiaryId, input);
   }
 
   @QueryMapping // memberId 없이 다 보일 수 있게 또 수정?
-  public List<DiaryResponseDto> allDiaries() {
+  public List<DiaryDto> allDiaries() {
     try {
       return diaryService.getAllDiary();
     } catch (Exception e) {
@@ -50,7 +50,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public DiaryResponseDto diaryById(@Argument Long id) {
+  public DiaryDto diaryById(@Argument Long id) {
     try {
       return diaryService.getDiaryById(id);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public List<DiaryResponseDto> myDiaries() {
+  public List<DiaryDto> myDiaries() {
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getMyDiaries(memberId);
@@ -102,7 +102,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public List<DiaryResponseDto> randomDiaries(@Argument Integer first) {
+  public List<DiaryDto> randomDiaries(@Argument Integer first) {
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getRandomDiaries(first, memberId);
