@@ -29,7 +29,8 @@ public enum ErrorCode {
   INVALID_REQUEST(400, "CHALLENGE-004", "Member is not requested"),
   CHALLENGE_LIKE_NOT_FOUND(404, "CHALLENGE-005", "No challenge like"),
   ALREADY_LIKED(400, "CHALLENGE-006", "You already liked this challenge"),
-
+  CHALLENGE_GOAL_NOT_FOUND(
+      404, "CHALLENGE_GOAL-001", "Cannot Find ChallengeGoal, CreateChallengeFirst"),
   INVALID_DATE_FORMAT(400, "COMMON-001", "Invalid date format. Please use yyyy-MM-dd"),
   INVALID_CURSOR(400, "COMMON-002", "Invalid cursor");
 
