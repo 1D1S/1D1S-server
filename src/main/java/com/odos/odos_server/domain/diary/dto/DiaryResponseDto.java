@@ -5,14 +5,13 @@ import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.entity.DiaryLike;
-import com.odos.odos_server.domain.member.dto.MemberDto;
 import java.util.Collections;
 import java.util.List;
 
 public record DiaryResponseDto(
     Long id,
     ChallengeDto challenge,
-    MemberDto author,
+    // MemberDto author,
     String title,
     String content,
     LikesDto likes,
@@ -36,7 +35,7 @@ public record DiaryResponseDto(
     return new DiaryResponseDto(
         diary.getId(),
         diary.getChallenge() == null ? null : ChallengeDto.from(diary.getChallenge()),
-        MemberDto.from(diary.getMember()),
+        // MemberDto.from(diary.getMember()),
         diary.getTitle(),
         diary.getContent(),
         likesDto,
