@@ -40,7 +40,6 @@ public class DiaryService {
 
   /*
   Diary가 있는지 없는지 등의 권한 처리하는 코드 부족함 없는 거 있으니 추가하기
-  Diary에서 빌더 패턴으로 객체 생성하기
    */
   @Transactional
   public DiaryDto createDiary(Long memberId, CreateDiaryInput input) {
@@ -53,18 +52,6 @@ public class DiaryService {
             .findById(input.challengeId())
             .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
-    List<DiaryGoal> diaryGoals = new ArrayList<>();
-    //    if (input.goalIds() != null) {
-    //      for (Long goalId : input.goalIds()) {
-    //        ChallengeGoal cg =
-    //            challengeGoalRepository
-    //                .findById(goalId)
-    //                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
-    //        diaryGoals.add(new DiaryGoal(null, true, null, cg, null)); // Diary는 아직 null
-    //      }
-    //    }
-
-    // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
     Diary diary =
         Diary.builder()
@@ -75,12 +62,9 @@ public class DiaryService {
             .isPublic(input.isPublic())
             .content(input.content())
             .deleted(false)
-            // .diaryLikes(null)
             .member(member)
             .challenge(challenge)
-            //  .diaryReports(null)
             .build();
-    // diaryRepository.save(diary);
 
     if (input.achievedGoalIds() != null) {
       for (Long goalId : input.achievedGoalIds()) {
@@ -180,31 +164,6 @@ public class DiaryService {
     return result;
   }
 
-  //  @Transactional(readOnly = true)
-  //  public DiaryConnectionDto getPublicDiaryList(Integer first, String after) {
-  //    int size = (first != null) ? first : 10;
-  //    int page = decodePageCursor(after); // 커서 디코딩
-  //
-  //    Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
-  //    Page<Diary> pageResult = diaryRepository.findByIsPublicTrue(pageable);
-  //
-  //    List<DiaryEdgeDto> edges = new ArrayList<>();
-  //    int startOffset = page * size;
-  //    List<Diary> diaries = pageResult.getContent();
-  //
-  //    for (int i = 0; i < diaries.size(); i++) {
-  //      Diary d = diaries.get(i);
-  //      String cursor = encodeItemCursor(startOffset + i);
-  //      edges.add(new DiaryEdgeDto(DiaryDto.from(d,
-  // diaryLikeRepository.findDiaryLikesByDiaryId(d.getId())), cursor));
-  //    }
-  //
-  //    String endCursor = pageResult.hasNext() ? encodePageCursor(page + 1) : null;
-  //    PageInfoDto pageInfo = new PageInfoDto(endCursor, pageResult.hasNext());
-  //    long totalCount = diaryRepository.countByIsPublicTrue();
-  //
-  //    return new DiaryConnectionDto(edges, pageInfo, (int) totalCount);
-  //  }
   @Transactional(readOnly = true)
   public DiaryConnectionDto getPublicDiaryList(Integer first, String after) {
     int size = (first != null) ? first : 10;
@@ -245,8 +204,7 @@ public class DiaryService {
     try {
       return Integer.parseInt(new String(Base64.getDecoder().decode(cursor)));
     } catch (Exception e) {
-      // 로그 찍고 기본값 반환
-      System.err.println("⚠️ 잘못된 after 커서: " + cursor);
+      System.err.println("잘못된 after 커서: " + cursor);
       return 0;
     }
   }
@@ -255,17 +213,6 @@ public class DiaryService {
   private String encodePageCursor(int page) {
     return Base64.getEncoder().encodeToString(String.valueOf(page).getBytes());
   }
-
-  //  private int decodePageCursor(String cursor) {
-  //    if (cursor == null || cursor.isEmpty()) {
-  //      return 0;
-  //    }
-  //    try {
-  //      return Integer.parseInt(new String(Base64.getDecoder().decode(cursor)));
-  //    } catch (Exception e) {
-  //      return 0;
-  //    }
-  //  }
 
   private String encodeItemCursor(long offset) {
     return Base64.getEncoder().encodeToString(String.valueOf(offset).getBytes());

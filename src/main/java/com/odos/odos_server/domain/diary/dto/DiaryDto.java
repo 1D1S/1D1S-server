@@ -15,7 +15,7 @@ public record DiaryDto(
     MemberCoreInfoDto author,
     String title,
     String content,
-    LikesDto likes,
+    LikesDto like,
     List<ImgDto> img,
     DiaryPublicDto isPublic,
     DiaryInfoDto diaryInfo) {

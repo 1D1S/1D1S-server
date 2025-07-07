@@ -24,8 +24,9 @@ public record DiaryInfoDto(
             : diary.getDiaryGoals().stream().map(DiaryGoalDto::from).toList();
 
     long achievedCount = goals.stream().filter(DiaryGoalDto::isAchieved).count();
+    // long achievedCount = goals.size();
     int achievementRate =
-        goals.isEmpty() ? 0 : (int) Math.round((double) (achievedCount / goals.size()) * 100);
+        goals.isEmpty() ? 0 : (int) Math.round(((double) achievedCount / goals.size()) * 100);
 
     return new DiaryInfoDto(created, diaryDate, diary.getFeeling(), goals, achievementRate);
   }
