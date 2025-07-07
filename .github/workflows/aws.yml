@@ -22,8 +22,11 @@ jobs:
         run: |
           zip -r app.zip .
       # 3) EB 배포
-      - uses: einaregilsson/beanstalk-deploy@v22
+      - uses: einaregilsson/beanstalk-deploy@v22   # v22 그대로 사용 가능
         with:
+          aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws_session_token: ${{ env.AWS_SESSION_TOKEN }}   # 중요! OIDC면 꼭 함께 넘김
           application_name: 1d1s-test
           environment_name: 1d1s-test-env
           version_label: ${{ github.sha }}
