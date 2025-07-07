@@ -1,6 +1,7 @@
 package com.odos.odos_server.domain.member.controller;
 
 import com.odos.odos_server.domain.member.dto.MemberDto;
+import com.odos.odos_server.domain.member.dto.StreakDto;
 import com.odos.odos_server.domain.member.dto.UpdateMemberProfileInput;
 import com.odos.odos_server.domain.member.entity.Member;
 import com.odos.odos_server.domain.member.service.MemberService;
@@ -58,5 +59,16 @@ public class MemberGraphQLController {
   public String updateMemberProfileImg(@Argument String fileName) {
     Long id = CurrentUserContext.getCurrentMemberId();
     return memberService.updateMemberProfileImg(id, fileName);
+  }
+
+  @QueryMapping(name = "streakMe")
+  public StreakDto streakMe(){
+    Long id = CurrentUserContext.getCurrentMemberId();
+    return memberService.getStreakByMemberId(id);
+  }
+
+  @QueryMapping(name = "streakByMemberId")
+  public StreakDto streakByMemberId(@Argument Long id){
+    return memberService.getStreakByMemberId(id);
   }
 }

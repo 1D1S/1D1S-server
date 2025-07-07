@@ -2,4 +2,7 @@ extend type Query {
     memberMe:Member!
     memberById(id: ID!): Member!
     allMembers: [Member!]!
+
+    streakMe:Streak!
+    streakByMemberId(id: ID!):Streak!
 }
