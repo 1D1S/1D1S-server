@@ -9,6 +9,6 @@ public record CreateDiaryInput(
     String content,
     Feeling feeling,
     Boolean isPublic,
-    List<Long> goalIds,
-    String achievedDate,
-    List<String> images) {}
+    List<Long> achievedGoalIds,
+    String achievedDate) {}
+//    List<String> images

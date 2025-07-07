@@ -5,6 +5,7 @@ import com.odos.odos_server.domain.common.Enum.Feeling;
 import com.odos.odos_server.domain.member.entity.Member;
 import jakarta.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -77,5 +78,13 @@ public class Diary {
     this.isPublic = isPublic;
     this.date = date;
     this.challenge = challenge;
+  }
+
+  public void addDiaryGoal(DiaryGoal diaryGoal) {
+    if (this.diaryGoals == null) {
+      this.diaryGoals = new ArrayList<>();
+    }
+    this.diaryGoals.add(diaryGoal);
+    diaryGoal.setDiary(this);
   }
 }

@@ -54,15 +54,15 @@ public class DiaryService {
             .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     List<DiaryGoal> diaryGoals = new ArrayList<>();
-    if (input.goalIds() != null) {
-      for (Long goalId : input.goalIds()) {
-        ChallengeGoal cg =
-            challengeGoalRepository
-                .findById(goalId)
-                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
-        diaryGoals.add(new DiaryGoal(null, true, null, cg, null)); // Diary는 아직 null
-      }
-    }
+    //    if (input.goalIds() != null) {
+    //      for (Long goalId : input.goalIds()) {
+    //        ChallengeGoal cg =
+    //            challengeGoalRepository
+    //                .findById(goalId)
+    //                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
+    //        diaryGoals.add(new DiaryGoal(null, true, null, cg, null)); // Diary는 아직 null
+    //      }
+    //    }
 
     // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
@@ -75,12 +75,30 @@ public class DiaryService {
             .isPublic(input.isPublic())
             .content(input.content())
             .deleted(false)
-            .diaryLikes(null)
+            // .diaryLikes(null)
             .member(member)
             .challenge(challenge)
-            .diaryReports(null)
-            .diaryGoals(diaryGoals)
+            //  .diaryReports(null)
             .build();
+    // diaryRepository.save(diary);
+
+    if (input.achievedGoalIds() != null) {
+      for (Long goalId : input.achievedGoalIds()) {
+        ChallengeGoal cg =
+            challengeGoalRepository
+                .findById(goalId)
+                .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
+
+        DiaryGoal diaryGoal =
+            DiaryGoal.builder()
+                .goalCompleted(true)
+                .challengeGoal(cg)
+                .memberChallenge(cg.getMemberChallenge())
+                .build();
+        diary.addDiaryGoal(diaryGoal);
+      }
+    }
+
     diaryRepository.save(diary);
     return DiaryDto.from(diary, diaryLikeRepository.findDiaryLikesByDiaryId(diary.getId()));
   }
@@ -118,8 +136,8 @@ public class DiaryService {
       diaryGoalRepository.deleteAll(diary.getDiaryGoals());
     }
 
-    if (input.goalIds() != null) {
-      for (Long goalId : input.goalIds()) {
+    if (input.achievedGoalIds() != null) {
+      for (Long goalId : input.achievedGoalIds()) {
         ChallengeGoal cg =
             challengeGoalRepository
                 .findById(goalId)
