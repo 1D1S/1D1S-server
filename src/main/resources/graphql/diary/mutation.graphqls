@@ -18,8 +18,7 @@ input CreateDiaryInput {
     isPublic: Boolean
     # images : [String!]
     #    public: Boolean
-
-    : [ID!]
+    achievedGoalIds: [ID!]
     achievedDate: String!
 }
 
