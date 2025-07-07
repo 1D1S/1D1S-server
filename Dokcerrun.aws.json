@@ -1,0 +1,15 @@
+{
+  "AWSEBDockerrunVersion": "1",
+  "Image": {
+    "Name": "406816180769.dkr.ecr.ap-northeast-2.amazonaws.com/test-repository:latest",
+    "Update": "true"
+  },
+  "Ports": [
+    { "ContainerPort": "8080" }
+  ],
+  "Authentication": {
+    "Bucket": "elasticbeanstalk-ap-northeast-2-406816180769",
+    "Key": "docker-auth.json"
+  },
+  "Logging": "/var/log/nginx"
+}
