@@ -38,7 +38,7 @@ public class DiaryController {
     return diaryService.updateDiary(DiaryId, input);
   }
 
-  @QueryMapping //
+  @QueryMapping // 성공
   public List<DiaryDto> allDiaries() {
     try {
       return diaryService.getAllDiary();
@@ -50,7 +50,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public DiaryDto diaryById(@Argument Long id) {
+  public DiaryDto diaryById(@Argument Long id) { // 성공
     try {
       return diaryService.getDiaryById(id);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public List<DiaryDto> myDiaries() {
+  public List<DiaryDto> myDiaries() { // 성공
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getMyDiaries(memberId);
@@ -84,7 +84,7 @@ public class DiaryController {
     return diaryService.createDiaryLike(diaryId, memberId);
   }
 
-  @MutationMapping // 수정 필요, 삭제 되고 조회하려고 함
+  @MutationMapping // 성공
   public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) { // 성공
     return diaryService.cancelDiaryLike(diaryId, memberId);
   }
@@ -102,7 +102,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public List<DiaryDto> randomDiaries(@Argument Integer first) { // like 개수 반환 제외 다 성공,
+  public List<DiaryDto> randomDiaries(@Argument Integer first) { // 성공
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getRandomDiaries(first, memberId);
@@ -127,13 +127,6 @@ public class DiaryController {
   public DiaryConnectionDto diariesList(@Argument Integer first, @Argument String after) {
     return diaryService.getPublicDiaryList(first, after);
   }
-
-  //  @QueryMapping
-  //  public ResponseEntity<DiaryConnectionDTO> diariesList(
-  //          @Argument Integer first, @Argument String after) {
-  //    DiaryConnectionDTO result = diaryService.getPublicDiaries(first, after);
-  //    return ResponseEntity.ok(result);
-  //  }
 
   @MutationMapping
   public List<String> addDiaryImg(@Argument Long diaryId, @Argument List<String> fileNameList) {

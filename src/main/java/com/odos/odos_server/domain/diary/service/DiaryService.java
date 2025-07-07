@@ -155,7 +155,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryDto> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
+  public List<DiaryDto> getAllDiary() {
     List<Diary> diaries = diaryRepository.findAllPublicDiaries();
     List<DiaryDto> result = new ArrayList<>();
     for (Diary d : diaries) {
@@ -228,8 +228,7 @@ public class DiaryService {
     return DiaryDto.from(diary, diaryLikes);
   }
 
-  @Transactional(
-      readOnly = true) // query의 myDiaries, likeSize를 리턴안해줘서 getDiaryLikes()를 안 쓰고 직접 가져오는식으로 수정
+  @Transactional(readOnly = true)
   public List<DiaryDto> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
 
