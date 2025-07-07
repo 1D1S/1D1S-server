@@ -22,7 +22,7 @@ jobs:
         run: |
           zip -r app.zip .
       # 3) EB 배포
-      - uses: einaregilsson/beanstalk-deploy@v25
+      - uses: einaregilsson/beanstalk-deploy@v22
         with:
           application_name: 1d1s-test
           environment_name: 1d1s-test-env
