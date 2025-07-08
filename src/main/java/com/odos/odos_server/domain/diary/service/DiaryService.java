@@ -87,7 +87,7 @@ public class DiaryService {
     return DiaryDto.from(diary, diaryLikeRepository.findDiaryLikesByDiaryId(diary.getId()));
   }
 
-  @Transactional
+  @Transactional // 수정완료
   public DiaryDto updateDiary(Long diaryId, CreateDiaryInput input) {
     Diary diary =
         diaryRepository
@@ -97,29 +97,24 @@ public class DiaryService {
     Challenge challenge =
         challengeRepository
             .findById(input.challengeId())
-            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
-
     diary.update(
         input.title(), input.content(), input.feeling(), input.isPublic(), diaryDate, challenge);
 
+    // 이미지 삭제
     if (diary.getDiaryImages() != null && !diary.getDiaryImages().isEmpty()) {
       diaryImageRepository.deleteAll(diary.getDiaryImages());
     }
 
-    /*diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
-    if (input.images() != null) {
-      for (String url : input.images()) {
-        diaryImageRepository.save(new DiaryImage(null, url, diary));
-      }
-    }*/
-
-    // 기존 체크한 목표 삭제하고 다시 체크한거로
+    // 목표 삭제
     if (diary.getDiaryGoals() != null && !diary.getDiaryGoals().isEmpty()) {
       diaryGoalRepository.deleteAll(diary.getDiaryGoals());
+      diary.getDiaryGoals().clear();
     }
 
+    // 새로운 목표 추가
     if (input.achievedGoalIds() != null) {
       for (Long goalId : input.achievedGoalIds()) {
         ChallengeGoal cg =
@@ -127,13 +122,19 @@ public class DiaryService {
                 .findById(goalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
 
-        DiaryGoal diaryGoal = new DiaryGoal(null, true, diary, cg, null);
-        diaryGoalRepository.save(diaryGoal);
+        DiaryGoal dg =
+            DiaryGoal.builder()
+                .goalCompleted(true)
+                .challengeGoal(cg)
+                .memberChallenge(cg.getMemberChallenge())
+                .diary(diary)
+                .build();
+        diary.addDiaryGoal(dg);
       }
     }
 
     diaryRepository.save(diary);
-    return DiaryDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diaryLikeRepository.findDiaryLikesByDiaryId(diary.getId()));
   }
 
   public List<String> addDiaryImg(Long diaryId, List<String> fileNameList) {
