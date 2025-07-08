@@ -62,13 +62,13 @@ public class MemberGraphQLController {
   }
 
   @QueryMapping(name = "streakMe")
-  public StreakDto streakMe(){
+  public StreakDto streakMe() {
     Long id = CurrentUserContext.getCurrentMemberId();
     return memberService.getStreakByMemberId(id);
   }
 
   @QueryMapping(name = "streakByMemberId")
-  public StreakDto streakByMemberId(@Argument Long id){
+  public StreakDto streakByMemberId(@Argument Long id) {
     return memberService.getStreakByMemberId(id);
   }
 }
