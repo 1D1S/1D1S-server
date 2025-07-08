@@ -23,7 +23,7 @@ public class DiaryController {
   private final DiaryService diaryService;
 
   @MutationMapping
-  public DiaryDto createDiary(@Argument CreateDiaryInput input) {
+  public DiaryDto createDiary(@Argument CreateDiaryInput input) { // 성공
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.createDiary(memberId, input);
@@ -34,11 +34,11 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public DiaryDto updateDiary(@Argument Long DiaryId, @Argument CreateDiaryInput input) {
+  public DiaryDto updateDiary(@Argument Long DiaryId, @Argument CreateDiaryInput input) { // 성공
     return diaryService.updateDiary(DiaryId, input);
   }
 
-  @QueryMapping // memberId 없이 다 보일 수 있게 또 수정?
+  @QueryMapping // 성공
   public List<DiaryDto> allDiaries() {
     try {
       return diaryService.getAllDiary();
@@ -50,7 +50,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public DiaryDto diaryById(@Argument Long id) {
+  public DiaryDto diaryById(@Argument Long id) { // 성공
     try {
       return diaryService.getDiaryById(id);
     } catch (Exception e) {
@@ -60,7 +60,7 @@ public class DiaryController {
   }
 
   @QueryMapping
-  public List<DiaryDto> myDiaries() {
+  public List<DiaryDto> myDiaries() { // 성공
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getMyDiaries(memberId);
@@ -71,7 +71,7 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Boolean deleteDiary(@Argument Long DiaryId) {
+  public Boolean deleteDiary(@Argument Long DiaryId) { // 성공
     try {
       return diaryService.deleteDiary(DiaryId);
     } catch (CustomException e) {
@@ -80,29 +80,29 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Integer addDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
+  public Integer addDiaryLike(@Argument Long diaryId, @Argument Long memberId) { // 성공
     return diaryService.createDiaryLike(diaryId, memberId);
   }
 
-  @MutationMapping // 수정 필요, 삭제 되고 조회하려고 함
-  public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) {
+  @MutationMapping // 성공
+  public Integer cancelDiaryLike(@Argument Long diaryId, @Argument Long memberId) { // 성공
     return diaryService.cancelDiaryLike(diaryId, memberId);
   }
 
   @QueryMapping
-  public Boolean isDiaryWrittenByMe(@Argument Long id) {
+  public Boolean isDiaryWrittenByMe(@Argument Long id) { // 성공
     Long memberId = CurrentUserContext.getCurrentMemberId();
     return diaryService.isMine(id, memberId);
   }
 
   @QueryMapping
-  public Boolean isDiaryLikedByMe(@Argument Long id) {
+  public Boolean isDiaryLikedByMe(@Argument Long id) { // 성공
     Long memberId = CurrentUserContext.getCurrentMemberId();
     return diaryService.checkIfPressLikeByMe(id, memberId);
   }
 
   @QueryMapping
-  public List<DiaryDto> randomDiaries(@Argument Integer first) {
+  public List<DiaryDto> randomDiaries(@Argument Integer first) { // 성공
     try {
       Long memberId = CurrentUserContext.getCurrentMemberId();
       return diaryService.getRandomDiaries(first, memberId);
@@ -114,7 +114,7 @@ public class DiaryController {
   }
 
   @MutationMapping
-  public Boolean reportDiary(@Argument CreateDiaryReportInput input) {
+  public Boolean reportDiary(@Argument CreateDiaryReportInput input) { // 성공
     try {
       return diaryService.makeDiaryReport(input);
     } catch (CustomException e) {
@@ -127,13 +127,6 @@ public class DiaryController {
   public DiaryConnectionDto diariesList(@Argument Integer first, @Argument String after) {
     return diaryService.getPublicDiaryList(first, after);
   }
-
-  //  @QueryMapping
-  //  public ResponseEntity<DiaryConnectionDTO> diariesList(
-  //          @Argument Integer first, @Argument String after) {
-  //    DiaryConnectionDTO result = diaryService.getPublicDiaries(first, after);
-  //    return ResponseEntity.ok(result);
-  //  }
 
   @MutationMapping
   public List<String> addDiaryImg(@Argument Long diaryId, @Argument List<String> fileNameList) {

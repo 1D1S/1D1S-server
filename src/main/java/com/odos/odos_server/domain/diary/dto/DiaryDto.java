@@ -3,20 +3,19 @@ package com.odos.odos_server.domain.diary.dto;
 import com.odos.odos_server.domain.challenge.dto.ChallengeDto;
 import com.odos.odos_server.domain.common.dto.ImgDto;
 import com.odos.odos_server.domain.common.dto.LikesDto;
+import com.odos.odos_server.domain.common.dto.MemberCoreInfoDto;
 import com.odos.odos_server.domain.diary.entity.Diary;
 import com.odos.odos_server.domain.diary.entity.DiaryLike;
-import com.odos.odos_server.domain.member.dto.MemberDto;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 public record DiaryDto(
     Long id,
     ChallengeDto challenge,
-    MemberDto author,
+    MemberCoreInfoDto author,
     String title,
     String content,
-    LikesDto likes,
+    LikesDto like,
     List<ImgDto> img,
     DiaryPublicDto isPublic,
     DiaryInfoDto diaryInfo) {
@@ -31,16 +30,14 @@ public record DiaryDto(
 
     // 이 다이어리에 좋아요 누른 사람의 정보를 가져오고 다이어리의 총 좋아요 개수 가져오는거 맞죠??
     // LikesDto likesDto = LikesDto.fromDiary(likes == null ? List.of() : likes);
-    LikesDto likesDto =
-        likes == null ? new LikesDto(Collections.emptyList(), 0) : LikesDto.fromDiary(likes);
 
     return new DiaryDto(
         diary.getId(),
         diary.getChallenge() == null ? null : ChallengeDto.from(diary.getChallenge()),
-        MemberDto.from(diary.getMember()),
+        MemberCoreInfoDto.from(diary.getMember()),
         diary.getTitle(),
         diary.getContent(),
-        likesDto,
+        LikesDto.fromDiary(likes),
         images,
         DiaryPublicDto.from(diary.getIsPublic()),
         DiaryInfoDto.from(diary));
