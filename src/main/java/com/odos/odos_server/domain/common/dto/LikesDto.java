@@ -2,7 +2,6 @@ package com.odos.odos_server.domain.common.dto;
 
 import com.odos.odos_server.domain.challenge.entity.ChallengeLike;
 import com.odos.odos_server.domain.diary.entity.DiaryLike;
-import com.odos.odos_server.domain.member.dto.MemberDto;
 import java.util.Collections;
 import java.util.List;
 

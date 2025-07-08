@@ -40,7 +40,6 @@ public class DiaryService {
 
   /*
   Diary가 있는지 없는지 등의 권한 처리하는 코드 부족함 없는 거 있으니 추가하기
-  Diary에서 빌더 패턴으로 객체 생성하기
    */
   @Transactional
   public DiaryDto createDiary(Long memberId, CreateDiaryInput input) {
@@ -53,7 +52,6 @@ public class DiaryService {
             .findById(input.challengeId())
             .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
-    // 추후에 DateDTO인가 DateInputDTO로 바꿔야함
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
     Diary diary =
         Diary.builder()
@@ -64,36 +62,32 @@ public class DiaryService {
             .isPublic(input.isPublic())
             .content(input.content())
             .deleted(false)
-            .diaryLikes(null)
             .member(member)
             .challenge(challenge)
-            .diaryReports(null)
             .build();
-    diaryRepository.save(diary);
 
-    /*if (input.images() != null) {
-      for (String url : input.images()) {
-        diaryImageRepository.save(new DiaryImage(null, url, diary));
-      }
-    }*/
-
-    // 챌린지에서 목표 가져오면 이 코드 필요없을듯
-    if (input.goalIds() != null) {
-      for (Long goalId : input.goalIds()) {
+    if (input.achievedGoalIds() != null) {
+      for (Long goalId : input.achievedGoalIds()) {
         ChallengeGoal cg =
             challengeGoalRepository
                 .findById(goalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
 
-        DiaryGoal diaryGoal = new DiaryGoal(null, true, diary, cg, null);
-        diaryGoalRepository.save(diaryGoal);
+        DiaryGoal diaryGoal =
+            DiaryGoal.builder()
+                .goalCompleted(true)
+                .challengeGoal(cg)
+                .memberChallenge(cg.getMemberChallenge())
+                .build();
+        diary.addDiaryGoal(diaryGoal);
       }
     }
 
-    return DiaryDto.from(diary, diary.getDiaryLikes());
+    diaryRepository.save(diary);
+    return DiaryDto.from(diary, diaryLikeRepository.findDiaryLikesByDiaryId(diary.getId()));
   }
 
-  @Transactional
+  @Transactional // 수정완료
   public DiaryDto updateDiary(Long diaryId, CreateDiaryInput input) {
     Diary diary =
         diaryRepository
@@ -103,43 +97,44 @@ public class DiaryService {
     Challenge challenge =
         challengeRepository
             .findById(input.challengeId())
-            .orElseThrow(() -> new IllegalArgumentException("Challenge not found"));
+            .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_NOT_FOUND));
 
     LocalDate diaryDate = LocalDate.parse(input.achievedDate());
-
     diary.update(
         input.title(), input.content(), input.feeling(), input.isPublic(), diaryDate, challenge);
 
+    // 이미지 삭제
     if (diary.getDiaryImages() != null && !diary.getDiaryImages().isEmpty()) {
       diaryImageRepository.deleteAll(diary.getDiaryImages());
     }
 
-    /*diary.getDiaryImages().clear(); // 이걸 없애면 기존 사진에 더하는 로직으로 변경될 수 있음
-    if (input.images() != null) {
-      for (String url : input.images()) {
-        diaryImageRepository.save(new DiaryImage(null, url, diary));
-      }
-    }*/
-
-    // 기존 체크한 목표 삭제하고 다시 체크한거로
+    // 목표 삭제
     if (diary.getDiaryGoals() != null && !diary.getDiaryGoals().isEmpty()) {
       diaryGoalRepository.deleteAll(diary.getDiaryGoals());
+      diary.getDiaryGoals().clear();
     }
 
-    if (input.goalIds() != null) {
-      for (Long goalId : input.goalIds()) {
+    // 새로운 목표 추가
+    if (input.achievedGoalIds() != null) {
+      for (Long goalId : input.achievedGoalIds()) {
         ChallengeGoal cg =
             challengeGoalRepository
                 .findById(goalId)
                 .orElseThrow(() -> new CustomException(ErrorCode.CHALLENGE_GOAL_NOT_FOUND));
 
-        DiaryGoal diaryGoal = new DiaryGoal(null, true, diary, cg, null);
-        diaryGoalRepository.save(diaryGoal);
+        DiaryGoal dg =
+            DiaryGoal.builder()
+                .goalCompleted(true)
+                .challengeGoal(cg)
+                .memberChallenge(cg.getMemberChallenge())
+                .diary(diary)
+                .build();
+        diary.addDiaryGoal(dg);
       }
     }
 
     diaryRepository.save(diary);
-    return DiaryDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diaryLikeRepository.findDiaryLikesByDiaryId(diary.getId()));
   }
 
   public List<String> addDiaryImg(Long diaryId, List<String> fileNameList) {
@@ -161,11 +156,11 @@ public class DiaryService {
   }
 
   @Transactional
-  public List<DiaryDto> getAllDiary() { // 공개된 다이어리 최신순 전체정렬 : 10개씩 페이지네이션은 아직 NO..
+  public List<DiaryDto> getAllDiary() {
     List<Diary> diaries = diaryRepository.findAllPublicDiaries();
     List<DiaryDto> result = new ArrayList<>();
     for (Diary d : diaries) {
-      result.add(DiaryDto.from(d, d.getDiaryLikes()));
+      result.add(DiaryDto.from(d, diaryLikeRepository.findDiaryLikesByDiaryId(d.getId())));
     }
     return result;
   }
@@ -175,40 +170,49 @@ public class DiaryService {
     int size = (first != null) ? first : 10;
     int page = decodePageCursor(after); // 커서 디코딩
 
+    long totalCount = diaryRepository.countByIsPublicTrue();
+    int startOffset = page * size;
+
+    // 전체 개수보다 큰 offset 요청 시 빈 페이지 반환
+    if (startOffset >= totalCount) {
+      return new DiaryConnectionDto(
+          Collections.emptyList(), new PageInfoDto(null, false), (int) totalCount);
+    }
+
     Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdDate"));
     Page<Diary> pageResult = diaryRepository.findByIsPublicTrue(pageable);
-
-    List<DiaryEdgeDto> edges = new ArrayList<>();
-    int startOffset = page * size;
     List<Diary> diaries = pageResult.getContent();
 
+    List<DiaryEdgeDto> edges = new ArrayList<>();
     for (int i = 0; i < diaries.size(); i++) {
       Diary d = diaries.get(i);
+      if (d == null || d.getId() == null) continue; // null 방어
+
       String cursor = encodeItemCursor(startOffset + i);
-      edges.add(new DiaryEdgeDto(DiaryDto.from(d, d.getDiaryLikes()), cursor));
+      edges.add(
+          new DiaryEdgeDto(
+              DiaryDto.from(d, diaryLikeRepository.findDiaryLikesByDiaryId(d.getId())), cursor));
     }
 
     String endCursor = pageResult.hasNext() ? encodePageCursor(page + 1) : null;
     PageInfoDto pageInfo = new PageInfoDto(endCursor, pageResult.hasNext());
-    long totalCount = diaryRepository.countByIsPublicTrue();
 
     return new DiaryConnectionDto(edges, pageInfo, (int) totalCount);
+  }
+
+  private int decodePageCursor(String cursor) {
+    if (cursor == null || cursor.isEmpty()) return 0;
+    try {
+      return Integer.parseInt(new String(Base64.getDecoder().decode(cursor)));
+    } catch (Exception e) {
+      System.err.println("잘못된 after 커서: " + cursor);
+      return 0;
+    }
   }
 
   /* 페이지네이션 관련 메서드 */
   private String encodePageCursor(int page) {
     return Base64.getEncoder().encodeToString(String.valueOf(page).getBytes());
-  }
-
-  private int decodePageCursor(String cursor) {
-    if (cursor == null || cursor.isEmpty()) {
-      return 0;
-    }
-    try {
-      return Integer.parseInt(new String(Base64.getDecoder().decode(cursor)));
-    } catch (Exception e) {
-      return 0;
-    }
   }
 
   private String encodeItemCursor(long offset) {
@@ -217,20 +221,22 @@ public class DiaryService {
 
   @Transactional
   public DiaryDto getDiaryById(Long diaryId) {
+    List<DiaryLike> diaryLikes = diaryLikeRepository.findDiaryLikesByDiaryId(diaryId);
     Diary diary =
         diaryRepository
             .findById(diaryId)
             .orElseThrow(() -> new CustomException(ErrorCode.DIARYLIKE_NOT_FOUND));
-    return DiaryDto.from(diary, diary.getDiaryLikes());
+    return DiaryDto.from(diary, diaryLikes);
   }
 
-  @Transactional(readOnly = true) // query의 myDiaries
+  @Transactional(readOnly = true)
   public List<DiaryDto> getMyDiaries(Long memberId) {
     List<Diary> myDiaries = diaryRepository.findAllByMyId(memberId);
+
     List<DiaryDto> result = new ArrayList<>();
 
     for (Diary d : myDiaries) {
-      result.add(DiaryDto.from(d, d.getDiaryLikes()));
+      result.add(DiaryDto.from(d, diaryLikeRepository.findDiaryLikesByDiaryId(d.getId())));
     }
     return result;
   }
@@ -246,7 +252,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public Integer createDiaryLike(Long diaryId, Long memberId) {
+  public Integer createDiaryLike(Long diaryId, Long memberId) { // 성공
     Diary diary =
         diaryRepository
             .findById(diaryId)
@@ -269,7 +275,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public Integer cancelDiaryLike(Long diaryId, Long memberId) {
+  public Integer cancelDiaryLike(Long diaryId, Long memberId) { // 성공
     Optional<DiaryLike> like =
         diaryLikeRepository.findDiaryLikeByMemberIdAndDiaryId(memberId, diaryId);
     // DiaryLike가 없어서 예외처리 던지면 GrapahQL 스키마 상 무조건 INT! 리턴이라 에러터짐
@@ -282,7 +288,7 @@ public class DiaryService {
   }
 
   @Transactional
-  public Boolean isMine(Long diaryId, Long memberId) {
+  public Boolean isMine(Long diaryId, Long memberId) { //
     Diary diary =
         diaryRepository
             .findById(diaryId)
@@ -320,7 +326,10 @@ public class DiaryService {
     }
 
     Collections.shuffle(diaries);
-    return diaries.stream().limit(size).map(d -> DiaryDto.from(d, d.getDiaryLikes())).toList();
+    return diaries.stream()
+        .limit(size)
+        .map(d -> DiaryDto.from(d, diaryLikeRepository.findDiaryLikesByDiaryId(d.getId())))
+        .toList();
   }
 
   @Transactional
