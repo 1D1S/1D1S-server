@@ -7,9 +7,5 @@
   "Ports": [
     { "ContainerPort": "8080" }
   ],
-  "Authentication": {
-    "Bucket": "elasticbeanstalk-ap-northeast-2-406816180769",
-    "Key": "docker-auth.json"
-  },
   "Logging": "/var/log/nginx"
 }
