@@ -29,6 +29,6 @@ jobs:
           aws_session_token: ${{ env.AWS_SESSION_TOKEN }}   # 중요! OIDC면 꼭 함께 넘김
           application_name: 1d1s-test
           environment_name: 1d1s-test-env
-          version_label: ${{ github.sha }}
+          version_label: ${{ github.sha }}-${{ github.run_number }}
           region: ap-northeast-2
           deployment_package: app.zip
