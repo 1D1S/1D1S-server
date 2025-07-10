@@ -2,33 +2,63 @@ name: Deploy to Elastic Beanstalk
 on:
   push:
     branches: [ "dev" ]
+
 permissions:
-  id-token: write      # OIDC
+  id-token: write
   contents: read
+
+env:
+  AWS_REGION: ap-northeast-2
+  ECR_REPO: 406816180769.dkr.ecr.ap-northeast-2.amazonaws.com/test-repository
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      # 1) AWS OIDC 연동(권장, 액세스 키 불필요)
+      # 1) GitHub-OIDC → AWS 역할 Assume
       - uses: aws-actions/configure-aws-credentials@v2
         with:
           role-to-assume: arn:aws:iam::406816180769:role/GitHubOIDCRole
-          aws-region: ap-northeast-2
+          aws-region: ${{ env.AWS_REGION }}
 
-      # 2) 빌드 · 테스트 · 도커 이미지 태깅
-      - name: Build & zip
+      # 2) Docker build & push
+      - name: Login to ECR
+        uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & push image
         run: |
-          zip -r app.zip .
-      # 3) EB 배포
-      - uses: einaregilsson/beanstalk-deploy@v22   # v22 그대로 사용 가능
+          docker build -t $ECR_REPO:${{ github.sha }} .
+          docker tag  $ECR_REPO:${{ github.sha }}  $ECR_REPO:latest
+          docker push $ECR_REPO:${{ github.sha }}
+          docker push $ECR_REPO:latest             # Dockerrun은 latest 사용
+
+      # 3) Dockerrun.aws.json 생성(이미지만 명시)
+      - name: Create Dockerrun
+        run: |
+          cat > Dockerrun.aws.json <<'EOF'
+          {
+            "AWSEBDockerrunVersion": "1",
+            "Image": { "Name": "${ECR_REPO}:latest", "Update": "true" },
+            "Ports": [ { "ContainerPort": "8080" } ],
+            "Logging": "/var/log/nginx"
+          }
+          EOF
+
+      # 4) 최소 번들(zip) - Dockerrun 하나만 포함
+      - name: Zip source bundle
+        run: zip app.zip Dockerrun.aws.json
+
+      # 5) Elastic Beanstalk 배포
+      - uses: einaregilsson/beanstalk-deploy@v22
         with:
           aws_access_key: ${{ env.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ env.AWS_SECRET_ACCESS_KEY }}
           aws_session_token: ${{ env.AWS_SESSION_TOKEN }}   # 중요! OIDC면 꼭 함께 넘김
           application_name: 1d1s-test
           environment_name: 1d1s-test-env
+          region: ${{ env.AWS_REGION }}
           version_label: ${{ github.sha }}-${{ github.run_number }}
-          region: ap-northeast-2
           deployment_package: app.zip
+          use_existing_version_if_available: true      # 같은 SHA 재실행 시 오류 방지
